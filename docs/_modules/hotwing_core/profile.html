@@ -1,0 +1,621 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hotwing_core.profile &#8212; HotWing-Core 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hotwing_core.profile</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
+<span class="kn">from</span> <span class="nn">.surface</span> <span class="k">import</span> <span class="n">Surface</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and</span>
+<span class="sd">    bottom.  The job of the profile is to load the coordinates, split them and maintain the top and</span>
+<span class="sd">    bottom surfaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method Overloading:</span>
+
+<span class="sd">            Profile(filepath):</span>
+<span class="sd">                filepath: String-like object containing the file path to dat file to load</span>
+
+<span class="sd">            Profile(coordinates)</span>
+<span class="sd">                coordinates: List of Coordinate Objects to create Profile from</span>
+
+<span class="sd">            Profile(top_surface, bottom_surface)</span>
+<span class="sd">                top_surface: Surface - top surface to create Profile from</span>
+<span class="sd">                bottom_surface: Surface - bottom surface to create Profile from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># list of coordinates</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_profile</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># received a filename</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_dat_file</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Surface</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Surface</span><span class="p">):</span>
+            <span class="c1"># received two surfaces</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR!!  ---  TODO- IMPLEMENT ERROR IN PROFILE INIT METHOD&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the min and max X values in the Profile.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of Floats: (min_x,max_x) - containing the min and max X values in the profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the min and max Y values in the Profile.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of Floats: (min_y,max_y) - containing the min and max y values in the profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">left_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a XY position at the left-most value of the Profile half way between the two Surfaces</span>
+
+<span class="sd">        1) Finds the X value for the leftmost point in the Profile</span>
+<span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
+<span class="sd">        3) Finds the point in between the Coordinates, which is a coordinate vertically mid-way</span>
+<span class="sd">            between the points</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Coordinate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
+        <span class="n">top_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">min_x</span><span class="p">)</span>
+        <span class="n">bottom_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">min_x</span><span class="p">)</span>
+        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">average_y</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">right_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a XY position at the right-most value of the Profile half way between the two Surfaces</span>
+
+<span class="sd">        1) Finds the X value for the right most point in the Profile</span>
+<span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
+<span class="sd">        3) Finds the point in between the Coordinates, which is a coordinate vertically mid-way</span>
+<span class="sd">            between the points</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Coordinate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
+
+        <span class="n">top_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">max_x</span><span class="p">)</span>
+        <span class="n">bottom_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">max_x</span><span class="p">)</span>
+        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">average_y</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rotates a profile around a certain point.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            origin: Coordinate object that defines the point to rotate profile around</span>
+<span class="sd">            profile: Profile object to rotate</span>
+<span class="sd">            angle: Float - degrees to rotate profile.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - New rotated Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="n">bot_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">top_coords</span><span class="p">,</span> <span class="n">bot_coords</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.draw"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an image containing the profile and saves it to the disk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename - String-like object containing the path and filename to output the image</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
+
+            <span class="n">scale</span> <span class="o">=</span> <span class="mi">8000</span>
+            <span class="n">x_pad</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">y_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span>
+
+            <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
+            <span class="n">rib_width</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">rib_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">10.0</span>
+
+            <span class="n">n</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">+</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">y_height</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+            <span class="c1"># setup chart</span>
+            <span class="c1"># horizontal line</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="c1"># Left and right of vertical lines on x axis</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="c1"># ticks on y axis</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="c1"># ticks on x axis</span>
+            <span class="n">ticks</span> <span class="o">=</span> <span class="mi">20</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span>
+                          <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">ticks</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
+                          <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="k">def</span> <span class="nf">draw_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">draw_obj</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">c1</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">c2</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="n">c1_x</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span> <span class="o">+</span> <span class="n">x_pad</span>
+                    <span class="n">c1_y</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span>
+                    <span class="n">c2_x</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span> <span class="o">+</span> <span class="n">x_pad</span>
+                    <span class="n">c2_y</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span>
+                    <span class="n">draw_obj</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">c1_x</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="p">(</span><span class="n">c1_y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
+                                  <span class="p">(</span><span class="n">c2_x</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="p">(</span><span class="n">c2_y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="k">del</span> <span class="n">draw</span>
+            <span class="c1"># filepath = os.path.join(&quot;img&quot;,filename)</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">filename</span>
+            <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error drawing profile&quot;</span><span class="p">)</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a copy of a profile</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to copy</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new copied Profile object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">top</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.scale_to_width"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.scale_to_width">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">scale_to_width</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Scales a profile to a desired width.</span>
+
+<span class="sd">        Delagates to the Surface objects&#39; scale_to_width method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to scale</span>
+<span class="sd">            width: Float - width to scale profile to</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new scaled Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale_to_width</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale_to_width</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.offset_xy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Offsets a profile left, right, up or down.</span>
+
+<span class="sd">        Delagates to the Surface objects&#39; offset_xy method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to offset</span>
+<span class="sd">            offset: Coordinate - x,y values to offset profile - this value is simply added to</span>
+<span class="sd">                    each of the coordinates in the Profile&#39;s Surfaces.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new offset Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">offset_around_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">,</span> <span class="n">bottom_offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Offsets each of a Profile&#39;s Surfaces around itself. It can be thought of as scaling the Profile&#39;s</span>
+<span class="sd">        Surfaces inward or outward around the Surfaces.</span>
+
+<span class="sd">        Delagates to the Surface objects&#39; offset_around_profiles method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to offset</span>
+<span class="sd">            top_offset:    Float -  Positive value expands profile (offsets upwards/outwards),</span>
+<span class="sd">                                    negative value contracs profile (offsets inwards/downwards).</span>
+<span class="sd">            bottom_offset: Float -  Positive value expands profile (offsets upwards/downwards),</span>
+<span class="sd">                                    negative value contracs profile (offsets inwards/upwards).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new offset Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom_offset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.trim"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.trim">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trims a Profile&#39;s Surfaces to new starting and ending x values.</span>
+
+<span class="sd">        IMPORTANT - If you specify a value smaller than the min or larger than the max, by default</span>
+<span class="sd">        those values will be interpolated and may actually make the width of the surface larger.</span>
+
+<span class="sd">        Delagates trim to the Surface objects</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to trim</span>
+<span class="sd">            x_min: Float - left-most value to trim the profile to.</span>
+<span class="sd">            x_max: Float - right-most value to trim the profile to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new trimmed Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Profile.trim_overlap"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.trim_overlap">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">trim_overlap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trims a Profiles Surfaces where they overlap.</span>
+
+<span class="sd">        After manipulating Surfaces, the profiles may now overlap.  This method finds this point</span>
+<span class="sd">        using the class&#39; _find_convergence_points method and then trims the profiles based on the</span>
+<span class="sd">        results.  If no over lap(s) is/are found, not trimming will occur.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            profile: Profile object to trim.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - new trimmed Profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">_find_convergence_points</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">x1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">x2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+<div class="viewcode-block" id="Profile.interpolate_new_profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.interpolate_new_profile">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">interpolate_new_profile</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new Profile interpolated from two other Profiles.</span>
+
+<span class="sd">        Delagates to the Surface objects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            p1: Profile - first profile to interpolate from</span>
+<span class="sd">            p2: Profile - second profile to interpolate from</span>
+<span class="sd">            dist_between: Float - Distance between profiles</span>
+<span class="sd">            dist_interp: Float - Distance from s1 where new profile should be interpolated</span>
+<span class="sd">            points: Int - Number of points to use for interpolating each surface of the profile</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Profile - New Profile interpolated from s1 and s2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">interpolate_new_surface</span><span class="p">(</span>
+            <span class="n">p1</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+        <span class="n">bot</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">interpolate_new_surface</span><span class="p">(</span>
+            <span class="n">p1</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bot</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_load_dat_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads the contents of a Selig-formatted file and loads the coordinates into the Class&#39;</span>
+<span class="sd">        coordinates attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            f: String-like object containing the file path to a Selig-formatted file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of (two) Profiles : (top_profile, bottom_profile)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; *([0,1]\.*\d*) *(-?[0,1]\.*\d*)&quot;</span><span class="p">)</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Coordinate</span><span class="p">(</span>
+                            <span class="nb">float</span><span class="p">(</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_profile</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_split_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits the coordinates into top and bottom surfaces</span>
+
+<span class="sd">        TODO: Create better splitting algorithm</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            coordinates: list of coordinates</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of (two) Profiles : (top_profile, bottom_profile)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># get leftmost point</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">min_x</span><span class="p">:</span>
+                <span class="n">coordinate_to_split_on</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+
+        <span class="c1"># coordinate_to_split_on = len(coordinates)</span>
+        <span class="c1"># for i,c in enumerate(coordinates):</span>
+        <span class="c1">#   if c.y &lt; 0:</span>
+        <span class="c1">#       coordinate_to_split_on = i</span>
+        <span class="c1">#       break</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="n">coordinate_to_split_on</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">coordinate_to_split_on</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Surface</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> <span class="n">Surface</span><span class="p">(</span><span class="n">bottom</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_find_convergence_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds convergence points of a Class&#39; Profiles.</span>
+
+<span class="sd">        Searches for convergence points from the middle of the profile to the left bound and then</span>
+<span class="sd">        the middle of the profile to the right bound.  Uses the Class&#39; _find_convergence_point</span>
+<span class="sd">        method to perform the search.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of Floats:  ex: (0.23,0.92), (0.23,None), (None,0.92), (None,None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">left_bound</span><span class="p">,</span> <span class="n">right_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
+        <span class="n">midpoint</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_bound</span> <span class="o">+</span> <span class="n">right_bound</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_convergence_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">left_bound</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_convergence_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">right_bound</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
+
+    <span class="k">def</span> <span class="nf">_find_convergence_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_start</span><span class="p">,</span> <span class="n">x_stop</span><span class="p">,</span> <span class="n">accuracy</span><span class="o">=</span><span class="mf">0.000001</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds convergence points of a Class&#39; Profiles between two x positions.</span>
+
+<span class="sd">        Starts looking for convergence at the x_start value, then moves towards x_stop value until</span>
+<span class="sd">        it finds a convergence point or hits the x_stop value.  Continues interating each found</span>
+<span class="sd">        region and increasing the accuracy until the accuracy level is satisfied.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_start: Float</span>
+<span class="sd">            x_end: Float</span>
+<span class="sd">            accuracy: Float - minimum level of error we can tolerate on the convergence.  The</span>
+<span class="sd">                              algorithm doesn&#39;t solve for an exact value but can get very close</span>
+<span class="sd">                              by iteration.  Set this value very high for more accuracy.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Float: None if no convergence found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span> <span class="k">if</span> <span class="n">x_start</span> <span class="o">&gt;</span> <span class="n">x_stop</span> <span class="k">else</span> <span class="s2">&quot;right&quot;</span>
+
+        <span class="c1"># iterate until we get the accuracy we need</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+
+            <span class="c1"># set resolution to 1/100th of the search distance</span>
+            <span class="n">resolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_start</span> <span class="o">-</span> <span class="n">x_stop</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_region_of_convergence</span><span class="p">(</span><span class="n">x_start</span><span class="o">=</span><span class="n">x_start</span><span class="p">,</span>
+                                                      <span class="n">x_stop</span><span class="o">=</span><span class="n">x_stop</span><span class="p">,</span>
+                                                      <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">accuracy</span><span class="p">:</span>
+                <span class="c1"># accuracy is at a level we are happy with, return average of</span>
+                <span class="c1"># ranges</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+            <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
+                <span class="n">x_stop</span> <span class="o">=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">x_start</span> <span class="o">=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x_start</span> <span class="o">=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">x_stop</span> <span class="o">=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_region_of_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_start</span><span class="p">,</span> <span class="n">x_stop</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a region of convergence for the Profile&#39;s Surfaces.</span>
+
+<span class="sd">        Starting from the x_start and moving towards x_stop in increments defined by the resolution</span>
+<span class="sd">        variable, we try to determine a range - between x and x-1 - where the surfaces cross over</span>
+<span class="sd">        one other.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_start : Float</span>
+<span class="sd">            x_stop : Float</span>
+<span class="sd">            resolution : Float</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of Floats: (x1,x2) - two values that contain two x coordinates that bound the</span>
+<span class="sd">                                       region between where the convergence occurs.  None if no</span>
+<span class="sd">                                       convergence found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_val</span> <span class="o">=</span> <span class="n">x_start</span>
+        <span class="n">last_x</span> <span class="o">=</span> <span class="n">x_val</span>
+        <span class="k">if</span> <span class="n">x_stop</span> <span class="o">&lt;</span> <span class="n">x_start</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">x_val</span> <span class="o">&gt;</span> <span class="n">x_stop</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">last_x</span><span class="p">)</span>
+                <span class="n">last_x</span> <span class="o">=</span> <span class="n">x_val</span>
+                <span class="n">x_val</span> <span class="o">-=</span> <span class="n">resolution</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">x_val</span> <span class="o">&lt;</span> <span class="n">x_stop</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="n">last_x</span><span class="p">,</span> <span class="n">x_val</span><span class="p">)</span>
+                <span class="n">last_x</span> <span class="o">=</span> <span class="n">x_val</span>
+                <span class="n">x_val</span> <span class="o">+=</span> <span class="n">resolution</span>
+
+        <span class="c1"># couldn&#39;t find</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="s2">&quot;../profiles/rg14.dat&quot;</span><span class="p">)</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale_to_width</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">interpolate_new_profile</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="n">p1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;../p1.png&quot;</span><span class="p">)</span>
+    <span class="n">p2</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;../p2.png&quot;</span><span class="p">)</span>
+    <span class="n">p3</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;../p3.png&quot;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,199 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hotwing_core.rib &#8212; HotWing-Core 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hotwing_core.rib</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.profile</span> <span class="k">import</span> <span class="n">Profile</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">isect_line_plane_v3</span>
+<span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
+
+
+<div class="viewcode-block" id="Rib"><a class="viewcode-back" href="../../rib.html#hotwing_core.rib.Rib">[docs]</a><span class="k">class</span> <span class="nc">Rib</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Rib contains a Profile and other attributes to determine the size and position.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">airfoil</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xy_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">bottom_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">front_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tail_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotate_pos</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Document</span>
+<span class="sd">        Args:</span>
+<span class="sd">            something here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">airfoil</span><span class="p">,</span> <span class="n">Profile</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span> <span class="o">=</span> <span class="n">airfoil</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">airfoil</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span> <span class="o">=</span> <span class="n">xy_offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span> <span class="o">=</span> <span class="n">top_sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_sheet</span> <span class="o">=</span> <span class="n">bottom_sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">front_stock</span> <span class="o">=</span> <span class="n">front_stock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail_stock</span> <span class="o">=</span> <span class="n">tail_stock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">=</span> <span class="n">rotate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate_pos</span> <span class="o">=</span> <span class="n">rotate_pos</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a copy of the rib profile after scaling and offsets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale_to_width</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x_bounds</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">x_bounds</span>
+            <span class="n">x_len</span> <span class="o">=</span> <span class="n">x_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">mid_point</span> <span class="o">=</span> <span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_len</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate_pos</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">mid_point</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sheeted_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Document</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_sheet</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_around_profiles</span><span class="p">(</span>
+                <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_sheet</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p</span>
+
+<div class="viewcode-block" id="Rib.interpolate_new_rib"><a class="viewcode-back" href="../../rib.html#hotwing_core.rib.Rib.interpolate_new_rib">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">interpolate_new_rib</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span>
+                            <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Document</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">interpolate_new_profile</span><span class="p">(</span>
+            <span class="n">r1</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+        <span class="n">rib</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">rib</span><span class="o">.</span><span class="n">top_sheet</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">top_sheet</span>
+        <span class="n">rib</span><span class="o">.</span><span class="n">bottom_sheet</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">bottom_sheet</span>
+        <span class="n">rib</span><span class="o">.</span><span class="n">front_stock</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">front_stock</span>
+        <span class="n">rib</span><span class="o">.</span><span class="n">tail_stock</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">tail_stock</span>
+        <span class="k">return</span> <span class="n">rib</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">Rib</span><span class="p">(</span><span class="s2">&quot;profiles/rg14.dat&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># def get_coord_at_percent(self, position, surface=&quot;top&quot;):</span>
+    <span class="c1">#   top_len, bottom_len = self.surface_lengths()</span>
+    <span class="c1">#   if surface==&quot;top&quot;:</span>
+    <span class="c1">#       x_coord = position * top_len</span>
+    <span class="c1">#       coordinates = self.coordinates[0]</span>
+    <span class="c1">#       point_count = len(coordinates)</span>
+    <span class="c1">#       for i in range(point_count-1):</span>
+    <span class="c1">#           x1,y1 = coordinates[i]</span>
+    <span class="c1">#           x2,y2 = coordinates[i+1]</span>
+    <span class="c1">#           if x1 &gt;= x_coord and x2 &lt;= x_coord:</span>
+    <span class="c1">#               slope = (y2-y1)/(x2-x1)</span>
+    <span class="c1">#               y_coord = (x_coord-x1) * slope + y1</span>
+    <span class="c1">#               return (x_coord, y_coord)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

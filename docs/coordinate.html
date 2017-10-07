@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Coordinate &#8212; HotWing-Core 0.1dev documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Gcode" href="gcode.html" />
+    <link rel="prev" title="Welcome to HotWing-Core’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hotwing_core.coordinate">
+<span id="coordinate"></span><h1>Coordinate<a class="headerlink" href="#module-hotwing_core.coordinate" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hotwing_core.coordinate.Coordinate">
+<em class="property">class </em><code class="descclassname">hotwing_core.coordinate.</code><code class="descname">Coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>2 Dimensional X-Y coordinate</p>
+<dl class="classmethod">
+<dt id="hotwing_core.coordinate.Coordinate.calc_dist">
+<em class="property">classmethod </em><code class="descname">calc_dist</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.calc_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance between two coordinates</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>a : Coordinate
+b : Coordinate</dd>
+<dt>Returns:</dt>
+<dd>Float: distance between c1 and c2</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.coordinate.Coordinate.calc_slope">
+<em class="property">classmethod </em><code class="descname">calc_slope</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_slope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.calc_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the slope between two coordinates</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>a : Coordinate
+b : Coordinate</dd>
+<dt>Returns:</dt>
+<dd>Float: slope between c1 and c2</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.coordinate.Coordinate.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>coordinate</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates a coordinate around a certain point.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>origin: Coordinate object that defines the point to rotate coordinate around
+coordinate: coordinate object to rotate
+angle: Float - degrees to rotate Coordinate.</dd>
+<dt>Returns:</dt>
+<dd>Coordinate - New rotated Profile</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to HotWing-Core’s documentation!</a></li>
+      <li>Next: <a href="gcode.html" title="next chapter">Gcode</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/coordinate.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,294 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Surface &#8212; HotWing-Core 0.1dev documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Rib" href="rib.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hotwing_core.surface">
+<span id="surface"></span><h1>Surface<a class="headerlink" href="#module-hotwing_core.surface" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hotwing_core.surface.Surface">
+<em class="property">class </em><code class="descclassname">hotwing_core.surface.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>coordinates=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>A connected group of coordinates connected by lines that make up a top or bottom
+surface of an airfoil.</p>
+<dl class="attribute">
+<dt id="hotwing_core.surface.Surface.bounds">
+<code class="descname">bounds</code><a class="headerlink" href="#hotwing_core.surface.Surface.bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the bounding box of the Surface</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>(min,max) - tuple of Coordinates with the min xy and the max xy value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.surface.Surface.interpolate">
+<code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolates the Y position for a given value of X.</p>
+<p>Method uses linear interpolation between two points.  If the point lies outside of the
+coordinates, the line is interpolated based on the closest two points extended outwards.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Float - value of x where we want to interpolate</dd>
+<dt>Returns:</dt>
+<dd>Coordinate - (x,y) - original x value provided and solved y value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.surface.Surface.interpolate_around_profile_dist">
+<code class="descname">interpolate_around_profile_dist</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_around_profile_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the x-y position along the surface of the profile at a specified DISTANCE around the
+surface of the profile, starting from the left-most coordinate.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>pos: Float - value to find of distance around profile</dd>
+<dt>Returns:</dt>
+<dd>Coordinate - interpolated coordinate at position</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.surface.Surface.interpolate_around_profile_dist_pct">
+<code class="descname">interpolate_around_profile_dist_pct</code><span class="sig-paren">(</span><em>pct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist_pct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_around_profile_dist_pct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the x-y position along the surface of the profile at a specified PERCENTAGE value of
+the total distance around the surface of the profile, starting from the left-most coordinate.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>pos: Float - value to find of distance around profile</dd>
+<dt>Returns:</dt>
+<dd>Coordinate - interpolated coordinate at position</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.interpolate_new_surface">
+<em class="property">classmethod </em><code class="descname">interpolate_new_surface</code><span class="sig-paren">(</span><em>s1</em>, <em>s2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_new_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_new_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Surface interpolated from two other Surfaces.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>s1: Surface - first surface to interpolate from
+s2: Surface - second surface to interpolate from
+dist_between: Float - Distance between profiles
+dist_interp: Float - Distance from s1 where new surface should be interpolated
+points: Int - Number of points to use for interpolating the new surface</dd>
+<dt>Returns:</dt>
+<dd>Surface - New Surface interpolated from s1 and s2</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.surface.Surface.length">
+<code class="descname">length</code><a class="headerlink" href="#hotwing_core.surface.Surface.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the total length around the area of the surface</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Float</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.surface.Surface.max">
+<code class="descname">max</code><a class="headerlink" href="#hotwing_core.surface.Surface.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the right-most Coordinate</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Coordinate</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.surface.Surface.min">
+<code class="descname">min</code><a class="headerlink" href="#hotwing_core.surface.Surface.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the left most Coordinate</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Coordinate</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.offset_around_profile">
+<em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.offset_around_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offsets the surface around the current surface - evaluates relative angle at each point and
+expands/contracts the surface around these angles.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">surface: Surface to offset
+offset: Float - distance to offset from surface - positive value offsets upwards, negative</p>
+<blockquote class="last">
+<div>value offsets downwards.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>Surface: new Surface with the offset applied</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.offset_xy">
+<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.offset_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offsets the surface using the x and y values in the coordinate</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>surface : Surface to offset
+offset: Coordinate object containing the x and y values to offset</dd>
+<dt>Returns:</dt>
+<dd>Surface: new Surface with the offset applied</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>surface</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates a surface around a certain point.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>origin: Coordinate object that defines the point to rotate surface around
+surface: Surface object to rotate
+angle: Float - degrees to rotate surface.</dd>
+<dt>Returns:</dt>
+<dd>Surface - New rotated Surface</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.scale_to_width">
+<em class="property">classmethod </em><code class="descname">scale_to_width</code><span class="sig-paren">(</span><em>surface</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.scale_to_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.scale_to_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales a Surface to a specified width</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>surface : Surface to offset
+width: Float - width of new surface</dd>
+<dt>Returns:</dt>
+<dd>Surface: new Surface scaled to the new width</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.surface.Surface.trim">
+<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>surface</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trims a Surface to new starting and ending x values.</p>
+<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
+those values will be interpolated and may actually make the width of the surface larger.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">surface : Surface to trim
+x_min (optional): Float - x value to make the left cut on - if not</p>
+<blockquote>
+<div>specified, no cut will be made on this side</div></blockquote>
+<dl class="last docutils">
+<dt>x_max (optional): Float - x value to make the right cut on - if not</dt>
+<dd>specified, no cut will be made on this side</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Surface: new Surface trimmed to the min and max x values</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="rib.html" title="previous chapter">Rib</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/surface.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

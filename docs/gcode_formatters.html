@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>GCode Formatters &#8212; HotWing-Core 0.1dev documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Machine" href="machine.html" />
+    <link rel="prev" title="Gcode" href="gcode.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hotwing_core.gcode_formatters">
+<span id="gcode-formatters"></span><h1>GCode Formatters<a class="headerlink" href="#module-hotwing_core.gcode_formatters" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatBase">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatBase</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gcode Formatter’s job is to convert the commands maintained
+by the Gcode class and format them into the appropriate format
+for the specification of Gcode being generated.</p>
+<p>On any subclass, you are expected to implement at a minimum
+the _process_move and _process_fast_move commands.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatDebug">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatDebug</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatDebug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatDebug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
+<p>This is meant as a debugging class.  It will output the commands
+as a line of text separated by tabs.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hotwing_core.gcode_formatters.GenericGcode">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GenericGcode</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GenericGcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GenericGcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
+<p>Generic Gcode (RS-274?) formatter</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gcode.html" title="previous chapter">Gcode</a></li>
+      <li>Next: <a href="machine.html" title="next chapter">Machine</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/gcode_formatters.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

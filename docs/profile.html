@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Profile &#8212; HotWing-Core 0.1dev documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Rib" href="rib.html" />
+    <link rel="prev" title="Panel" href="panel.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hotwing_core.profile">
+<span id="profile"></span><h1>Profile<a class="headerlink" href="#module-hotwing_core.profile" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="hotwing_core.profile.Profile">
+<em class="property">class </em><code class="descclassname">hotwing_core.profile.</code><code class="descname">Profile</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
+bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
+bottom surfaces.</p>
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.copy">
+<em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a copy of a profile</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>profile: Profile object to copy</dd>
+<dt>Returns:</dt>
+<dd>Profile - new copied Profile object</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.profile.Profile.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an image containing the profile and saves it to the disk.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filename - String-like object containing the path and filename to output the image</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.interpolate_new_profile">
+<em class="property">classmethod </em><code class="descname">interpolate_new_profile</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.interpolate_new_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.interpolate_new_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Profile interpolated from two other Profiles.</p>
+<p>Delagates to the Surface objects.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>p1: Profile - first profile to interpolate from
+p2: Profile - second profile to interpolate from
+dist_between: Float - Distance between profiles
+dist_interp: Float - Distance from s1 where new profile should be interpolated
+points: Int - Number of points to use for interpolating each surface of the profile</dd>
+<dt>Returns:</dt>
+<dd>Profile - New Profile interpolated from s1 and s2</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.profile.Profile.left_midpoint">
+<code class="descname">left_midpoint</code><a class="headerlink" href="#hotwing_core.profile.Profile.left_midpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a XY position at the left-most value of the Profile half way between the two Surfaces</p>
+<ol class="arabic simple">
+<li>Finds the X value for the leftmost point in the Profile</li>
+<li>Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</li>
+<li><dl class="first docutils">
+<dt>Finds the point in between the Coordinates, which is a coordinate vertically mid-way</dt>
+<dd>between the points</dd>
+</dl>
+</li>
+</ol>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Coordinate</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.offset_around_profiles">
+<em class="property">classmethod </em><code class="descname">offset_around_profiles</code><span class="sig-paren">(</span><em>profile</em>, <em>top_offset</em>, <em>bottom_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_around_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.offset_around_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offsets each of a Profile’s Surfaces around itself. It can be thought of as scaling the Profile’s
+Surfaces inward or outward around the Surfaces.</p>
+<p>Delagates to the Surface objects’ offset_around_profiles method</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">profile: Profile object to offset
+top_offset:    Float -  Positive value expands profile (offsets upwards/outwards),</p>
+<blockquote>
+<div>negative value contracs profile (offsets inwards/downwards).</div></blockquote>
+<dl class="last docutils">
+<dt>bottom_offset: Float -  Positive value expands profile (offsets upwards/downwards),</dt>
+<dd>negative value contracs profile (offsets inwards/upwards).</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Profile - new offset Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.offset_xy">
+<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>profile</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.offset_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offsets a profile left, right, up or down.</p>
+<p>Delagates to the Surface objects’ offset_xy method</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">profile: Profile object to offset
+offset: Coordinate - x,y values to offset profile - this value is simply added to</p>
+<blockquote class="last">
+<div>each of the coordinates in the Profile’s Surfaces.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>Profile - new offset Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.profile.Profile.right_midpoint">
+<code class="descname">right_midpoint</code><a class="headerlink" href="#hotwing_core.profile.Profile.right_midpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a XY position at the right-most value of the Profile half way between the two Surfaces</p>
+<ol class="arabic simple">
+<li>Finds the X value for the right most point in the Profile</li>
+<li>Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</li>
+<li><dl class="first docutils">
+<dt>Finds the point in between the Coordinates, which is a coordinate vertically mid-way</dt>
+<dd>between the points</dd>
+</dl>
+</li>
+</ol>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Coordinate</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>profile</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates a profile around a certain point.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>origin: Coordinate object that defines the point to rotate profile around
+profile: Profile object to rotate
+angle: Float - degrees to rotate profile.</dd>
+<dt>Returns:</dt>
+<dd>Profile - New rotated Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.scale_to_width">
+<em class="property">classmethod </em><code class="descname">scale_to_width</code><span class="sig-paren">(</span><em>profile</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale_to_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.scale_to_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales a profile to a desired width.</p>
+<p>Delagates to the Surface objects’ scale_to_width method</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>profile: Profile object to scale
+width: Float - width to scale profile to</dd>
+<dt>Returns:</dt>
+<dd>Profile - new scaled Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.trim">
+<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>profile</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trims a Profile’s Surfaces to new starting and ending x values.</p>
+<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
+those values will be interpolated and may actually make the width of the surface larger.</p>
+<p>Delagates trim to the Surface objects</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>profile: Profile object to trim
+x_min: Float - left-most value to trim the profile to.
+x_max: Float - right-most value to trim the profile to.</dd>
+<dt>Returns:</dt>
+<dd>Profile - new trimmed Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.profile.Profile.trim_overlap">
+<em class="property">classmethod </em><code class="descname">trim_overlap</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim_overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.trim_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trims a Profiles Surfaces where they overlap.</p>
+<p>After manipulating Surfaces, the profiles may now overlap.  This method finds this point
+using the class’ _find_convergence_points method and then trims the profiles based on the
+results.  If no over lap(s) is/are found, not trimming will occur.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>profile: Profile object to trim.</dd>
+<dt>Returns:</dt>
+<dd>Profile - new trimmed Profile</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.profile.Profile.x_bounds">
+<code class="descname">x_bounds</code><a class="headerlink" href="#hotwing_core.profile.Profile.x_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the min and max X values in the Profile.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Tuple of Floats: (min_x,max_x) - containing the min and max X values in the profile.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.profile.Profile.y_bounds">
+<code class="descname">y_bounds</code><a class="headerlink" href="#hotwing_core.profile.Profile.y_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the min and max Y values in the Profile.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Tuple of Floats: (min_y,max_y) - containing the min and max y values in the profile.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="panel.html" title="previous chapter">Panel</a></li>
+      <li>Next: <a href="rib.html" title="next chapter">Rib</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/profile.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

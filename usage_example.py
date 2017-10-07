@@ -1,12 +1,3 @@
-# About
-
-This repository consists of a Python Module, which contains the core libraries for the HotWing-CLI and HotWing-GUI projects.  This Module provides a series of classes and functions to aid in creating GCode for 4-Axis CNC foam cutters, specifically working with wing profiles, interpolating new profiles, and computing reverse kinematics for the CNC.
-
-
-# Example Usage
-
-```py
-
 from hotwing_core import Profile
 from hotwing_core import Rib
 from hotwing_core import Machine
@@ -41,15 +32,10 @@ m = Machine(24, kerf=0.075, profile_points=100, output_profile_images=True)
 
 # Load panel into machine
 m.load_panel(p)
-m.gcode_formatter_name = "debug"
+#m.gcode_formatter_name = "debug"
 
 # Generate GCode
 gcode = m.generate_gcode(safe_height=1, normalize=False)
 
 # Output to screen
 print gcode
-```
-
-# Docs
-
-You can find the docs here : https://jasonhamilton.github.io/hotwing-core/index.html

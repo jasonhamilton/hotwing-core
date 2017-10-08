@@ -11,13 +11,17 @@ Welcome to HotWing-Core's documentation!
    :caption: Classes:
 
    coordinate
+   surface
+   profile
+   rib
+   panel
    gcode
    gcode_formatters
    machine
-   panel
-   profile
-   rib
-   surface
+   
+   
+   
+   
 
 
 

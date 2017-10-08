@@ -146,8 +146,10 @@
                 <span class="n">slope_prev</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="o">.</span><span class="n">calc_slope</span><span class="p">(</span>
                     <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">slope_next</span> <span class="o">+</span> <span class="n">slope_prev</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-
-            <span class="n">slope_inv</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">slope</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">slope_inv</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">slope</span>
+            <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+                <span class="n">slope_inv</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">slope_inv</span> <span class="o">*</span> <span class="n">slope_inv</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">slope_inv</span> <span class="o">*</span> <span class="n">b</span>
 
@@ -529,13 +531,13 @@
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
 </ul>
 
 <div class="relations">

@@ -20,7 +20,6 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('..'))
-print sys.path
 
 # -- General configuration ------------------------------------------------
 
@@ -32,6 +31,7 @@ print sys.path
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.todo',
     'sphinx.ext.imgmath',
     'sphinx.ext.viewcode']

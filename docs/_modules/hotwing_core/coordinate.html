@@ -44,7 +44,7 @@
 
 <div class="viewcode-block" id="Coordinate"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate">[docs]</a><span class="k">class</span> <span class="nc">Coordinate</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    2 Dimensional X-Y coordinate</span>
+<span class="sd">    2 Dimensional X-Y coordinate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
@@ -53,21 +53,25 @@
 <div class="viewcode-block" id="Coordinate.calc_slope"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.calc_slope">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">calc_slope</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the slope between two coordinates</span>
+<span class="sd">        Calculates the slope between two Coordinates.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            a : Coordinate</span>
 <span class="sd">            b : Coordinate</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            Float: slope between c1 and c2</span>
+<span class="sd">            Float: slope between a and b</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+            <span class="c1"># same x val -&gt; infinite slope</span>
+            <span class="n">slope</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">slope</span></div>
 
 <div class="viewcode-block" id="Coordinate.calc_dist"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.calc_dist">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">calc_dist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the distance between two coordinates</span>
+<span class="sd">        Calculates the distance between two Coordinates.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            a : Coordinate</span>
@@ -82,15 +86,15 @@
 <div class="viewcode-block" id="Coordinate.rotate"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotates a coordinate around a certain point.</span>
+<span class="sd">        Rotates a Coordinate around a point in 2D space.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            origin: Coordinate object that defines the point to rotate coordinate around</span>
-<span class="sd">            coordinate: coordinate object to rotate</span>
+<span class="sd">            coordinate: Coordinate object to rotate</span>
 <span class="sd">            angle: Float - degrees to rotate Coordinate.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate - New rotated Profile</span>
+<span class="sd">            Coordinate - New rotated Coordinate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">ox</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">x</span>
@@ -109,9 +113,16 @@
         <span class="k">return</span> <span class="s2">&quot;Coordinate: </span><span class="si">%5f</span><span class="s2">, </span><span class="si">%5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="c1"># comparison tolerance - necessary due to the rounding</span>
+        <span class="c1"># error with floating point numbers </span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.00000001</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">return</span> <span class="bp">NotImplemented</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">tolerance</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">tolerance</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -128,14 +139,6 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">c1</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.213</span><span class="p">,</span> <span class="mf">0.552</span><span class="p">)</span>
-    <span class="n">c2</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -156,13 +159,13 @@
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../panel.html">Panel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../profile.html">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../rib.html">Rib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../surface.html">Surface</a></li>
 </ul>
 
 <div class="relations">

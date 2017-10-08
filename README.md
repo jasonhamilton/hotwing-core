@@ -30,7 +30,7 @@ c3 = Coordinate(0.5,0.25)
 c4 = c2+c3 # 0.75,0.45
 ```
 
-![Coordinate Visual Representation](https://github.com/jasonhamilton/hotwing-core/img/coordinate_example.png)
+![Coordinate Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/coordinate_example.png)
 
 You can find more info on the Coordinate's methods and functionality in the Documentation: https://jasonhamilton.github.io/hotwing-core/coordinate.html
 
@@ -61,7 +61,7 @@ coords=[
 s = Surface(coords)
 ```
 
-![Surface Visual Representation](https://github.com/jasonhamilton/hotwing-core/img/surface_example.png)
+![Surface Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/surface_example.png)
 
 The Surface has a bunch of methods you can use, however you'll probably be interacting with the Profile method and letting it handle the lower-level interacton with the Surface object.
 
@@ -124,7 +124,7 @@ p = Profile(“http://m-selig.ae.illinois.edu/ads/coord/e374.dat”)
 The Profile has lots of nifty methods built into it so you can rotate, trim, scale, offset, interpolate, etc. You can see the Profile documentation here:
 https://jasonhamilton.github.io/hotwing-core/profile.html
 
-![Profile Visual Representation](https://github.com/jasonhamilton/hotwing-core/img/profile_example.png)
+![Profile Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/profile_example.png)
 
 
 ## Rib

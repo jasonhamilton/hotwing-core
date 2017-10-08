@@ -3,7 +3,7 @@ import math
 
 class Coordinate():
     """
-    2 Dimensional X-Y coordinate
+    2 Dimensional X-Y coordinate.
     """
     def __init__(self, x, y):
         self.x = x
@@ -12,21 +12,25 @@ class Coordinate():
     @classmethod
     def calc_slope(cls, a, b):
         """
-        Calculates the slope between two coordinates
+        Calculates the slope between two Coordinates.
 
         Args:
             a : Coordinate
             b : Coordinate
         Returns:
-            Float: slope between c1 and c2
+            Float: slope between a and b
         """
-        slope = (a.y-b.y)*1.0 / (a.x-b.x)
+        try:
+            slope = (a.y-b.y)*1.0 / (a.x-b.x)
+        except ZeroDivisionError:
+            # same x val -> infinite slope
+            slope = float('inf')
         return slope
 
     @classmethod
     def calc_dist(cls, a, b):
         """
-        Calculates the distance between two coordinates
+        Calculates the distance between two Coordinates.
 
         Args:
             a : Coordinate
@@ -41,15 +45,15 @@ class Coordinate():
     @classmethod
     def rotate(cls, origin, coordinate, angle):
         """
-        Rotates a coordinate around a certain point.
+        Rotates a Coordinate around a point in 2D space.
 
         Args:
             origin: Coordinate object that defines the point to rotate coordinate around
-            coordinate: coordinate object to rotate
+            coordinate: Coordinate object to rotate
             angle: Float - degrees to rotate Coordinate.
 
         Returns:
-            Coordinate - New rotated Profile
+            Coordinate - New rotated Coordinate
         """
         angle = math.radians(angle)
         ox = origin.x
@@ -68,9 +72,16 @@ class Coordinate():
         return "Coordinate: %5f, %5f" % (self.x, self.y)
 
     def __eq__(self, other):
+        # comparison tolerance - necessary due to the rounding
+        # error with floating point numbers 
+        tolerance = 0.00000001
+
         if isinstance(other, self.__class__):
-            return self.x == other.x and self.y == other.y
-        return NotImplemented
+            if abs(self.x - other.x) >= tolerance:
+                return False
+            if abs(self.y - other.y) >= tolerance:
+                return False
+            return True
 
     def __ne__(self, other):
         if isinstance(other, self.__class__):
@@ -87,11 +98,3 @@ class Coordinate():
         if isinstance(other, self.__class__):
             return Coordinate(self.x*other.x, self.y*other.y)
         return Coordinate(self.x*other, self.y*other)
-
-
-if __name__ == "__main__":
-    c1 = Coordinate(0.213, 0.552)
-    c2 = Coordinate(1, 2)
-
-    print(c1)
-    print(c1 == c2)

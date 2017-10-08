@@ -105,8 +105,10 @@ class Surface():
                 slope_prev = Coordinate.calc_slope(
                     coordinates[i - 1], coordinates[i])
                 slope = (slope_next + slope_prev) / 2
-
-            slope_inv = -1.0 / slope
+            try:
+                slope_inv = -1.0 / slope
+            except ZeroDivisionError:
+                slope_inv = 0
             b = offset / math.sqrt(slope_inv * slope_inv + 1)
             a = slope_inv * b
 

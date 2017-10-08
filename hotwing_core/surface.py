@@ -7,15 +7,14 @@ class Surface():
     """
     A connected group of coordinates connected by lines that make up a top or bottom
     surface of an airfoil.
+
+    Args:
+        coordinates: list of Coordinates
+                        ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
+                        ORDER BASED ON X VALUES
     """
 
     def __init__(self, coordinates=[]):
-        """
-        Args:
-            coordinates: list of Coordinates
-                            ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
-                            ORDER BASED ON X VALUES
-        """
         self.coordinates = coordinates
         self._remove_duplicate_coordinates()
         self._order_coordinates()
@@ -134,7 +133,7 @@ class Surface():
             Surface: new Surface with the offset applied
         """
         if not isinstance(offset, Coordinate):
-            print("error! offset is not an instance of Coordinate")
+            raise TypeError
         new_coords = []
         for c in surface.coordinates:
             new_coords.append(c + offset)
@@ -143,7 +142,7 @@ class Surface():
     @classmethod
     def scale_to_width(cls, surface, width):
         """
-        Scales a Surface to a specified width
+        Scales a Surface to a specified width.  The new surface will start at 0 and go to the width
 
         Args:
             surface : Surface to offset
@@ -152,10 +151,15 @@ class Surface():
         Returns:
             Surface: new Surface scaled to the new width
         """
-        _, max_ = surface.bounds
+
+        # offset min x to 0
+        min_, max_ = surface.bounds
+        s = Surface.offset_xy(surface, Coordinate(-min_.x,0))
+
+        _, max_ = s.bounds
         scale_factor = width * 1.00 / max_.x
         new_coords = []
-        for c in surface.coordinates:
+        for c in s.coordinates:
             new_coords.append(c * scale_factor)
         return cls(new_coords)
 
@@ -411,7 +415,9 @@ class Surface():
         for i in range(coord_count - 1):
             c1 = self.coordinates[i]
             c2 = self.coordinates[i + 1]
-            if c2.x > c1.x:
+            if c2.x == c1.x:
+                pass
+            elif c2.x > c1.x:
                 ascending_count += 1
             else:
                 descending_count += 1
@@ -425,48 +431,3 @@ class Surface():
             out += c.__str__()
             out += "\n"
         return out
-
-
-if __name__ == "__main__":
-
-    coordinates = [
-        Coordinate(1, 0),
-        Coordinate(0.99667, 0.00045),
-        Coordinate(0.98707, 0.00195),
-        Coordinate(0.97194, 0.00446),
-        Coordinate(0.95169, 0.0076),
-        Coordinate(0.92645, 0.01112),
-        Coordinate(0.89647, 0.01506),
-        Coordinate(0.86218, 0.01937),
-        Coordinate(0.82405, 0.02394),
-        Coordinate(0.78255, 0.02867),
-        Coordinate(0.73817, 0.03344),
-        Coordinate(0.6914499, 0.03811),
-        Coordinate(0.64292, 0.04256),
-        Coordinate(0.5931, 0.04666),
-        Coordinate(0.54254, 0.05029),
-        Coordinate(0.49178, 0.05334),
-        Coordinate(0.44133, 0.0557),
-        Coordinate(0.39172, 0.05727),
-        Coordinate(0.34343, 0.058),
-        Coordinate(0.29692, 0.0578),
-        Coordinate(0.25262, 0.05666),
-        Coordinate(0.21095, 0.05456),
-        Coordinate(0.17226, 0.05151),
-        Coordinate(0.13689, 0.04755),
-        Coordinate(0.10513, 0.04275),
-        Coordinate(0.07725, 0.03721),
-        Coordinate(0.05344, 0.03104),
-        Coordinate(0.03388, 0.02439),
-        Coordinate(0.01867, 0.01744),
-        Coordinate(0.00786, 0.01048),
-        Coordinate(0.0015, 0.0039),
-        Coordinate(0.0015, 0.0039),
-        Coordinate(0, 0)
-
-    ]
-
-    s1 = Surface(coordinates)
-    s2 = Surface.offset_xy(s1, Coordinate(0, 0))
-
-    Surface.interpolate_new_surface(s1, s2, 10, 5)

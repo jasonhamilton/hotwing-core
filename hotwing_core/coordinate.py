@@ -66,10 +66,10 @@ class Coordinate():
         return cls(qx, qy)
 
     def __str__(self):
-        return "%5f, %5f" % (self.x, self.y)
+        return "%.5f, %.5f" % (self.x, self.y)
 
     def __repr__(self):
-        return "Coordinate: %5f, %5f" % (self.x, self.y)
+        return "Coordinate: %.5f, %.5f" % (self.x, self.y)
 
     def __eq__(self, other):
         # comparison tolerance - necessary due to the rounding
@@ -82,11 +82,12 @@ class Coordinate():
             if abs(self.y - other.y) >= tolerance:
                 return False
             return True
+        raise NotImplementedError
 
     def __ne__(self, other):
         if isinstance(other, self.__class__):
             return not self.__eq__(other)
-        return NotImplemented
+        raise NotImplementedError
 
     def __add__(self, other):
         return Coordinate(self.x+other.x, self.y+other.y)

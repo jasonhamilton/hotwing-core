@@ -5,7 +5,7 @@ from hotwing_core import Panel
 from hotwing_core import Coordinate
 
 ## Setup Rib
-r1 = Rib("profiles/s6063.dat",
+r1 = Rib("http://m-selig.ae.illinois.edu/ads/coord/ah83159.dat",
          scale=10,
          xy_offset=None,
          top_sheet=0.0625,
@@ -13,7 +13,7 @@ r1 = Rib("profiles/s6063.dat",
          front_stock=0.5,
          tail_stock=1.25 )
          
-r2 = Rib("profiles/rg14.dat",
+r2 = Rib("http://m-selig.ae.illinois.edu/ads/coord/rg14.dat",
          scale=10,
          xy_offset=Coordinate(0, 0),
          top_sheet=0.0625,

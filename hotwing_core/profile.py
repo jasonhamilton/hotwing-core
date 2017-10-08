@@ -3,7 +3,7 @@ from .surface import Surface
 import re
 import copy
 import os
-
+import urllib2
 
 class Profile():
     """
@@ -19,6 +19,9 @@ class Profile():
             Profile(filepath):
                 filepath: String-like object containing the file path to dat file to load
 
+            Profile(url):
+                url: String-like object containing a URL to the dat file to load
+
             Profile(coordinates)
                 coordinates: List of Coordinate Objects to create Profile from
 
@@ -30,8 +33,12 @@ class Profile():
             # list of coordinates
             self.top, self.bottom = self._split_profile(args[0])
         elif len(args) == 1 and isinstance(args[0], str):
-            # received a filename
-            self.top, self.bottom = self._load_dat_file(args[0])
+            if "http://" in args[0] or "https://" in args[0]:
+                # received a URL
+                self.top, self.bottom = self._load_dat_from_url(args[0])
+            else:
+                # received a filename
+                self.top, self.bottom = self._load_dat_file(args[0])
         elif len(args) == 2 and isinstance(args[0], Surface) and isinstance(args[1], Surface):
             # received two surfaces
             self.top = args[0]
@@ -359,16 +366,50 @@ class Profile():
         coordinates = []
         with open(f, "r") as f:
             for line in f.readlines():
-                p = re.compile(" *([0,1]\.*\d*) *(-?[0,1]\.*\d*)")
-                m = p.match(line)
-                if m:
-                    coordinates.append(
-                        Coordinate(
-                            float(
-                                m.group(1)), float(
-                                m.group(2))))
+                c = self._parse_dat_file_line(line)
+                if c:
+                    coordinates.append(c)
         self.all_coordinates = coordinates
         return self._split_profile(coordinates)
+
+    def _load_dat_from_url(self, url):
+        """
+        Downloads the contents of a Selig-formatted file and loads the coordinates into 
+        the Class' coordinates attribute.
+
+        Args:
+            f: String-like object containing a URL to the Selig-formatted.  Make sure you
+               include http:// or https:// in the URL
+
+        Returns:
+            Tuple of (two) Profiles : (top_profile, bottom_profile)
+        """
+        coordinates = []
+        r = urllib2.urlopen(url)
+        contents = r.read()
+
+        for line in contents.splitlines():
+            c = self._parse_dat_file_line(line)
+            if c:
+                coordinates.append(c)
+        self.all_coordinates = coordinates
+        return self._split_profile(coordinates)
+
+    def _parse_dat_file_line(self, line):
+        """
+        Takes a single line for a dat file and parses out any coordinates
+        """
+        p = re.compile(" *([0,1]\.*\d*) *(-?[0,1]\.*\d*)")
+        m = p.match(line)
+        if m:
+            x = float(m.group(1))
+            y = float(m.group(2))
+            if x > 1 and y > 1:
+                # the Lednicer format specifies the coord count - ignore this
+                return None
+            c =  Coordinate(x,y)
+            return c
+        return None
 
     def _split_profile(self, coordinates):
         """
@@ -383,20 +424,43 @@ class Profile():
             Tuple of (two) Profiles : (top_profile, bottom_profile)
         """
 
-        # get leftmost point
-        min_x = min([c.x for c in coordinates])
-        for i, c in enumerate(coordinates):
-            if c.x == min_x:
-                coordinate_to_split_on = i
-                break
+        # determine direction
+        inc_count = 0
+        dec_count = 0
+        # test the x direction of the first 5 coordinates
+        for i in range(4):
+            c1 = coordinates[i]
+            c2 = coordinates[i+1]
+            if c2.x > c1.x:
+                inc_count += 1
+            else:
+                dec_count += 1
+
+        if inc_count > dec_count:
+            # get rightmost point
+            max_x = max([c.x for c in coordinates])
+            for i, c in enumerate(coordinates):
+                if c.x == max_x:
+                    coordinate_to_split_on = i
+                    break
+            top = coordinates[:coordinate_to_split_on + 1]
+            bottom = coordinates[coordinate_to_split_on+1:]
+        else:
+            # get leftmost point
+            min_x = min([c.x for c in coordinates])
+            for i, c in enumerate(coordinates):
+                if c.x == min_x:
+                    coordinate_to_split_on = i
+                    break
+            top = coordinates[:coordinate_to_split_on + 1]
+            bottom = coordinates[coordinate_to_split_on:]
 
         # coordinate_to_split_on = len(coordinates)
         # for i,c in enumerate(coordinates):
         #   if c.y < 0:
         #       coordinate_to_split_on = i
         #       break
-        top = coordinates[:coordinate_to_split_on + 1]
-        bottom = coordinates[coordinate_to_split_on:]
+
         return (Surface(top), Surface(bottom))
 
     def _find_convergence_points(self):
@@ -503,12 +567,3 @@ class Profile():
         return None
 
 
-if __name__ == "__main__":
-    p1 = Profile("../profiles/rg14.dat")
-    p2 = Profile.scale_to_width(p1, 2)
-    p1 = Profile.offset_xy(p1, Coordinate(0.5, 0))
-    p3 = Profile.interpolate_new_profile(p1, p2, 10, 5)
-
-    p1.draw("../p1.png")
-    p2.draw("../p2.png")
-    p3.draw("../p3.png")

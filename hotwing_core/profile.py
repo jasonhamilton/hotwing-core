@@ -10,25 +10,25 @@ class Profile():
     Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
     bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
     bottom surfaces.
+
+    Method Overloading:
+
+        Profile(filepath):
+            filepath: String-like object containing the file path to dat file to load
+
+        Profile(url):
+            url: String-like object containing a URL to the dat file to load
+
+        Profile(coordinates)
+            coordinates: List of Coordinate Objects to create Profile from
+
+        Profile(top_surface, bottom_surface)
+            top_surface: Surface - top surface to create Profile from
+            bottom_surface: Surface - bottom surface to create Profile from
     """
 
     def __init__(self, *args):
-        """
-        Method Overloading:
-
-            Profile(filepath):
-                filepath: String-like object containing the file path to dat file to load
-
-            Profile(url):
-                url: String-like object containing a URL to the dat file to load
-
-            Profile(coordinates)
-                coordinates: List of Coordinate Objects to create Profile from
-
-            Profile(top_surface, bottom_surface)
-                top_surface: Surface - top surface to create Profile from
-                bottom_surface: Surface - bottom surface to create Profile from
-        """
+        
         if len(args) == 1 and isinstance(args[0], list):
             # list of coordinates
             self.top, self.bottom = self._split_profile(args[0])

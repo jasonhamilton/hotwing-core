@@ -399,7 +399,7 @@ class Profile():
         """
         Takes a single line for a dat file and parses out any coordinates
         """
-        p = re.compile(" *([0,1]\.*\d*) *(-?[0,1]\.*\d*)")
+        p = re.compile("^\s*(-*\d*\.\d*)\s*(-*\d*\.\d*)")
         m = p.match(line)
         if m:
             x = float(m.group(1))

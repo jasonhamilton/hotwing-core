@@ -189,61 +189,158 @@ class TestSurface():
         #test offset with invalid object
         with pytest.raises(TypeError):
             Surface.offset_xy(s, 1)
-        
-    def test_scale_to_width(self):
-        def test_scale(coords, scale):
-            s = Surface(coords)
-            width = scale
-            s = Surface.scale_to_width(s, width)
-            x_diff = coords[-1].x - coords[0].x
-            assert s.max.x == width
-            assert s.min.x == 0
-            
-            expected_min_y = coords[0].y*(width/1.2)
-            expected_max_y = coords[-1].y*(width/1.2)
-            assert s.min.y == expected_min_y
-            assert s.max.y == expected_max_y
 
-
-
+    def test_scale(self):
         coords = [
             Coordinate(0.0,0.1),
             Coordinate(0.4,0.2), 
             Coordinate(0.8,0.4),
             Coordinate(1.2,0.6),
         ]
-        test_scale(coords,1)
-        test_scale(coords,0.05)
-        test_scale(coords,1.5)
-        test_scale(coords,500.1)
+        scale = 5
+        s = Surface(coords)
+        s1 = Surface.scale(s,scale)
+        s2 = s*5
 
+        # scaling by method or multiplying should yield same values
+        for i in range(len(s.coordinates)):
+            assert s1.coordinates[i] == s2.coordinates[i]
 
+        # validate coordinates scaled correctly
+        for i in range(len(s.coordinates)):
+            c_x = coords[i].x
+            c_y = coords[i].y
+            s1.coordinates[i] == Coordinate(c_x*scale,c_y*scale)
 
+    def test_trim(self):
+        # trim both sides
+        trim_l = 0.25
+        trim_r = 0.75
+        s = Surface(coordinates)
+        t = Surface.trim(s,trim_l,trim_r)
+        assert t.min.x == trim_l
+        assert t.max.x == trim_r
+
+        # trim right side only
+        trim_l = None
+        trim_r = 0.75
+        s = Surface(coordinates)
+        t = Surface.trim(s,trim_l,trim_r)
+        assert t.min.x == coordinates[-1].x
+        assert t.max.x == trim_r
+
+        # trim left side only
+        trim_l = 0.25
+        trim_r = None
+        s = Surface(coordinates)
+        t = Surface.trim(s,trim_l,trim_r)
+        assert t.min.x == trim_l
+        assert t.max.x == coordinates[0].x
+
+        # don't trim either
+        trim_l = None
+        trim_r = None
+        s = Surface(coordinates)
+        t = Surface.trim(s,trim_l,trim_r)
+        assert t.min.x == coordinates[-1].x
+        assert t.max.x == coordinates[0].x
+
+    def test_equality(self):
+        s1 = Surface(coordinates)
+        s2 = Surface(coordinates_no_dupe)
+        s3 = Surface(short_surface)
+
+        assert s1 == s2
+        assert s1 != s3
+        assert not s1 == s3
+        
+    def test_interpolate(self):
+        # Straignt line x=y
         coords = [
-            Coordinate(-0.2,0.1),
-            Coordinate(0.2,0.2), 
-            Coordinate(0.6,0.4),
-            Coordinate(1.0,0.6),
+            Coordinate(0.0,0.0),
+            Coordinate(0.4,0.4), 
+            Coordinate(0.8,0.8),
+            Coordinate(1.2,1.2),
         ]
-        test_scale(coords,1)
-        test_scale(coords,0.05)
-        test_scale(coords,1.5)
-        test_scale(coords,500.1)
+        s = Surface(coords)
+        for i in range(100):
+            val = i/100.0
+            result = s.interpolate(val)
+            assert result == Coordinate(val,val)
+
+        # horizontal line y=0.5
+        coords = [
+            Coordinate(0.0,0.5),
+            Coordinate(0.4,0.5), 
+            Coordinate(0.8,0.5),
+            Coordinate(1.2,0.5),
+        ]
+        s = Surface(coords)
+        for i in range(100):
+            val = i/100.0
+            result = s.interpolate(val)
+            assert result == Coordinate(val,0.5)
+        
+    def test_rotate(self):
+        coords = [
+            Coordinate(0.0,0.0),
+            Coordinate(0.4,0.2), 
+            Coordinate(0.8,0.4),
+            Coordinate(1.2,0.6),
+        ]
+
+        s = Surface(coords)
+        o = Coordinate(0,0)
+        a = 90
+        r = Surface.rotate(o,s,a)
+        r.coordinates[0] == Coordinate(0,0)
+        r.coordinates[1] == Coordinate(-0.2,0.4)
+        r.coordinates[2] == Coordinate(-0.8,-0.4),
+        r.coordinates[3] == Coordinate(0.6,-1.2)
+
+    def test_interpolate_new_surface(self):
+        coords = [
+            Coordinate(0.0,0.0),
+            Coordinate(0.4,0.2), 
+            Coordinate(0.8,0.4),
+            Coordinate(1.2,0.6),
+        ]
+        # make same surface
+        s1 = Surface(coords)
+        s2 = Surface(coords)
+        length = 500
+        s3 = Surface.interpolate_new_surface(s1,s2,10,3, length)
+
+        assert len(s3.coordinates) == length
+
+        # test each original coordinate to see if it's the same
+        # doesn't validate correctly on an interpolated foil but
+        # works on our linear example
+        for c in s1.coordinates:
+            assert c == s3.interpolate(c.x)
+        # also only works on our contrived example
+        for i in range(len(s1.coordinates)-1):
+            c1 = coords[i]
+            c2 = coords[i+1]
+            c3 = c1+c2
+            c3 = c3*0.5
+            assert s1.interpolate(c3.x) == s3.interpolate(c3.x)
+
+    # def test_offset_around_profile(self):
+
+    #     s1 = Surface(coordinates)
+    #     offset = 1.125
+    #     s2 = Surface.offset_around_profile(s1,offset)
+    #     s3 = Surface.offset_around_profile(s2,-offset)
 
 
-        
-    # def test_trim(self):
-    #     pass
-        
-    # def test_interpolate_new_surface(self):
-    #     pass
-        
-    # def test_rotate(self):
-    #     pass
-        
-    # def test_interpolate(self):
-    #     pass
-        
+    #     for i in range(len(s2.coordinates)):
+    #         c1 = s1.coordinates[i]
+    #         c2 = s2.coordinates[i]
+    #         c3 = s3.coordinates[i]
+
+
+
     # def test_interpolate_around_profile_dist_pct(self):
     #     pass
         

@@ -107,7 +107,7 @@ class Surface():
             try:
                 slope_inv = -1.0 / slope
             except ZeroDivisionError:
-                slope_inv = 0
+                slope_inv = 10**50
             b = offset / math.sqrt(slope_inv * slope_inv + 1)
             a = slope_inv * b
 
@@ -140,28 +140,44 @@ class Surface():
         return cls(new_coords)
 
     @classmethod
-    def scale_to_width(cls, surface, width):
+    def scale(cls, surface, scale):
         """
-        Scales a Surface to a specified width.  The new surface will start at 0 and go to the width
+        Scales a Surface by a specified value
 
         Args:
             surface : Surface to offset
-            width: Float - width of new surface
+            scale: Float - value to scale by
 
         Returns:
-            Surface: new Surface scaled to the new width
+            Surface: new scaled Surface
         """
-
-        # offset min x to 0
-        min_, max_ = surface.bounds
-        s = Surface.offset_xy(surface, Coordinate(-min_.x,0))
-
-        _, max_ = s.bounds
-        scale_factor = width * 1.00 / max_.x
         new_coords = []
-        for c in s.coordinates:
-            new_coords.append(c * scale_factor)
+        for c in surface.coordinates:
+            new_coords.append(c * scale)
         return cls(new_coords)
+
+    # @classmethod
+    # def scale_to_width(cls, surface, width):
+    #     """
+    #     Scales a Surface to a specified width.  The new surface will start at 0 and go to the width
+
+    #     Args:
+    #         surface : Surface to offset
+    #         width: Float - width of new surface
+
+    #     Returns:
+    #         Surface: new Surface scaled to the new width
+    #     """
+    #     # offset min x to 0
+    #     min_, max_ = surface.bounds
+    #     s = Surface.offset_xy(surface, Coordinate(-min_.x,0))
+
+    #     _, max_ = s.bounds
+    #     scale_factor = width * 1.00 / max_.x
+    #     new_coords = []
+    #     for c in s.coordinates:
+    #         new_coords.append(c * scale_factor)
+    #     return cls(new_coords)
 
     @classmethod
     def trim(cls, surface, x_min=None, x_max=None):
@@ -185,7 +201,7 @@ class Surface():
 
         # extract the points between the cut points
         trim_left = 0
-        trim_right = len(surface.coordinates) - 1
+        trim_right = len(surface.coordinates)
 
         if not x_min is None:
             for i, c in enumerate(surface.coordinates):
@@ -239,8 +255,8 @@ class Surface():
             return a[-2:]
 
         new_coords = []
-        for i in range(points + 1):
-            pct = i * 1.0 / points
+        for i in range(points):
+            pct = i * 1.0 / (points-1)
             c1 = s1.interpolate_around_profile_dist_pct(pct)
             c2 = s2.interpolate_around_profile_dist_pct(pct)
             res = interpolate_between_points(c1, c2, 10, 5)
@@ -390,6 +406,23 @@ class Surface():
 
         return Coordinate(x, y)
 
+    def export(self, output_file, separator="\t", newline="\n"):
+        """
+        Writes the coordinates to a file
+
+        Args:
+            output_file
+            separator
+            newline
+
+        Returns:
+            None
+        """
+        with open(output_file,"w") as f:
+            for c in self.coordinates:
+                line = "%.5f%s%.5f%s" % (c.x,separator,c.y,newline)
+                f.write(line)
+
     def _remove_duplicate_coordinates(self):
         """
         Removes any duplicates from the coordinates attribute
@@ -431,3 +464,30 @@ class Surface():
             out += c.__str__()
             out += "\n"
         return out
+
+    def __mul__(self, other):
+        return Surface.scale(self, other)
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return Surface.trim(self,key.start,key.stop)
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            # start by comparing coord len
+            if not len(self.coordinates) == len(other.coordinates):
+                return False
+            # next compare each coordinate
+            for i in range(len(self.coordinates)):
+                c1 = self.coordinates[i]
+                c2 = other.coordinates[i]
+                if not c1 == c2:
+                    return False
+            return True
+        raise NotImplementedError
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        raise NotImplementedError

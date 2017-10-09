@@ -275,3 +275,21 @@ gcode = m.generate_gcode(safe_height=5)
 print gcode
 ```
 
+# Testing
+
+Tests are located in the test folder.  Make sure you have the dependencies in requirements_dev.txt installed.
+
+From the root folder (hotwing-core) run:
+```sh
+# Run all tests
+pytest
+
+# Run tests but allow print statements to output text - useful for debugging
+pytest -s
+
+# Run tests and show coverage
+pytest --cov=hotwing_core
+
+# Run tests, show coverage and show lines not covered by tests
+pytest --cov=hotwing_core --cov-report term-missing
+```

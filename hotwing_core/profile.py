@@ -225,22 +225,40 @@ class Profile():
         return Profile(top, bottom)
 
     @classmethod
-    def scale_to_width(cls, profile, width):
+    def scale(cls, profile, scale):
         """
-        Scales a profile to a desired width.
+        Scales a profile by a value
 
-        Delagates to the Surface objects' scale_to_width method
+        Delagates to the Surface objects' scale method
 
         Args:
             profile: Profile object to scale
-            width: Float - width to scale profile to
+            scale: Float - value to scale profile by
 
         Returns:
             Profile - new scaled Profile
         """
-        top = Surface.scale_to_width(profile.top, width)
-        bottom = Surface.scale_to_width(profile.bottom, width)
+        top = Surface.scale(profile.top, scale)
+        bottom = Surface.scale(profile.bottom, scale)
         return Profile(top, bottom)
+
+    # @classmethod
+    # def scale_to_width(cls, profile, width):
+    #     """
+    #     Scales a profile to a desired width.
+
+    #     Delagates to the Surface objects' scale_to_width method
+
+    #     Args:
+    #         profile: Profile object to scale
+    #         width: Float - width to scale profile to
+
+    #     Returns:
+    #         Profile - new scaled Profile
+    #     """
+    #     top = Surface.scale_to_width(profile.top, width)
+    #     bottom = Surface.scale_to_width(profile.bottom, width)
+    #     return Profile(top, bottom)
 
     @classmethod
     def offset_xy(cls, profile, offset):
@@ -402,8 +420,12 @@ class Profile():
         p = re.compile("^\s*(-*\d*\.\d*)\s*(-*\d*\.\d*)")
         m = p.match(line)
         if m:
-            x = float(m.group(1))
-            y = float(m.group(2))
+            try:
+                x = float(m.group(1))
+                y = float(m.group(2))
+            except ValueError:
+                # error converting to float - ignore this line
+                return None
             if x > 1 and y > 1:
                 # the Lednicer format specifies the coord count - ignore this
                 return None

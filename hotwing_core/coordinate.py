@@ -90,10 +90,14 @@ class Coordinate():
         raise NotImplementedError
 
     def __add__(self, other):
-        return Coordinate(self.x+other.x, self.y+other.y)
+        if isinstance(other, self.__class__):
+            return Coordinate(self.x+other.x, self.y+other.y)
+        raise NotImplementedError
 
     def __sub__(self, other):
-        return Coordinate(self.x-other.x, self.y-other.y)
+        if isinstance(other, self.__class__):
+            return Coordinate(self.x-other.x, self.y-other.y)
+        raise NotImplementedError
 
     def __mul__(self, other):
         if isinstance(other, self.__class__):

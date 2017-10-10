@@ -23,7 +23,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Panel" href="panel.html" />
     <link rel="prev" title="GCode Formatters" href="gcode_formatters.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -49,6 +48,24 @@
 through the series of cuts required to create a complete cutting path.</p>
 <p>The machine takes a Profile object and generates the code to cut that
 profile.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">width: Float or Int - length of the machine’s hotwire cutter
+kerf: Float -</p>
+<blockquote>
+<div>Allowance for the hotwire’s cutter.  This includes the radius of 
+the wire plus any additional allowance for melted foam from direct
+or radiant heat.</div></blockquote>
+<dl class="last docutils">
+<dt>profile_points: Int - </dt>
+<dd>Number of points used when interpolating profiles.  This is the
+number for each (top and bottom) surface of a Profile.</dd>
+<dt>output_profile_images: Boolean - </dt>
+<dd>If true, images of the profiles during the manipulation process 
+will be created.  Used is for debugging purposes.</dd>
+</dl>
+</dd>
+</dl>
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.convert_coords_to_machine_pos">
 <code class="descname">convert_coords_to_machine_pos</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.convert_coords_to_machine_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.convert_coords_to_machine_pos" title="Permalink to this definition">¶</a></dt>
@@ -129,13 +146,13 @@ between the CNC’s cutting posts.</div></blockquote>
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
 </ul>
 
 <div class="relations">
@@ -143,7 +160,6 @@ between the CNC’s cutting posts.</div></blockquote>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="gcode_formatters.html" title="previous chapter">GCode Formatters</a></li>
-      <li>Next: <a href="panel.html" title="next chapter">Panel</a></li>
   </ul></li>
 </ul>
 </div>

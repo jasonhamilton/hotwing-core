@@ -48,15 +48,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A connected group of coordinates connected by lines that make up a top or bottom</span>
 <span class="sd">    surface of an airfoil.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coordinates: list of Coordinates</span>
+<span class="sd">                        ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING</span>
+<span class="sd">                        ORDER BASED ON X VALUES</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args:</span>
-<span class="sd">            coordinates: list of Coordinates</span>
-<span class="sd">                            ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING</span>
-<span class="sd">                            ORDER BASED ON X VALUES</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_duplicate_coordinates</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order_coordinates</span><span class="p">()</span>
@@ -149,7 +148,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">slope_inv</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">slope</span>
             <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
-                <span class="n">slope_inv</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">slope_inv</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">50</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">slope_inv</span> <span class="o">*</span> <span class="n">slope_inv</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">slope_inv</span> <span class="o">*</span> <span class="n">b</span>
 
@@ -175,30 +174,51 @@
 <span class="sd">            Surface: new Surface with the offset applied</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error! offset is not an instance of Coordinate&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
         <span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.scale_to_width"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.scale_to_width">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">scale_to_width</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.scale"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.scale">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scales a Surface to a specified width</span>
+<span class="sd">        Scales a Surface by a specified value</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            surface : Surface to offset</span>
-<span class="sd">            width: Float - width of new surface</span>
+<span class="sd">            scale: Float - value to scale by</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Surface: new Surface scaled to the new width</span>
+<span class="sd">            Surface: new scaled Surface</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">bounds</span>
-        <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">1.00</span> <span class="o">/</span> <span class="n">max_</span><span class="o">.</span><span class="n">x</span>
         <span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
-            <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">)</span>
+            <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
+
+    <span class="c1"># @classmethod</span>
+    <span class="c1"># def scale_to_width(cls, surface, width):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Scales a Surface to a specified width.  The new surface will start at 0 and go to the width</span>
+
+    <span class="c1">#     Args:</span>
+    <span class="c1">#         surface : Surface to offset</span>
+    <span class="c1">#         width: Float - width of new surface</span>
+
+    <span class="c1">#     Returns:</span>
+    <span class="c1">#         Surface: new Surface scaled to the new width</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     # offset min x to 0</span>
+    <span class="c1">#     min_, max_ = surface.bounds</span>
+    <span class="c1">#     s = Surface.offset_xy(surface, Coordinate(-min_.x,0))</span>
+
+    <span class="c1">#     _, max_ = s.bounds</span>
+    <span class="c1">#     scale_factor = width * 1.00 / max_.x</span>
+    <span class="c1">#     new_coords = []</span>
+    <span class="c1">#     for c in s.coordinates:</span>
+    <span class="c1">#         new_coords.append(c * scale_factor)</span>
+    <span class="c1">#     return cls(new_coords)</span>
 
 <div class="viewcode-block" id="Surface.trim"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.trim">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -222,7 +242,7 @@
 
         <span class="c1"># extract the points between the cut points</span>
         <span class="n">trim_left</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">trim_right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">trim_right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">x_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">):</span>
@@ -276,8 +296,8 @@
             <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
 
         <span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">pct</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">points</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+            <span class="n">pct</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">c1</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
             <span class="n">c2</span> <span class="o">=</span> <span class="n">s2</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">interpolate_between_points</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -427,6 +447,23 @@
 
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Surface.export"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the coordinates to a file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_file</span>
+<span class="sd">            separator</span>
+<span class="sd">            newline</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.5f%s%.5f%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">separator</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span><span class="n">newline</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">_remove_duplicate_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes any duplicates from the coordinates attribute</span>
@@ -452,7 +489,9 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord_count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">c1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">c2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">c2</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c2</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">c2</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
                 <span class="n">ascending_count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">descending_count</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -465,52 +504,45 @@
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
             <span class="n">out</span> <span class="o">+=</span> <span class="n">c</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
             <span class="n">out</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">out</span></div>
+        <span class="k">return</span> <span class="n">out</span>
 
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
+            <span class="n">new_coord</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.99667</span><span class="p">,</span> <span class="mf">0.00045</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.98707</span><span class="p">,</span> <span class="mf">0.00195</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.97194</span><span class="p">,</span> <span class="mf">0.00446</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.95169</span><span class="p">,</span> <span class="mf">0.0076</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.92645</span><span class="p">,</span> <span class="mf">0.01112</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.89647</span><span class="p">,</span> <span class="mf">0.01506</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.86218</span><span class="p">,</span> <span class="mf">0.01937</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.82405</span><span class="p">,</span> <span class="mf">0.02394</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.78255</span><span class="p">,</span> <span class="mf">0.02867</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.73817</span><span class="p">,</span> <span class="mf">0.03344</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.6914499</span><span class="p">,</span> <span class="mf">0.03811</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.64292</span><span class="p">,</span> <span class="mf">0.04256</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.5931</span><span class="p">,</span> <span class="mf">0.04666</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.54254</span><span class="p">,</span> <span class="mf">0.05029</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.49178</span><span class="p">,</span> <span class="mf">0.05334</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.44133</span><span class="p">,</span> <span class="mf">0.0557</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.39172</span><span class="p">,</span> <span class="mf">0.05727</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.34343</span><span class="p">,</span> <span class="mf">0.058</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.29692</span><span class="p">,</span> <span class="mf">0.0578</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.25262</span><span class="p">,</span> <span class="mf">0.05666</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.21095</span><span class="p">,</span> <span class="mf">0.05456</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.17226</span><span class="p">,</span> <span class="mf">0.05151</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.13689</span><span class="p">,</span> <span class="mf">0.04755</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.10513</span><span class="p">,</span> <span class="mf">0.04275</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.07725</span><span class="p">,</span> <span class="mf">0.03721</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.05344</span><span class="p">,</span> <span class="mf">0.03104</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.03388</span><span class="p">,</span> <span class="mf">0.02439</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.01867</span><span class="p">,</span> <span class="mf">0.01744</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.00786</span><span class="p">,</span> <span class="mf">0.01048</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.0015</span><span class="p">,</span> <span class="mf">0.0039</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mf">0.0015</span><span class="p">,</span> <span class="mf">0.0039</span><span class="p">),</span>
-        <span class="n">Coordinate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-    <span class="p">]</span>
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="n">s1</span> <span class="o">=</span> <span class="n">Surface</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
-    <span class="n">s2</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="c1"># start by comparing coord len</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">coordinates</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># next compare each coordinate</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)):</span>
+                <span class="n">c1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">c2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="n">Surface</span><span class="o">.</span><span class="n">interpolate_new_surface</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </pre></div>
 
           </div>

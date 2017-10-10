@@ -23,7 +23,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Rib" href="rib.html" />
+    <link rel="next" title="Profile" href="profile.html" />
+    <link rel="prev" title="Coordinate" href="coordinate.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -46,6 +47,15 @@
 <em class="property">class </em><code class="descclassname">hotwing_core.surface.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>coordinates=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface" title="Permalink to this definition">¶</a></dt>
 <dd><p>A connected group of coordinates connected by lines that make up a top or bottom
 surface of an airfoil.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>coordinates: list of Coordinates</dt>
+<dd>ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
+ORDER BASED ON X VALUES</dd>
+</dl>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="hotwing_core.surface.Surface.bounds">
 <code class="descname">bounds</code><a class="headerlink" href="#hotwing_core.surface.Surface.bounds" title="Permalink to this definition">¶</a></dt>
@@ -53,6 +63,20 @@ surface of an airfoil.</p>
 <dl class="docutils">
 <dt>Returns:</dt>
 <dd>(min,max) - tuple of Coordinates with the min xy and the max xy value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.surface.Surface.export">
+<code class="descname">export</code><span class="sig-paren">(</span><em>output_file</em>, <em>separator='\t'</em>, <em>newline='\n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the coordinates to a file</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>output_file
+separator
+newline</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
 </dl>
 </dd></dl>
 
@@ -187,15 +211,15 @@ angle: Float - degrees to rotate surface.</dd>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.scale_to_width">
-<em class="property">classmethod </em><code class="descname">scale_to_width</code><span class="sig-paren">(</span><em>surface</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.scale_to_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.scale_to_width" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scales a Surface to a specified width</p>
+<dt id="hotwing_core.surface.Surface.scale">
+<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>surface</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales a Surface by a specified value</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>surface : Surface to offset
-width: Float - width of new surface</dd>
+scale: Float - value to scale by</dd>
 <dt>Returns:</dt>
-<dd>Surface: new Surface scaled to the new width</dd>
+<dd>Surface: new scaled Surface</dd>
 </dl>
 </dd></dl>
 
@@ -244,20 +268,21 @@ x_min (optional): Float - x value to make the left cut on - if not</p>
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Surface</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="rib.html" title="previous chapter">Rib</a></li>
+      <li>Previous: <a href="coordinate.html" title="previous chapter">Coordinate</a></li>
+      <li>Next: <a href="profile.html" title="next chapter">Profile</a></li>
   </ul></li>
 </ul>
 </div>

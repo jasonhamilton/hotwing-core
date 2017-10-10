@@ -51,24 +51,23 @@
 <span class="sd">    through the series of cuts required to create a complete cutting path.</span>
 
 <span class="sd">    The machine takes a Profile object and generates the code to cut that</span>
-<span class="sd">    profile.    </span>
+<span class="sd">    profile.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        width: Float or Int - length of the machine&#39;s hotwire cutter</span>
+<span class="sd">        kerf: Float - </span>
+<span class="sd">            Allowance for the hotwire&#39;s cutter.  This includes the radius of </span>
+<span class="sd">            the wire plus any additional allowance for melted foam from direct</span>
+<span class="sd">            or radiant heat.</span>
+<span class="sd">        profile_points: Int - </span>
+<span class="sd">            Number of points used when interpolating profiles.  This is the</span>
+<span class="sd">            number for each (top and bottom) surface of a Profile.</span>
+<span class="sd">        output_profile_images: Boolean - </span>
+<span class="sd">            If true, images of the profiles during the manipulation process </span>
+<span class="sd">            will be created.  Used is for debugging purposes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">kerf</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span> <span class="n">profile_points</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
                  <span class="n">output_profile_images</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args:</span>
-<span class="sd">            width: Float or Int - length of the machine&#39;s hotwire cutter</span>
-<span class="sd">            kerf: Float - </span>
-<span class="sd">                Allowance for the hotwire&#39;s cutter.  This includes the radius of </span>
-<span class="sd">                the wire plus any additional allowance for melted foam from direct</span>
-<span class="sd">                or radiant heat.</span>
-<span class="sd">            profile_points: Int - </span>
-<span class="sd">                Number of points used when interpolating profiles.  This is the</span>
-<span class="sd">                number for each (top and bottom) surface of a Profile.</span>
-<span class="sd">            output_profile_images: Boolean - </span>
-<span class="sd">                If true, images of the profiles during the manipulation process </span>
-<span class="sd">                will be created.  Used is for debugging purposes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kerf</span> <span class="o">=</span> <span class="n">kerf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">profile_points</span> <span class="o">=</span> <span class="n">profile_points</span>

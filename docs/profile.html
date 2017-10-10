@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Rib" href="rib.html" />
-    <link rel="prev" title="Panel" href="panel.html" />
+    <link rel="prev" title="Surface" href="surface.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -48,6 +48,20 @@
 <dd><p>Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
 bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
 bottom surfaces.</p>
+<p>Initialization Method Overloading:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Profile(filepath):</dt>
+<dd>filepath: String-like object containing the file path to dat file to load</dd>
+<dt>Profile(url):</dt>
+<dd>url: String-like object containing a URL to the dat file to load</dd>
+<dt>Profile(coordinates)</dt>
+<dd>coordinates: List of Coordinate Objects to create Profile from</dd>
+<dt>Profile(top_surface, bottom_surface)</dt>
+<dd>top_surface: Surface - top surface to create Profile from
+bottom_surface: Surface - bottom surface to create Profile from</dd>
+</dl>
+</div></blockquote>
 <dl class="classmethod">
 <dt id="hotwing_core.profile.Profile.copy">
 <em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.copy" title="Permalink to this definition">¶</a></dt>
@@ -181,14 +195,14 @@ angle: Float - degrees to rotate profile.</dd>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.scale_to_width">
-<em class="property">classmethod </em><code class="descname">scale_to_width</code><span class="sig-paren">(</span><em>profile</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale_to_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.scale_to_width" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scales a profile to a desired width.</p>
-<p>Delagates to the Surface objects’ scale_to_width method</p>
+<dt id="hotwing_core.profile.Profile.scale">
+<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>profile</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales a profile by a value</p>
+<p>Delagates to the Surface objects’ scale method</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>profile: Profile object to scale
-width: Float - width to scale profile to</dd>
+scale: Float - value to scale profile by</dd>
 <dt>Returns:</dt>
 <dd>Profile - new scaled Profile</dd>
 </dl>
@@ -269,20 +283,20 @@ results.  If no over lap(s) is/are found, not trimming will occur.</p>
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="panel.html" title="previous chapter">Panel</a></li>
+      <li>Previous: <a href="surface.html" title="previous chapter">Surface</a></li>
       <li>Next: <a href="rib.html" title="next chapter">Rib</a></li>
   </ul></li>
 </ul>

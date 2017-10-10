@@ -11,7 +11,7 @@ class Profile():
     bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
     bottom surfaces.
 
-    Method Overloading:
+    Initialization Method Overloading:
 
         Profile(filepath):
             filepath: String-like object containing the file path to dat file to load

@@ -17,7 +17,11 @@ You can find the docs here : https://jasonhamilton.github.io/hotwing-core/index.
 
 ## Coordinate
 
-A Coordinate is the building block of the other objects.  It represents a point in 2D space.  
+A Coordinate is the most basic building block.  It represents a point in 2D space and simply contains x and y values.  If we want to lay out some coordinates that look like:
+
+![Coordinate Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/coordinate_example.png)
+
+We can use the following code:
 
 ```py
 from hotwing_core import Coordinate
@@ -30,20 +34,25 @@ c3 = Coordinate(0.5,0.25)
 c4 = c2+c3 # 0.75,0.45
 ```
 
-![Coordinate Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/coordinate_example.png)
 
 You can find more info on the Coordinate's methods and functionality in the Documentation: https://jasonhamilton.github.io/hotwing-core/coordinate.html
 
 
 ## Surface
 
-The next level up above the Coordinate is a Surface.  A Surface is simply a list of Coordinates, which, when connected with lines, represents a Surface.  A Surface contains the information to represent the top or bottom of an airfoil.
+A Surface is simply a list of Coordinates, which, when connected with lines, represents a Surface.  A Surface contains the information to represent the top or bottom of an airfoil.
+
+If we want to make something like this:
+![Surface Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/surface_example.png)
+
+We can do so like:
 
 ```py
 from hotwing_core import Coordinate
 from hotwing_core import Surface
 
 # A list of coordinates that will make up a Surface
+# These coordinates should be in either ascending or descending order based on the x value.
 coords=[
    Coordinate(1.000, 0.000),
    Coordinate(0.900, 0.015),
@@ -61,7 +70,6 @@ coords=[
 s = Surface(coords)
 ```
 
-![Surface Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/surface_example.png)
 
 The Surface has a bunch of methods you can use, however you'll probably be interacting with the Profile method and letting it handle the lower-level interacton with the Surface object.
 
@@ -71,7 +79,11 @@ You can find more info on the Surface's methods and functionality in the Documen
 
 ## Profile
 
-Next up is the Profile object.  A profile is made up of two Surface objects, representing a complete - the top and bottom – airfoil.
+Next up is the Profile object.  A profile is made up of two Surface objects a top and a bottom, which together make up a profile.  A profile would look visually like:
+
+![Profile Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/profile_example.png)
+
+You can create a profile using
 
 ```py
 from hotwing_core import Coordinate
@@ -121,29 +133,34 @@ p = Profile("profiles/myprofile.dat")
 p = Profile(“http://m-selig.ae.illinois.edu/ads/coord/e374.dat”)
 ```
 
-The Profile has lots of nifty methods built into it so you can rotate, trim, scale, offset, interpolate, etc. You can see the Profile documentation here:
+The Profile has lots of nifty methods built into it so you can rotate, trim, scale, offset, interpolate, etc. Check out the documentation here:
 https://jasonhamilton.github.io/hotwing-core/profile.html
 
-![Profile Visual Representation](https://raw.githubusercontent.com/jasonhamilton/hotwing-core/master/img/profile_example.png)
+
 
 
 ## Rib
 
-A Rib contains an airfoil profile, and handles any modification to the airfoil such as scaling, offseting, rotating, sheeting allowane(on the top or the bottom) and stock allowance (on the front or back).
+A Rib is a representation of a slice of a wing.  A Rib contains a Profile with the airfoil's coordinates, with which it can perform modifications such as scaling, offseting, rotating, and trimming for sheeting allowance (on the top or the bottom) and stock allowance (on the front or back).
 
 ```py
 from hotwing_core import Rib
 
 ## Create Rib
-r1 = Rib("profiles/s6063.dat",   # Dat file to use -  File or URL
+r1 = Rib("http://m-selig.ae.illinois.edu/ads/coord/e374.dat",   # Dat file to use -  File or URL
          scale=10,               # Width of the Rib - Scales the dat file profile
          xy_offset=None,         # Offset 
-         top_sheet=0.0625,       # Sheeting allowance top - this will make the foil smaller by this amount
+         top_sheet=0.0625,       # Sheeting allowance top - this will make the foil smaller by this 
+                                 #     amount
          bottom_sheet=0.0625,    # Sheeting allowance bottom
-         front_stock=0.5,        # Trims the front of the airfoil by this amount.  You would glue wooden stock here and shape it
-         tail_stock=1.25,        # Trims the trailing edge of the foil.  You would put tail stock here and shape to the foil.
-         rotate=0,               # The angle to rotate the rib in degrees - positive number points the nose upward
-         rotate_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the chord (starting from the front)
+         front_stock=0.5,        # Trims the front of the airfoil by this amount.  You would glue 
+                                 #     wooden stock here and shape it
+         tail_stock=1.25,        # Trims the trailing edge of the foil.  You would put tail stock 
+                                 #     here and shape to the foil.
+         rotate=0,               # The angle to rotate the rib in degrees - positive number points 
+                                 #     the nose upward
+         rotate_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the 
+                                 #     chord (starting from the front)
 
 # you can get the manipulated profile
 r1.sheeted_profile
@@ -158,31 +175,32 @@ Documentation: https://jasonhamilton.github.io/hotwing-core/rib.html
 
 ## Panel
 
-A Panel contains two Ribs and makes up a panel of a wing.  If you took the Ribs, placed them a distance apart, then sheeted them, you would get the equivalent of what a Panel represents.
+A Panel contains two Ribs and makes up a panel of a wing.  If you took the plywood ribs, placed them a distance apart, then sheeted them, you would get the equivalent of what a Panel represents.
 
 
 ```py
+from hotwing_core import Coordinate
 from hotwing_core import Profile
 from hotwing_core import Rib
 from hotwing_core import Panel
 
 ## Create Root Rib
-r1 = Rib("profiles/s6063.dat",
-         scale=10,
-         xy_offset=None,
-         top_sheet=0.0625,
-         bottom_sheet=0.0625,
-         front_stock=0.5,
-         tail_stock=1.25 )
+r1 = Rib("http://airfoiltools.com/airfoil/seligdatfile?airfoil=s6063-il",
+        scale=10,
+        xy_offset=None,
+        top_sheet=0.0625,
+        bottom_sheet=0.0625,
+        front_stock=0.5,
+        tail_stock=1.25 )
 
 ## Create Tip Rib   
-r2 = Rib("profiles/rg14.dat",
-         scale=10,
-         xy_offset=Coordinate(0, 0),
-         top_sheet=0.0625,
-         bottom_sheet=0.0625,
-         front_stock=0.5,
-         tail_stock=1.25 )
+r2 = Rib("http://airfoiltools.com/airfoil/seligdatfile?airfoil=rg14-il",
+        scale=10,
+        xy_offset=Coordinate(0, 0),
+        top_sheet=0.0625,
+        bottom_sheet=0.0625,
+        front_stock=0.5,
+        tail_stock=1.25 )
 
 # Setup Panel - takes the two ribs, at a specified distance of 24 units (inches or centimeters)
 p = Panel(r1, r2, 24)
@@ -199,6 +217,8 @@ Docs: https://jasonhamilton.github.io/hotwing-core/panel.html
 
 ## Machine
 
+A Machine is a representation of the 4-Axis CNC hotwire foam cutting machine.  You pass the Machine a Panel object and the Machine will handle generating the Gcode for you.
+
 ```py
 from hotwing_core import Machine
 
@@ -206,8 +226,10 @@ from hotwing_core import Machine
 # Setup Machine
 m = Machine(24,                           # Width between pillars of machine
             kerf=0.075,                   # Allowance for wire size and melted foam
-            profile_points=200,           # number of points to use for each surface when iterpolating
-            output_profile_images=False)   # generates image of the Profile and Rib manipulation for Debugging
+            profile_points=200,           # number of points to use for each surface when 
+                                          #  iterpolating
+            output_profile_images=False)  # generates image of the Profile and Rib manipulation for 
+                                          #  Debugging
 
 # Load panel into machine (p1 is the panel created in the previous step)
 # The offset is the distance the left of the panel will be from the left of the machine --
@@ -239,7 +261,7 @@ from hotwing_core import Panel
 from hotwing_core import Coordinate
 
 ## Setup Rib
-r1 = Rib("profiles/s6063.dat",
+r1 = Rib("http://airfoiltools.com/airfoil/seligdatfile?airfoil=s6063-il",
          scale=10,
          xy_offset=None,
          top_sheet=0.0625,
@@ -247,7 +269,7 @@ r1 = Rib("profiles/s6063.dat",
          front_stock=0.5,
          tail_stock=1.25 )
          
-r2 = Rib("profiles/rg14.dat",
+r2 = Rib("http://airfoiltools.com/airfoil/seligdatfile?airfoil=rg14-il",
          scale=10,
          xy_offset=Coordinate(0, 0),
          top_sheet=0.0625,

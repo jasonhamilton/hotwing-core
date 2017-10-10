@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Profile" href="profile.html" />
-    <link rel="prev" title="Machine" href="machine.html" />
+    <link rel="next" title="Gcode" href="gcode.html" />
+    <link rel="prev" title="Rib" href="rib.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -47,6 +47,12 @@
 <em class="property">class </em><code class="descclassname">hotwing_core.panel.</code><code class="descname">Panel</code><span class="sig-paren">(</span><em>rib1</em>, <em>rib2</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Panel is a representation of a wing panel and contains all of the items/objects
 necessary to define the attributes of the wing.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>rib1: Rib object
+rib2: Rib object
+width: Float - width of the total wing panel from rib to rib</dd>
+</dl>
 <dl class="classmethod">
 <dt id="hotwing_core.panel.Panel.trim_panel">
 <em class="property">classmethod </em><code class="descname">trim_panel</code><span class="sig-paren">(</span><em>panel</em>, <em>left=None</em>, <em>right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.trim_panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel.trim_panel" title="Permalink to this definition">¶</a></dt>
@@ -85,21 +91,21 @@ right: Float - amount to trim from the right side of the panel</dd>
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Panel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surface.html">Surface</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="machine.html" title="previous chapter">Machine</a></li>
-      <li>Next: <a href="profile.html" title="next chapter">Profile</a></li>
+      <li>Previous: <a href="rib.html" title="previous chapter">Rib</a></li>
+      <li>Next: <a href="gcode.html" title="next chapter">Gcode</a></li>
   </ul></li>
 </ul>
 </div>

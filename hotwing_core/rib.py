@@ -6,16 +6,21 @@ from .coordinate import Coordinate
 class Rib():
     """
     A Rib contains a Profile and other attributes to determine the size and position.
-    
+
+    Args:
+        airfoil
+        scale
+        xy_offset
+        top_sheet
+        bottom_sheet
+        front_stock
+        tail_stock
+        rotate
+        rotate_pos
     """
     
     def __init__(self, airfoil, scale=None, xy_offset=None, top_sheet=0,
                  bottom_sheet=0, front_stock=0, tail_stock=0, rotate=0, rotate_pos=0.5):
-        """
-        Document
-        Args:
-            something here
-        """
         if isinstance(airfoil, Profile):
             self.airfoil = airfoil
         else:
@@ -37,7 +42,7 @@ class Rib():
         """
         p = Profile.copy(self.airfoil)
         if not self.scale is None:
-            p = Profile.scale_to_width(p, self.scale)
+            p = Profile.scale(p, self.scale)
         if not self.rotate == 0:
             x_bounds = p.x_bounds
             x_len = x_bounds[1] - x_bounds[0]
@@ -72,21 +77,3 @@ class Rib():
         rib.front_stock = r1.front_stock
         rib.tail_stock = r1.tail_stock
         return rib
-
-
-if __name__ == "__main__":
-    r1 = Rib("profiles/rg14.dat", scale=5)
-
-    # def get_coord_at_percent(self, position, surface="top"):
-    #   top_len, bottom_len = self.surface_lengths()
-    #   if surface=="top":
-    #       x_coord = position * top_len
-    #       coordinates = self.coordinates[0]
-    #       point_count = len(coordinates)
-    #       for i in range(point_count-1):
-    #           x1,y1 = coordinates[i]
-    #           x2,y2 = coordinates[i+1]
-    #           if x1 >= x_coord and x2 <= x_coord:
-    #               slope = (y2-y1)/(x2-x1)
-    #               y_coord = (x_coord-x1) * slope + y1
-    #               return (x_coord, y_coord)

@@ -107,11 +107,3 @@ class Gcode():
                                  ))
 
         self.commands = new_commands
-
-
-if __name__ == "__main__":
-    g = Gcode()
-    g.move([-1, 2, 3, 4])
-    g.fast_move([1, 2, 3, 4])
-    g.normalize()
-    print(g.code_as_str)

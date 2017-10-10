@@ -10,24 +10,23 @@ class Machine():
     through the series of cuts required to create a complete cutting path.
 
     The machine takes a Profile object and generates the code to cut that
-    profile.    
+    profile.
+
+    Args:
+        width: Float or Int - length of the machine's hotwire cutter
+        kerf: Float - 
+            Allowance for the hotwire's cutter.  This includes the radius of 
+            the wire plus any additional allowance for melted foam from direct
+            or radiant heat.
+        profile_points: Int - 
+            Number of points used when interpolating profiles.  This is the
+            number for each (top and bottom) surface of a Profile.
+        output_profile_images: Boolean - 
+            If true, images of the profiles during the manipulation process 
+            will be created.  Used is for debugging purposes.
     """
     def __init__(self, width, kerf=0.075, profile_points=200,
                  output_profile_images=False):
-        """
-        Args:
-            width: Float or Int - length of the machine's hotwire cutter
-            kerf: Float - 
-                Allowance for the hotwire's cutter.  This includes the radius of 
-                the wire plus any additional allowance for melted foam from direct
-                or radiant heat.
-            profile_points: Int - 
-                Number of points used when interpolating profiles.  This is the
-                number for each (top and bottom) surface of a Profile.
-            output_profile_images: Boolean - 
-                If true, images of the profiles during the manipulation process 
-                will be created.  Used is for debugging purposes.
-        """
         self.width = width
         self.kerf = kerf
         self.profile_points = profile_points

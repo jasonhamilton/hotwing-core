@@ -28,14 +28,14 @@ p = Panel(r1, r2, 24)
 p = Panel.trim_panel(p, 0, 12)
 
 # Setup Machine
-m = Machine(24, kerf=0.075, profile_points=100, output_profile_images=True)
+m = Machine(24, kerf=0.075, profile_points=100)
 
 # Load panel into machine
 m.load_panel(p)
 #m.gcode_formatter_name = "debug"
 
 # Generate GCode
-gcode = m.generate_gcode(safe_height=1, normalize=False)
+gcode = m.generate_gcode(safe_height=1)
 
 # Output to screen
-print gcode
+# print gcode

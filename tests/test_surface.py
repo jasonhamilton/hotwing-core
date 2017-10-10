@@ -178,17 +178,25 @@ class TestSurface():
             Coordinate(1.2,0.9),
 
         ]
-        s = Surface(coords)
-        s = Surface.offset_xy(s, offset_coord)
-        for i in range(len(s.coordinates)):
+        s1 = Surface(coords)
+        s2 = Surface.offset_xy(s1, offset_coord)
+        for i in range(len(s2.coordinates)):
             orig_coord = coords[i]
-            surface_coord = s.coordinates[i]
+            surface_coord = s2.coordinates[i]
             assert orig_coord.x+offset_x == surface_coord.x
             assert orig_coord.y+offset_y == surface_coord.y
 
         #test offset with invalid object
         with pytest.raises(TypeError):
-            Surface.offset_xy(s, 1)
+            Surface.offset_xy(s2, 1)
+
+        # try using +/- operators
+        s3 = s1+offset_coord
+        assert s2 == s3
+
+        s4 = s3-offset_coord
+        assert s1 == s4
+
 
     def test_scale(self):
         coords = [

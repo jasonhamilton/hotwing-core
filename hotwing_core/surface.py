@@ -465,6 +465,17 @@ class Surface():
             out += "\n"
         return out
 
+    def __add__(self, other):
+        if isinstance(other, Coordinate):
+            return Surface.offset_xy(self,other)
+        raise NotImplementedError
+
+    def __sub__(self, other):
+        if isinstance(other, Coordinate):
+            new_coord = Coordinate(-other.x,-other.y)
+            return Surface.offset_xy(self,new_coord)
+        raise NotImplementedError
+
     def __mul__(self, other):
         return Surface.scale(self, other)
 

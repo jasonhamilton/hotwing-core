@@ -588,4 +588,30 @@ class Profile():
         # couldn't find
         return None
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if not self.top == other.top:
+                return False
+            elif not self.bottom == other.bottom:
+                return False
+            return True
+        raise NotImplementedError
 
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        raise NotImplementedError
+
+    def __add__(self, other):
+        if isinstance(other, Coordinate):
+            return Profile.offset_xy(self,other)
+        raise NotImplementedError
+
+    def __sub__(self, other):
+        if isinstance(other, Coordinate):
+            new_coord = Coordinate(-other.x,-other.y)
+            return Profile.offset_xy(self,new_coord)
+        raise NotImplementedError
+
+    def __mul__(self, other):
+        return Profile.scale(self, other)

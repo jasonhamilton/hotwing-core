@@ -54,15 +54,15 @@
 <span class="sd">    profile.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        width: Float or Int - length of the machine&#39;s hotwire cutter</span>
-<span class="sd">        kerf: Float - </span>
+<span class="sd">        width (Float): length of the machine&#39;s hotwire cutter</span>
+<span class="sd">        kerf (Float):</span>
 <span class="sd">            Allowance for the hotwire&#39;s cutter.  This includes the radius of </span>
 <span class="sd">            the wire plus any additional allowance for melted foam from direct</span>
 <span class="sd">            or radiant heat.</span>
-<span class="sd">        profile_points: Int - </span>
+<span class="sd">        profile_points (Int): </span>
 <span class="sd">            Number of points used when interpolating profiles.  This is the</span>
 <span class="sd">            number for each (top and bottom) surface of a Profile.</span>
-<span class="sd">        output_profile_images: Boolean - </span>
+<span class="sd">        output_profile_images (Boolean): </span>
 <span class="sd">            If true, images of the profiles during the manipulation process </span>
 <span class="sd">            will be created.  Used is for debugging purposes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -76,11 +76,11 @@
 
     <span class="k">def</span> <span class="nf">_draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Saves the profile as an image.</span>
+<span class="sd">        Save the profile as an image.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object - profile to create image from</span>
-<span class="sd">            filename: string-like object - path of filename to write</span>
+<span class="sd">            profile (Profile): object - profile to create image from</span>
+<span class="sd">            filename (String): string-like object - path of filename to write</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            None</span>
@@ -90,11 +90,11 @@
 
 <div class="viewcode-block" id="Machine.load_panel"><a class="viewcode-back" href="../../machine.html#hotwing_core.machine.Machine.load_panel">[docs]</a>    <span class="k">def</span> <span class="nf">load_panel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">panel</span><span class="p">,</span> <span class="n">left_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Loads a Panel object into the machine.</span>
+<span class="sd">        Load a Panel object into the machine.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            panel: Panel object - panel to use</span>
-<span class="sd">            left_offset: Float or Int - How far from the left hotwire post to place</span>
+<span class="sd">            panel (Panel): panel to use</span>
+<span class="sd">            left_offset (Float): How far from the left hotwire post to place</span>
 <span class="sd">                         the panel.  If the panel is 24 inches and the machine is 30</span>
 <span class="sd">                         inches, a value of 3 ([30-24]/2) will place the panel centered</span>
 <span class="sd">                         between the CNC&#39;s cutting posts.</span>
@@ -111,30 +111,30 @@
 <div class="viewcode-block" id="Machine.generate_gcode"><a class="viewcode-back" href="../../machine.html#hotwing_core.machine.Machine.generate_gcode">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">le_offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">te_offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
                        <span class="n">safe_height</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates the gcode to cut the panel.  You must have a panel loaded into the machine,</span>
+<span class="sd">        Generate the gcode to cut the panel.  You must have a panel loaded into the machine,</span>
 <span class="sd">        otherwise it cannot cut.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            le_offset: Float - Distance in front of the leading edge the hotwire should extend out</span>
+<span class="sd">            le_offset (Float): Distance in front of the leading edge the hotwire should extend out</span>
 <span class="sd">                               and cut to.  If you want to make sure your foam block is cut in half,</span>
 <span class="sd">                               make sure this value is long enough to reach the front edge of</span>
 <span class="sd">                               your block.</span>
-<span class="sd">            te_offset: Float - Distance behind the leading the hotwire should cut to. Similar to</span>
+<span class="sd">            te_offset (Float): Distance behind the leading the hotwire should cut to. Similar to</span>
 <span class="sd">                               the le_offset, except from the trailing edge towards the outside of</span>
 <span class="sd">                               the foam block you are cutting.</span>
-<span class="sd">            safe_height: Float - The height where the machine can move freely without hitting anything.</span>
+<span class="sd">            safe_height (Float): The height where the machine can move freely without hitting anything.</span>
 <span class="sd">                                 Make sure this value is greater than the height of your foam block.</span>
-<span class="sd">            normalize: Boolean - When generating the machine path, the x and y values may be &lt; 0.  Setting</span>
+<span class="sd">            normalize (Boolean): When generating the machine path, the x and y values may be &lt; 0.  Setting</span>
 <span class="sd">                                 this to True translates the values so that all x and y values are &gt;= 0.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            String - Gcode commands separated by newlines.</span>
+<span class="sd">            String: Gcode commands separated by newlines.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;panel&quot;</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no panel loaded into machine.  Load a panel before generating g_code&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">gc</span> <span class="o">=</span> <span class="n">Gcode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gc</span> <span class="o">=</span> <span class="n">Gcode</span><span class="p">(</span><span class="n">formatter_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s2">&quot;a_10_foil.png&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s2">&quot;b_10_foil.png&quot;</span><span class="p">)</span>
@@ -199,11 +199,11 @@
 <span class="sd">        Create the XYUV positions for the machine in order to intersect two Coordinates.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            c1: Coordinate</span>
-<span class="sd">            c2: Coordinate</span>
+<span class="sd">            c1 (Coordinate):</span>
+<span class="sd">            c2 (Coordinate):</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple of Floats (x, y, u, v)</span>
+<span class="sd">            Tuple of Floats: (x, y, u, v)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># create 3d coordinates and pass them to the </span>
@@ -221,11 +221,11 @@
 <span class="sd">        Uses the point plane intersect function.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            c1_3d: Tuple of 3 coordinates in 3d space (x,y,z)</span>
-<span class="sd">            c2_3d: Tuple of 3 coordinates in 3d space (x,y,z)</span>
+<span class="sd">            c1_3d (Tuple of Tuples): Tuple with 3 coordinates in 3d space (x,y,z)</span>
+<span class="sd">            c2_3d (Tuple of Tuples): Tuple with 3 coordinates in 3d space (x,y,z)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple of Tuples of Floats - ((y1,x1) (y2,x2))</span>
+<span class="sd">            Tuple of Tuples of Floats: ((y1,x1) (y2,x2))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pillar_a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">pillar_b</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>

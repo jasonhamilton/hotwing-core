@@ -50,9 +50,9 @@
 <span class="sd">    necessary to define the attributes of the wing.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        rib1: Rib object</span>
-<span class="sd">        rib2: Rib object</span>
-<span class="sd">        width: Float - width of the total wing panel from rib to rib</span>
+<span class="sd">        rib1 (Rib): object</span>
+<span class="sd">        rib2 (Rib): object</span>
+<span class="sd">        width (Float): width of the total wing panel from rib to rib</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rib1</span><span class="p">,</span> <span class="n">rib2</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rib1</span> <span class="o">=</span> <span class="n">rib1</span>
@@ -66,12 +66,12 @@
 <span class="sd">        side to make it shorter.  The new panel&#39;s ribs will be interpolated to the correct shape.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            panel: Panel object to trim</span>
-<span class="sd">            left: Float - amount to trim from the left side of the panel</span>
-<span class="sd">            right: Float - amount to trim from the right side of the panel</span>
+<span class="sd">            panel (Panel): object to trim</span>
+<span class="sd">            left (Float): amount to trim from the left side of the panel</span>
+<span class="sd">            right (Float): amount to trim from the right side of the panel</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Panel - New trimmed Panel</span>
+<span class="sd">            Panel: New trimmed Panel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">left</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># no need to trim left</span>

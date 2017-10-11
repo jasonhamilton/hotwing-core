@@ -9,7 +9,7 @@ class Surface():
     surface of an airfoil.
 
     Args:
-        coordinates: list of Coordinates
+        coordinates (Coordinate[]): list of Coordinates
                         ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
                         ORDER BASED ON X VALUES
     """
@@ -22,30 +22,30 @@ class Surface():
     @property
     def min(self):
         """
-        Gets the left most Coordinate
+        Get the left most Coordinate
 
         Returns:
-            Coordinate
+            Coordinate: left-most Coordinate
         """
         return self.coordinates[0]
 
     @property
     def max(self):
         """
-        Gets the right-most Coordinate
+        Get the right-most Coordinate
 
         Returns:
-            Coordinate
+            Coordinate: right-most Coordinate
         """
         return self.coordinates[-1]
 
     @property
     def bounds(self):
         """
-        Gets the bounding box of the Surface
+        Get the bounding box of the Surface
 
         Returns:
-            (min,max) - tuple of Coordinates with the min xy and the max xy value
+            (Coordinate,Coordinate): Tuple of Coordinates with the min xy and the max xy value
         """
         min_x = min([c.x for c in self.coordinates])
         min_y = min([c.y for c in self.coordinates])
@@ -56,10 +56,10 @@ class Surface():
     @property
     def length(self):
         """
-        Calculates the total length around the area of the surface
+        Calculate the total length around the area of the surface
 
         Returns:
-            Float
+            Float: Length around the surface
         """
         total_len = 0
         coord_count = len(self.coordinates)
@@ -73,16 +73,18 @@ class Surface():
     @classmethod
     def offset_around_profile(cls, surface, offset):
         """
-        Offsets the surface around the current surface - evaluates relative angle at each point and
-        expands/contracts the surface around these angles.
+        Offset the surface around the current surface.
+
+        Evaluates relative angle at each point and  expands/contracts 
+        the surface around these angles.
 
         Args:
-            surface: Surface to offset
-            offset: Float - distance to offset from surface - positive value offsets upwards, negative
+            surface (Surface): Surface to offset
+            offset (Float): Distance to offset from surface - positive value offsets upwards, negative
                             value offsets downwards.
 
         Returns:
-            Surface: new Surface with the offset applied
+            Surface: new Surface object with the offset applied
         """
         coordinates = surface.coordinates
         new_coords = []
@@ -123,11 +125,11 @@ class Surface():
     @classmethod
     def offset_xy(cls, surface, offset):
         """
-        Offsets the surface using the x and y values in the coordinate
+        Offset the surface using the x and y values
 
         Args:
-            surface : Surface to offset
-            offset: Coordinate object containing the x and y values to offset
+            surface (Surface) : Surface object to offset
+            offset (Coordinate): Coordinate object containing the x and y offset amounts.
 
         Returns:
             Surface: new Surface with the offset applied
@@ -142,11 +144,11 @@ class Surface():
     @classmethod
     def scale(cls, surface, scale):
         """
-        Scales a Surface by a specified value
+        Scale a Surface by a specified value
 
         Args:
-            surface : Surface to offset
-            scale: Float - value to scale by
+            surface (Surface): Surface to offset
+            scale (Float): Scale value
 
         Returns:
             Surface: new scaled Surface
@@ -182,16 +184,16 @@ class Surface():
     @classmethod
     def trim(cls, surface, x_min=None, x_max=None):
         """
-        Trims a Surface to new starting and ending x values.
+        Trim a Surface to new starting and ending x values.
 
         IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
         those values will be interpolated and may actually make the width of the surface larger.
 
         Args:
-            surface : Surface to trim
-            x_min (optional): Float - x value to make the left cut on - if not
+            surface (Surface) : Surface object to trim
+            x_min (Float): X value to make the left cut on - if not
                                         specified, no cut will be made on this side
-            x_max (optional): Float - x value to make the right cut on - if not
+            x_max (Float): X value to make the right cut on - if not
                                         specified, no cut will be made on this side
         Returns:
             Surface: new Surface trimmed to the min and max x values
@@ -231,17 +233,17 @@ class Surface():
     def interpolate_new_surface(
             cls, s1, s2, dist_between, dist_interp, points=200):
         """
-        Creates a new Surface interpolated from two other Surfaces.
+        Create a new Surface interpolated from two other Surfaces.
 
         Args:
-            s1: Surface - first surface to interpolate from
-            s2: Surface - second surface to interpolate from
-            dist_between: Float - Distance between profiles
-            dist_interp: Float - Distance from s1 where new surface should be interpolated
-            points: Int - Number of points to use for interpolating the new surface
+            s1 (Surface): First Surface to interpolate from
+            s2 (Surface): Second Surface to interpolate from
+            dist_between (Float): Distance between profiles
+            dist_interp (Float): Distance from s1 where new surface should be interpolated
+            points (Int): Number of points to use for interpolating the new surface
 
         Returns:
-            Surface - New Surface interpolated from s1 and s2
+            Surface: New Surface interpolated from s1 and s2
         """
 
         def interpolate_between_points(c1, c2, dist_between, dist_interp):
@@ -266,15 +268,15 @@ class Surface():
     @classmethod
     def rotate(cls, origin, surface, angle):
         """
-        Rotates a surface around a certain point.
+        Rotate a surface around a certain point.
 
         Args:
-            origin: Coordinate object that defines the point to rotate surface around
-            surface: Surface object to rotate
-            angle: Float - degrees to rotate surface.
+            origin (Coordinate): Object that defines the point to rotate surface around
+            surface (Surface): Object to rotate
+            angle (Float): Degrees to rotate surface.
 
         Returns:
-            Surface - New rotated Surface
+            Surface: New rotated Surface
         """
         new_coords = []
         for c in surface.coordinates:
@@ -283,15 +285,15 @@ class Surface():
 
     def interpolate(self, x):
         """
-        Interpolates the Y position for a given value of X.
+        Interpolate the Y position for a given value of X.
 
         Method uses linear interpolation between two points.  If the point lies outside of the
         coordinates, the line is interpolated based on the closest two points extended outwards.
 
         Args:
-            x: Float - value of x where we want to interpolate
+            x (Float): Value of x where we want to interpolate
         Returns:
-            Coordinate - (x,y) - original x value provided and solved y value
+            Coordinate: Coordinate containing original x value provided and solved y value
         """
         coordinates = self.coordinates
         coord_count = len(coordinates)
@@ -329,27 +331,27 @@ class Surface():
 
     def interpolate_around_profile_dist_pct(self, pct):
         """
-        Finds the x-y position along the surface of the profile at a specified PERCENTAGE value of
+        Find the x-y position along the surface of the profile at a specified PERCENTAGE value of
         the total distance around the surface of the profile, starting from the left-most coordinate.
 
         Args:
-            pos: Float - value to find of distance around profile
+            pct (Float): Distance around surface, expressed as a percent, to find
 
         Returns:
-            Coordinate - interpolated coordinate at position
+            Coordinate: Interpolated coordinate at position
         """
         return self.interpolate_around_profile_dist(self.length * pct)
 
     def interpolate_around_profile_dist(self, pos):
         """
-        Finds the x-y position along the surface of the profile at a specified DISTANCE around the
+        Find the x-y position along the surface of the profile at a specified DISTANCE around the
         surface of the profile, starting from the left-most coordinate.
 
         Args:
-            pos: Float - value to find of distance around profile
+            pos:(Float): Distance around surface, expressed in units, to find
 
         Returns:
-            Coordinate - interpolated coordinate at position
+            Coordinate: Interpolated coordinate at position
         """
         total_len = 0
         coord_count = len(self.coordinates)
@@ -408,12 +410,12 @@ class Surface():
 
     def export(self, output_file, separator="\t", newline="\n"):
         """
-        Writes the coordinates to a file
+        Write the Surface's list of Coordinates to a file
 
         Args:
-            output_file
-            separator
-            newline
+            output_file (String): Path to file output will be written to
+            separator (String): Separator between data fields
+            newline (String): Newline operator
 
         Returns:
             None

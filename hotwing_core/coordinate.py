@@ -12,11 +12,11 @@ class Coordinate():
     @classmethod
     def calc_slope(cls, a, b):
         """
-        Calculates the slope between two Coordinates.
+        Calculate the slope between two Coordinates.
 
         Args:
-            a : Coordinate
-            b : Coordinate
+            a (Coordinate): First Coordinate
+            b (Coordinate): Second Coordinate
         Returns:
             Float: slope between a and b
         """
@@ -30,13 +30,13 @@ class Coordinate():
     @classmethod
     def calc_dist(cls, a, b):
         """
-        Calculates the distance between two Coordinates.
+        Calculate the distance between two Coordinates.
 
         Args:
-            a : Coordinate
-            b : Coordinate
+            a (Coordinate): First Coordinate
+            b (Coordinate): Second Coordinate
         Returns:
-            Float: distance between c1 and c2
+            Float: Distance between c1 and c2
 
         """
         dist = math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
@@ -45,15 +45,15 @@ class Coordinate():
     @classmethod
     def rotate(cls, origin, coordinate, angle):
         """
-        Rotates a Coordinate around a point in 2D space.
+        Rotate a Coordinate around a point in 2D space.
 
         Args:
-            origin: Coordinate object that defines the point to rotate coordinate around
-            coordinate: Coordinate object to rotate
-            angle: Float - degrees to rotate Coordinate.
+            origin (Coordinate) : Defines the point to rotate around
+            coordinate (Coordinate): The Coordinate to rotate
+            angle (Float) : Degrees to rotate Coordinate
 
         Returns:
-            Coordinate - New rotated Coordinate
+            Coordinate: New rotated Coordinate
         """
         angle = math.radians(angle)
         ox = origin.x

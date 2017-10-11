@@ -44,7 +44,7 @@
 <span id="gcode-formatters"></span><h1>GCode Formatters<a class="headerlink" href="#module-hotwing_core.gcode_formatters" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatBase">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatBase</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gcode Formatter’s job is to convert the commands maintained
 by the Gcode class and format them into the appropriate format
 for the specification of Gcode being generated.</p>
@@ -54,7 +54,7 @@ the _process_move and _process_fast_move commands.</p>
 
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatDebug">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatDebug</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatDebug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatDebug" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatDebug</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatDebug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatDebug" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
 <p>This is meant as a debugging class.  It will output the commands
 as a line of text separated by tabs.</p>
@@ -62,9 +62,10 @@ as a line of text separated by tabs.</p>
 
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GenericGcode">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GenericGcode</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GenericGcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GenericGcode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GenericGcode</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GenericGcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GenericGcode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
-<p>Generic Gcode (RS-274?) formatter</p>
+<p>Generic Gcode (RS-274?) formatter
+Made to work with LinuxCNC</p>
 </dd></dl>
 
 </div>

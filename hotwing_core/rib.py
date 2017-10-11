@@ -9,14 +9,14 @@ class Rib():
 
     Args:
         airfoil
-        scale
-        xy_offset
-        top_sheet
-        bottom_sheet
-        front_stock
-        tail_stock
-        rotate
-        rotate_pos
+        scale (Float):
+        xy_offset (Coordinate):
+        top_sheet (Float):
+        bottom_sheet (Float):
+        front_stock (Float):
+        tail_stock (Float):
+        rotate (Float):
+        rotate_pos (Float):
     """
     
     def __init__(self, airfoil, scale=None, xy_offset=None, top_sheet=0,
@@ -38,7 +38,7 @@ class Rib():
     @property
     def profile(self):
         """
-        Returns a copy of the rib profile after scaling and offsets
+        Return a copy of the rib profile after scaling and offsets
         """
         p = Profile.copy(self.airfoil)
         if not self.scale is None:
@@ -55,7 +55,7 @@ class Rib():
     @property
     def sheeted_profile(self):
         """
-        Document
+        Return a copy of the rib profile after scaling and offsets but before any sheeting.
         """
         p = self.profile
         if self.top_sheet or self.bottom_sheet:
@@ -67,7 +67,14 @@ class Rib():
     def interpolate_new_rib(cls, r1, r2, dist_between,
                             dist_interp, points=200):
         """
-        Document
+        Interpolate a new rib based on two others.
+
+        Args:
+            r1 (Rib):
+            r2 (Rib):
+            dist_between (Float): Distance between the ribs of the panel we want to interpolate
+            dist_interp (Float): Distance from the left side at which we perform the interpolation.
+            points (Int): Number of points to use on each (top/bottom) surface we interpolate.
         """
         p = Profile.interpolate_new_profile(
             r1.profile, r2.profile, dist_between, dist_interp, points)

@@ -53,11 +53,11 @@
 <div class="viewcode-block" id="Coordinate.calc_slope"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.calc_slope">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">calc_slope</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the slope between two Coordinates.</span>
+<span class="sd">        Calculate the slope between two Coordinates.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            a : Coordinate</span>
-<span class="sd">            b : Coordinate</span>
+<span class="sd">            a (Coordinate): First Coordinate</span>
+<span class="sd">            b (Coordinate): Second Coordinate</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Float: slope between a and b</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -71,13 +71,13 @@
 <div class="viewcode-block" id="Coordinate.calc_dist"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.calc_dist">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">calc_dist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the distance between two Coordinates.</span>
+<span class="sd">        Calculate the distance between two Coordinates.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            a : Coordinate</span>
-<span class="sd">            b : Coordinate</span>
+<span class="sd">            a (Coordinate): First Coordinate</span>
+<span class="sd">            b (Coordinate): Second Coordinate</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            Float: distance between c1 and c2</span>
+<span class="sd">            Float: Distance between c1 and c2</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -86,15 +86,15 @@
 <div class="viewcode-block" id="Coordinate.rotate"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotates a Coordinate around a point in 2D space.</span>
+<span class="sd">        Rotate a Coordinate around a point in 2D space.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            origin: Coordinate object that defines the point to rotate coordinate around</span>
-<span class="sd">            coordinate: Coordinate object to rotate</span>
-<span class="sd">            angle: Float - degrees to rotate Coordinate.</span>
+<span class="sd">            origin (Coordinate) : Defines the point to rotate around</span>
+<span class="sd">            coordinate (Coordinate): The Coordinate to rotate</span>
+<span class="sd">            angle (Float) : Degrees to rotate Coordinate</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate - New rotated Coordinate</span>
+<span class="sd">            Coordinate: New rotated Coordinate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">ox</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">x</span>

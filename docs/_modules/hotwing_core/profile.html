@@ -90,7 +90,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the min and max X values in the Profile.</span>
+<span class="sd">        Get the min and max X values in the Profile.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of Floats: (min_x,max_x) - containing the min and max X values in the profile.</span>
@@ -102,7 +102,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">y_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the min and max Y values in the Profile.</span>
+<span class="sd">        Get the min and max Y values in the Profile.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of Floats: (min_y,max_y) - containing the min and max y values in the profile.</span>
@@ -114,7 +114,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">left_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds a XY position at the left-most value of the Profile half way between the two Surfaces</span>
+<span class="sd">        Find a XY position at the left-most value of the Profile half way between the two Surfaces</span>
 
 <span class="sd">        1) Finds the X value for the leftmost point in the Profile</span>
 <span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
@@ -122,7 +122,7 @@
 <span class="sd">            between the points</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate</span>
+<span class="sd">            Coordinate:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
         <span class="n">top_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">min_x</span><span class="p">)</span>
@@ -133,7 +133,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">right_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds a XY position at the right-most value of the Profile half way between the two Surfaces</span>
+<span class="sd">        Find a XY position at the right-most value of the Profile half way between the two Surfaces</span>
 
 <span class="sd">        1) Finds the X value for the right most point in the Profile</span>
 <span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
@@ -141,7 +141,7 @@
 <span class="sd">            between the points</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate</span>
+<span class="sd">            Coordinate:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
 
@@ -153,15 +153,15 @@
 <div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotates a profile around a certain point.</span>
+<span class="sd">        Rotate a profile around a certain point.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            origin: Coordinate object that defines the point to rotate profile around</span>
-<span class="sd">            profile: Profile object to rotate</span>
-<span class="sd">            angle: Float - degrees to rotate profile.</span>
+<span class="sd">            origin (Coordinate): object that defines the point to rotate profile around</span>
+<span class="sd">            profile (Profile): object to rotate</span>
+<span class="sd">            angle (Float): degrees to rotate profile.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - New rotated Profile</span>
+<span class="sd">            Profile: New rotated Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
         <span class="n">bot_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
@@ -169,13 +169,11 @@
 
 <div class="viewcode-block" id="Profile.draw"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates an image containing the profile and saves it to the disk.</span>
+<span class="sd">        Create an image containing the profile and saves it to the disk.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filename - String-like object containing the path and filename to output the image</span>
+<span class="sd">            filename (String) - String-like object containing the path and filename to output the image</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
@@ -253,13 +251,13 @@
 <div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a copy of a profile</span>
+<span class="sd">        Create a copy of a profile</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to copy</span>
+<span class="sd">            profile (Profile): object to copy</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - new copied Profile object</span>
+<span class="sd">            Profile: new copied Profile object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">top</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span>
@@ -268,16 +266,16 @@
 <div class="viewcode-block" id="Profile.scale"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scales a profile by a value</span>
+<span class="sd">        Scale a profile by a value</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; scale method</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to scale</span>
-<span class="sd">            scale: Float - value to scale profile by</span>
+<span class="sd">            profile (Profile): object to scale</span>
+<span class="sd">            scale (Float): - value to scale profile by</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - new scaled Profile</span>
+<span class="sd">            Profile: new scaled Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
@@ -291,11 +289,11 @@
     <span class="c1">#     Delagates to the Surface objects&#39; scale_to_width method</span>
 
     <span class="c1">#     Args:</span>
-    <span class="c1">#         profile: Profile object to scale</span>
-    <span class="c1">#         width: Float - width to scale profile to</span>
+    <span class="c1">#         profile (Profile): object to scale</span>
+    <span class="c1">#         width (Float): width to scale profile to</span>
 
     <span class="c1">#     Returns:</span>
-    <span class="c1">#         Profile - new scaled Profile</span>
+    <span class="c1">#         Profile: new scaled Profile</span>
     <span class="c1">#     &quot;&quot;&quot;</span>
     <span class="c1">#     top = Surface.scale_to_width(profile.top, width)</span>
     <span class="c1">#     bottom = Surface.scale_to_width(profile.bottom, width)</span>
@@ -304,17 +302,17 @@
 <div class="viewcode-block" id="Profile.offset_xy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offsets a profile left, right, up or down.</span>
+<span class="sd">        Offset a profile left, right, up or down.</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; offset_xy method</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to offset</span>
-<span class="sd">            offset: Coordinate - x,y values to offset profile - this value is simply added to</span>
+<span class="sd">            profile (Profile): object to offset</span>
+<span class="sd">            offset (Coordinate): - x,y values to offset profile - this value is simply added to</span>
 <span class="sd">                    each of the coordinates in the Profile&#39;s Surfaces.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - new offset Profile</span>
+<span class="sd">            Profile: new offset Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
@@ -323,20 +321,20 @@
 <div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_around_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">,</span> <span class="n">bottom_offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offsets each of a Profile&#39;s Surfaces around itself. It can be thought of as scaling the Profile&#39;s</span>
+<span class="sd">        Offset each of a Profile&#39;s Surfaces around itself. It can be thought of as scaling the Profile&#39;s</span>
 <span class="sd">        Surfaces inward or outward around the Surfaces.</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; offset_around_profiles method</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to offset</span>
-<span class="sd">            top_offset:    Float -  Positive value expands profile (offsets upwards/outwards),</span>
+<span class="sd">            profile (Profile): object to offset</span>
+<span class="sd">            top_offset    (Float): -  Positive value expands profile (offsets upwards/outwards),</span>
 <span class="sd">                                    negative value contracs profile (offsets inwards/downwards).</span>
-<span class="sd">            bottom_offset: Float -  Positive value expands profile (offsets upwards/downwards),</span>
+<span class="sd">            bottom_offset (Float): -  Positive value expands profile (offsets upwards/downwards),</span>
 <span class="sd">                                    negative value contracs profile (offsets inwards/upwards).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - new offset Profile</span>
+<span class="sd">            Profile: new offset Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">)</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom_offset</span><span class="p">)</span>
@@ -345,7 +343,7 @@
 <div class="viewcode-block" id="Profile.trim"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.trim">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Trims a Profile&#39;s Surfaces to new starting and ending x values.</span>
+<span class="sd">        Trim a Profile&#39;s Surfaces to new starting and ending x values.</span>
 
 <span class="sd">        IMPORTANT - If you specify a value smaller than the min or larger than the max, by default</span>
 <span class="sd">        those values will be interpolated and may actually make the width of the surface larger.</span>
@@ -353,9 +351,9 @@
 <span class="sd">        Delagates trim to the Surface objects</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to trim</span>
-<span class="sd">            x_min: Float - left-most value to trim the profile to.</span>
-<span class="sd">            x_max: Float - right-most value to trim the profile to.</span>
+<span class="sd">            profile (Profile): object to trim</span>
+<span class="sd">            x_min (Float): left-most value to trim the profile to.</span>
+<span class="sd">            x_max (Float): right-most value to trim the profile to.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Profile - new trimmed Profile</span>
@@ -374,10 +372,10 @@
 <span class="sd">        results.  If no over lap(s) is/are found, not trimming will occur.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile: Profile object to trim.</span>
+<span class="sd">            profile (Profile): object to trim.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - new trimmed Profile</span>
+<span class="sd">            Profile: new trimmed Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">_find_convergence_points</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">x1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -391,19 +389,19 @@
     <span class="k">def</span> <span class="nf">interpolate_new_profile</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new Profile interpolated from two other Profiles.</span>
+<span class="sd">        Create a new Profile interpolated from two other Profiles.</span>
 
 <span class="sd">        Delagates to the Surface objects.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            p1: Profile - first profile to interpolate from</span>
-<span class="sd">            p2: Profile - second profile to interpolate from</span>
-<span class="sd">            dist_between: Float - Distance between profiles</span>
-<span class="sd">            dist_interp: Float - Distance from s1 where new profile should be interpolated</span>
-<span class="sd">            points: Int - Number of points to use for interpolating each surface of the profile</span>
+<span class="sd">            p1 (Profile): first profile to interpolate from</span>
+<span class="sd">            p2 (Profile): second profile to interpolate from</span>
+<span class="sd">            dist_between (Float): Distance between profiles</span>
+<span class="sd">            dist_interp (Float): Distance from s1 where new profile should be interpolated</span>
+<span class="sd">            points (Int): Number of points to use for interpolating each surface of the profile</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Profile - New Profile interpolated from s1 and s2</span>
+<span class="sd">            Profile: New Profile interpolated from s1 and s2</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">interpolate_new_surface</span><span class="p">(</span>
             <span class="n">p1</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
@@ -413,11 +411,11 @@
 
     <span class="k">def</span> <span class="nf">_load_dat_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads the contents of a Selig-formatted file and loads the coordinates into the Class&#39;</span>
+<span class="sd">        Read the contents of a Selig-formatted file and loads the coordinates into the Class&#39;</span>
 <span class="sd">        coordinates attribute.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            f: String-like object containing the file path to a Selig-formatted file.</span>
+<span class="sd">            f (String):String-like object containing the file path to a Selig-formatted file.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of (two) Profiles : (top_profile, bottom_profile)</span>
@@ -433,11 +431,11 @@
 
     <span class="k">def</span> <span class="nf">_load_dat_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Downloads the contents of a Selig-formatted file and loads the coordinates into </span>
+<span class="sd">        Download the contents of a Selig-formatted file and loads the coordinates into </span>
 <span class="sd">        the Class&#39; coordinates attribute.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            f: String-like object containing a URL to the Selig-formatted.  Make sure you</span>
+<span class="sd">            f (String): String-like object containing a URL to the Selig-formatted.  Make sure you</span>
 <span class="sd">               include http:// or https:// in the URL</span>
 
 <span class="sd">        Returns:</span>
@@ -456,7 +454,7 @@
 
     <span class="k">def</span> <span class="nf">_parse_dat_file_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Takes a single line for a dat file and parses out any coordinates</span>
+<span class="sd">        Take a single line for a dat file and parse out any coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^\s*(-*\d*\.\d*)\s*(-*\d*\.\d*)&quot;</span><span class="p">)</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -476,12 +474,10 @@
 
     <span class="k">def</span> <span class="nf">_split_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Splits the coordinates into top and bottom surfaces</span>
-
-<span class="sd">        TODO: Create better splitting algorithm</span>
+<span class="sd">        Split the coordinates into top and bottom surfaces</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            coordinates: list of coordinates</span>
+<span class="sd">            coordinates (Coordinates[]): list of coordinates</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of (two) Profiles : (top_profile, bottom_profile)</span>
@@ -528,7 +524,7 @@
 
     <span class="k">def</span> <span class="nf">_find_convergence_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds convergence points of a Class&#39; Profiles.</span>
+<span class="sd">        Find convergence points of a Class&#39; Profiles.</span>
 
 <span class="sd">        Searches for convergence points from the middle of the profile to the left bound and then</span>
 <span class="sd">        the middle of the profile to the right bound.  Uses the Class&#39; _find_convergence_point</span>
@@ -555,9 +551,9 @@
 <span class="sd">        region and increasing the accuracy until the accuracy level is satisfied.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x_start: Float</span>
-<span class="sd">            x_end: Float</span>
-<span class="sd">            accuracy: Float - minimum level of error we can tolerate on the convergence.  The</span>
+<span class="sd">            x_start (Float):</span>
+<span class="sd">            x_end (Float):</span>
+<span class="sd">            accuracy (Float): minimum level of error we can tolerate on the convergence.  The</span>
 <span class="sd">                              algorithm doesn&#39;t solve for an exact value but can get very close</span>
 <span class="sd">                              by iteration.  Set this value very high for more accuracy.</span>
 
@@ -598,9 +594,9 @@
 <span class="sd">        one other.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x_start : Float</span>
-<span class="sd">            x_stop : Float</span>
-<span class="sd">            resolution : Float</span>
+<span class="sd">            x_start (Float)</span>
+<span class="sd">            x_stop (Float)</span>
+<span class="sd">            resolution (Float)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of Floats: (x1,x2) - two values that contain two x coordinates that bound the</span>

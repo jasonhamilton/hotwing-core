@@ -13,15 +13,15 @@ class Machine():
     profile.
 
     Args:
-        width: Float or Int - length of the machine's hotwire cutter
-        kerf: Float - 
+        width (Float): length of the machine's hotwire cutter
+        kerf (Float):
             Allowance for the hotwire's cutter.  This includes the radius of 
             the wire plus any additional allowance for melted foam from direct
             or radiant heat.
-        profile_points: Int - 
+        profile_points (Int): 
             Number of points used when interpolating profiles.  This is the
             number for each (top and bottom) surface of a Profile.
-        output_profile_images: Boolean - 
+        output_profile_images (Boolean): 
             If true, images of the profiles during the manipulation process 
             will be created.  Used is for debugging purposes.
     """
@@ -35,11 +35,11 @@ class Machine():
 
     def _draw_profile(self, profile, filename):
         """
-        Saves the profile as an image.
+        Save the profile as an image.
 
         Args:
-            profile: Profile object - profile to create image from
-            filename: string-like object - path of filename to write
+            profile (Profile): object - profile to create image from
+            filename (String): string-like object - path of filename to write
 
         Returns:
             None
@@ -49,11 +49,11 @@ class Machine():
 
     def load_panel(self, panel, left_offset=None):
         """
-        Loads a Panel object into the machine.
+        Load a Panel object into the machine.
 
         Args:
-            panel: Panel object - panel to use
-            left_offset: Float or Int - How far from the left hotwire post to place
+            panel (Panel): panel to use
+            left_offset (Float): How far from the left hotwire post to place
                          the panel.  If the panel is 24 inches and the machine is 30
                          inches, a value of 3 ([30-24]/2) will place the panel centered
                          between the CNC's cutting posts.
@@ -70,24 +70,24 @@ class Machine():
     def generate_gcode(self, le_offset=2.0, te_offset=2.0,
                        safe_height=5, normalize=True):
         """
-        Generates the gcode to cut the panel.  You must have a panel loaded into the machine,
+        Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
         otherwise it cannot cut.
 
         Args:
-            le_offset: Float - Distance in front of the leading edge the hotwire should extend out
+            le_offset (Float): Distance in front of the leading edge the hotwire should extend out
                                and cut to.  If you want to make sure your foam block is cut in half,
                                make sure this value is long enough to reach the front edge of
                                your block.
-            te_offset: Float - Distance behind the leading the hotwire should cut to. Similar to
+            te_offset (Float): Distance behind the leading the hotwire should cut to. Similar to
                                the le_offset, except from the trailing edge towards the outside of
                                the foam block you are cutting.
-            safe_height: Float - The height where the machine can move freely without hitting anything.
+            safe_height (Float): The height where the machine can move freely without hitting anything.
                                  Make sure this value is greater than the height of your foam block.
-            normalize: Boolean - When generating the machine path, the x and y values may be < 0.  Setting
+            normalize (Boolean): When generating the machine path, the x and y values may be < 0.  Setting
                                  this to True translates the values so that all x and y values are >= 0.
 
         Returns:
-            String - Gcode commands separated by newlines.
+            String: Gcode commands separated by newlines.
         """
         if not hasattr(self, "panel"):
             print("no panel loaded into machine.  Load a panel before generating g_code")
@@ -158,11 +158,11 @@ class Machine():
         Create the XYUV positions for the machine in order to intersect two Coordinates.
 
         Args:
-            c1: Coordinate
-            c2: Coordinate
+            c1 (Coordinate):
+            c2 (Coordinate):
 
         Returns:
-            Tuple of Floats (x, y, u, v)
+            Tuple of Floats: (x, y, u, v)
         """
 
         # create 3d coordinates and pass them to the 
@@ -180,11 +180,11 @@ class Machine():
         Uses the point plane intersect function.
 
         Args:
-            c1_3d: Tuple of 3 coordinates in 3d space (x,y,z)
-            c2_3d: Tuple of 3 coordinates in 3d space (x,y,z)
+            c1_3d (Tuple of Tuples): Tuple with 3 coordinates in 3d space (x,y,z)
+            c2_3d (Tuple of Tuples): Tuple with 3 coordinates in 3d space (x,y,z)
 
         Returns:
-            Tuple of Tuples of Floats - ((y1,x1) (y2,x2))
+            Tuple of Tuples of Floats: ((y1,x1) (y2,x2))
         """
         pillar_a = (0, 0, 0)
         pillar_b = (self.width, 0, 0)

@@ -49,6 +49,9 @@
 <span class="sd">    On any subclass, you are expected to implement at a minimum</span>
 <span class="sd">    the _process_move and _process_fast_move commands.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
     <span class="k">def</span> <span class="nf">_process_move</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -85,7 +88,9 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmds_as_str</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_start_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Units: &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="nf">_end_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[]</span></div>
@@ -94,18 +99,46 @@
 <div class="viewcode-block" id="GenericGcode"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GenericGcode">[docs]</a><span class="k">class</span> <span class="nc">GenericGcode</span><span class="p">(</span><span class="n">GcodeFormatBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic Gcode (RS-274?) formatter</span>
+<span class="sd">    Made to work with LinuxCNC</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">_process_move</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;G1 X</span><span class="si">%.10f</span><span class="s2"> Y</span><span class="si">%.10f</span><span class="s2"> U</span><span class="si">%.10f</span><span class="s2"> V</span><span class="si">%.10f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;G1 x</span><span class="si">%.10f</span><span class="s2"> y</span><span class="si">%.10f</span><span class="s2"> u</span><span class="si">%.10f</span><span class="s2"> v</span><span class="si">%.10f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_process_fast_move</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;G0 X</span><span class="si">%.10f</span><span class="s2"> Y</span><span class="si">%.10f</span><span class="s2"> U</span><span class="si">%.10f</span><span class="s2"> V</span><span class="si">%.10f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s2">&quot;G0 x</span><span class="si">%.10f</span><span class="s2"> y</span><span class="si">%.10f</span><span class="s2"> u</span><span class="si">%.10f</span><span class="s2"> v</span><span class="si">%.10f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">command</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_start_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1">## Working Plane</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G17&quot;</span><span class="p">)</span> <span class="c1"># is this necessary?</span>
+
+        <span class="c1"># Units        </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;inches&quot;</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G20&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;millimeters&quot;</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G21&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;(Unknown units &#39;</span><span class="si">%s</span><span class="s2">&#39; specified!)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+        <span class="c1">## Absolute Mode</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G90&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Control path mode</span>
+        <span class="c1"># G61 - Set Exact Path Control Mode</span>
+        <span class="c1"># G64 - Set Blended Path Control Mode</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G61&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Use first work offset</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G54&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="nf">_end_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[]</span></div>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># End Program</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;M30&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
 </pre></div>
 
           </div>

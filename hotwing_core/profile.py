@@ -49,7 +49,7 @@ class Profile():
     @property
     def x_bounds(self):
         """
-        Gets the min and max X values in the Profile.
+        Get the min and max X values in the Profile.
 
         Returns:
             Tuple of Floats: (min_x,max_x) - containing the min and max X values in the profile.
@@ -61,7 +61,7 @@ class Profile():
     @property
     def y_bounds(self):
         """
-        Gets the min and max Y values in the Profile.
+        Get the min and max Y values in the Profile.
 
         Returns:
             Tuple of Floats: (min_y,max_y) - containing the min and max y values in the profile.
@@ -73,7 +73,7 @@ class Profile():
     @property
     def left_midpoint(self):
         """
-        Finds a XY position at the left-most value of the Profile half way between the two Surfaces
+        Find a XY position at the left-most value of the Profile half way between the two Surfaces
 
         1) Finds the X value for the leftmost point in the Profile
         2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X
@@ -81,7 +81,7 @@ class Profile():
             between the points
 
         Returns:
-            Coordinate
+            Coordinate:
         """
         min_x, max_x = self.x_bounds
         top_c = self.top.interpolate(min_x)
@@ -92,7 +92,7 @@ class Profile():
     @property
     def right_midpoint(self):
         """
-        Finds a XY position at the right-most value of the Profile half way between the two Surfaces
+        Find a XY position at the right-most value of the Profile half way between the two Surfaces
 
         1) Finds the X value for the right most point in the Profile
         2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X
@@ -100,7 +100,7 @@ class Profile():
             between the points
 
         Returns:
-            Coordinate
+            Coordinate:
         """
         min_x, max_x = self.x_bounds
 
@@ -112,15 +112,15 @@ class Profile():
     @classmethod
     def rotate(cls, origin, profile, angle):
         """
-        Rotates a profile around a certain point.
+        Rotate a profile around a certain point.
 
         Args:
-            origin: Coordinate object that defines the point to rotate profile around
-            profile: Profile object to rotate
-            angle: Float - degrees to rotate profile.
+            origin (Coordinate): object that defines the point to rotate profile around
+            profile (Profile): object to rotate
+            angle (Float): degrees to rotate profile.
 
         Returns:
-            Profile - New rotated Profile
+            Profile: New rotated Profile
         """
         top_coords = Surface.rotate(origin, profile.top, angle)
         bot_coords = Surface.rotate(origin, profile.bottom, angle)
@@ -128,13 +128,11 @@ class Profile():
 
     def draw(self, filename):
         """
-        Creates an image containing the profile and saves it to the disk.
+        Create an image containing the profile and saves it to the disk.
 
         Args:
-            filename - String-like object containing the path and filename to output the image
+            filename (String) - String-like object containing the path and filename to output the image
 
-        Returns:
-            None
         """
         try:
             from PIL import Image, ImageDraw
@@ -212,13 +210,13 @@ class Profile():
     @classmethod
     def copy(cls, profile):
         """
-        Creates a copy of a profile
+        Create a copy of a profile
 
         Args:
-            profile: Profile object to copy
+            profile (Profile): object to copy
 
         Returns:
-            Profile - new copied Profile object
+            Profile: new copied Profile object
         """
         top = profile.top
         bottom = profile.bottom
@@ -227,16 +225,16 @@ class Profile():
     @classmethod
     def scale(cls, profile, scale):
         """
-        Scales a profile by a value
+        Scale a profile by a value
 
         Delagates to the Surface objects' scale method
 
         Args:
-            profile: Profile object to scale
-            scale: Float - value to scale profile by
+            profile (Profile): object to scale
+            scale (Float): - value to scale profile by
 
         Returns:
-            Profile - new scaled Profile
+            Profile: new scaled Profile
         """
         top = Surface.scale(profile.top, scale)
         bottom = Surface.scale(profile.bottom, scale)
@@ -250,11 +248,11 @@ class Profile():
     #     Delagates to the Surface objects' scale_to_width method
 
     #     Args:
-    #         profile: Profile object to scale
-    #         width: Float - width to scale profile to
+    #         profile (Profile): object to scale
+    #         width (Float): width to scale profile to
 
     #     Returns:
-    #         Profile - new scaled Profile
+    #         Profile: new scaled Profile
     #     """
     #     top = Surface.scale_to_width(profile.top, width)
     #     bottom = Surface.scale_to_width(profile.bottom, width)
@@ -263,17 +261,17 @@ class Profile():
     @classmethod
     def offset_xy(cls, profile, offset):
         """
-        Offsets a profile left, right, up or down.
+        Offset a profile left, right, up or down.
 
         Delagates to the Surface objects' offset_xy method
 
         Args:
-            profile: Profile object to offset
-            offset: Coordinate - x,y values to offset profile - this value is simply added to
+            profile (Profile): object to offset
+            offset (Coordinate): - x,y values to offset profile - this value is simply added to
                     each of the coordinates in the Profile's Surfaces.
 
         Returns:
-            Profile - new offset Profile
+            Profile: new offset Profile
         """
         top = Surface.offset_xy(profile.top, offset)
         bottom = Surface.offset_xy(profile.bottom, offset)
@@ -282,20 +280,20 @@ class Profile():
     @classmethod
     def offset_around_profiles(cls, profile, top_offset, bottom_offset):
         """
-        Offsets each of a Profile's Surfaces around itself. It can be thought of as scaling the Profile's
+        Offset each of a Profile's Surfaces around itself. It can be thought of as scaling the Profile's
         Surfaces inward or outward around the Surfaces.
 
         Delagates to the Surface objects' offset_around_profiles method
 
         Args:
-            profile: Profile object to offset
-            top_offset:    Float -  Positive value expands profile (offsets upwards/outwards),
+            profile (Profile): object to offset
+            top_offset    (Float): -  Positive value expands profile (offsets upwards/outwards),
                                     negative value contracs profile (offsets inwards/downwards).
-            bottom_offset: Float -  Positive value expands profile (offsets upwards/downwards),
+            bottom_offset (Float): -  Positive value expands profile (offsets upwards/downwards),
                                     negative value contracs profile (offsets inwards/upwards).
 
         Returns:
-            Profile - new offset Profile
+            Profile: new offset Profile
         """
         top = Surface.offset_around_profile(profile.top, top_offset)
         bottom = Surface.offset_around_profile(profile.bottom, -bottom_offset)
@@ -304,7 +302,7 @@ class Profile():
     @classmethod
     def trim(cls, profile, x_min=None, x_max=None):
         """
-        Trims a Profile's Surfaces to new starting and ending x values.
+        Trim a Profile's Surfaces to new starting and ending x values.
 
         IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
         those values will be interpolated and may actually make the width of the surface larger.
@@ -312,9 +310,9 @@ class Profile():
         Delagates trim to the Surface objects
 
         Args:
-            profile: Profile object to trim
-            x_min: Float - left-most value to trim the profile to.
-            x_max: Float - right-most value to trim the profile to.
+            profile (Profile): object to trim
+            x_min (Float): left-most value to trim the profile to.
+            x_max (Float): right-most value to trim the profile to.
 
         Returns:
             Profile - new trimmed Profile
@@ -333,10 +331,10 @@ class Profile():
         results.  If no over lap(s) is/are found, not trimming will occur.
 
         Args:
-            profile: Profile object to trim.
+            profile (Profile): object to trim.
 
         Returns:
-            Profile - new trimmed Profile
+            Profile: new trimmed Profile
         """
         x1, x2 = profile._find_convergence_points()
         if x1 is None:
@@ -350,19 +348,19 @@ class Profile():
     def interpolate_new_profile(
             cls, p1, p2, dist_between, dist_interp, points=200):
         """
-        Creates a new Profile interpolated from two other Profiles.
+        Create a new Profile interpolated from two other Profiles.
 
         Delagates to the Surface objects.
 
         Args:
-            p1: Profile - first profile to interpolate from
-            p2: Profile - second profile to interpolate from
-            dist_between: Float - Distance between profiles
-            dist_interp: Float - Distance from s1 where new profile should be interpolated
-            points: Int - Number of points to use for interpolating each surface of the profile
+            p1 (Profile): first profile to interpolate from
+            p2 (Profile): second profile to interpolate from
+            dist_between (Float): Distance between profiles
+            dist_interp (Float): Distance from s1 where new profile should be interpolated
+            points (Int): Number of points to use for interpolating each surface of the profile
 
         Returns:
-            Profile - New Profile interpolated from s1 and s2
+            Profile: New Profile interpolated from s1 and s2
         """
         top = Surface.interpolate_new_surface(
             p1.top, p2.top, dist_between, dist_interp, points)
@@ -372,11 +370,11 @@ class Profile():
 
     def _load_dat_file(self, f):
         """
-        Reads the contents of a Selig-formatted file and loads the coordinates into the Class'
+        Read the contents of a Selig-formatted file and loads the coordinates into the Class'
         coordinates attribute.
 
         Args:
-            f: String-like object containing the file path to a Selig-formatted file.
+            f (String):String-like object containing the file path to a Selig-formatted file.
 
         Returns:
             Tuple of (two) Profiles : (top_profile, bottom_profile)
@@ -392,11 +390,11 @@ class Profile():
 
     def _load_dat_from_url(self, url):
         """
-        Downloads the contents of a Selig-formatted file and loads the coordinates into 
+        Download the contents of a Selig-formatted file and loads the coordinates into 
         the Class' coordinates attribute.
 
         Args:
-            f: String-like object containing a URL to the Selig-formatted.  Make sure you
+            f (String): String-like object containing a URL to the Selig-formatted.  Make sure you
                include http:// or https:// in the URL
 
         Returns:
@@ -415,7 +413,7 @@ class Profile():
 
     def _parse_dat_file_line(self, line):
         """
-        Takes a single line for a dat file and parses out any coordinates
+        Take a single line for a dat file and parse out any coordinates
         """
         p = re.compile("^\s*(-*\d*\.\d*)\s*(-*\d*\.\d*)")
         m = p.match(line)
@@ -435,12 +433,10 @@ class Profile():
 
     def _split_profile(self, coordinates):
         """
-        Splits the coordinates into top and bottom surfaces
-
-        TODO: Create better splitting algorithm
+        Split the coordinates into top and bottom surfaces
 
         Args:
-            coordinates: list of coordinates
+            coordinates (Coordinates[]): list of coordinates
 
         Returns:
             Tuple of (two) Profiles : (top_profile, bottom_profile)
@@ -487,7 +483,7 @@ class Profile():
 
     def _find_convergence_points(self):
         """
-        Finds convergence points of a Class' Profiles.
+        Find convergence points of a Class' Profiles.
 
         Searches for convergence points from the middle of the profile to the left bound and then
         the middle of the profile to the right bound.  Uses the Class' _find_convergence_point
@@ -514,9 +510,9 @@ class Profile():
         region and increasing the accuracy until the accuracy level is satisfied.
 
         Args:
-            x_start: Float
-            x_end: Float
-            accuracy: Float - minimum level of error we can tolerate on the convergence.  The
+            x_start (Float):
+            x_end (Float):
+            accuracy (Float): minimum level of error we can tolerate on the convergence.  The
                               algorithm doesn't solve for an exact value but can get very close
                               by iteration.  Set this value very high for more accuracy.
 
@@ -557,9 +553,9 @@ class Profile():
         one other.
 
         Args:
-            x_start : Float
-            x_stop : Float
-            resolution : Float
+            x_start (Float)
+            x_stop (Float)
+            resolution (Float)
 
         Returns:
             Tuple of Floats: (x1,x2) - two values that contain two x coordinates that bound the

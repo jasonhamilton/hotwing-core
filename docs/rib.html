@@ -46,34 +46,56 @@
 <dt id="hotwing_core.rib.Rib">
 <em class="property">class </em><code class="descclassname">hotwing_core.rib.</code><code class="descname">Rib</code><span class="sig-paren">(</span><em>airfoil</em>, <em>scale=None</em>, <em>xy_offset=None</em>, <em>top_sheet=0</em>, <em>bottom_sheet=0</em>, <em>front_stock=0</em>, <em>tail_stock=0</em>, <em>rotate=0</em>, <em>rotate_pos=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/rib.html#Rib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.rib.Rib" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Rib contains a Profile and other attributes to determine the size and position.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>airfoil
-scale
-xy_offset
-top_sheet
-bottom_sheet
-front_stock
-tail_stock
-rotate
-rotate_pos</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>airfoil</strong> – </li>
+<li><strong>scale</strong> (<em>Float</em>) – </li>
+<li><strong>xy_offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – </li>
+<li><strong>top_sheet</strong> (<em>Float</em>) – </li>
+<li><strong>bottom_sheet</strong> (<em>Float</em>) – </li>
+<li><strong>front_stock</strong> (<em>Float</em>) – </li>
+<li><strong>tail_stock</strong> (<em>Float</em>) – </li>
+<li><strong>rotate</strong> (<em>Float</em>) – </li>
+<li><strong>rotate_pos</strong> (<em>Float</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="classmethod">
 <dt id="hotwing_core.rib.Rib.interpolate_new_rib">
 <em class="property">classmethod </em><code class="descname">interpolate_new_rib</code><span class="sig-paren">(</span><em>r1</em>, <em>r2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/rib.html#Rib.interpolate_new_rib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.rib.Rib.interpolate_new_rib" title="Permalink to this definition">¶</a></dt>
-<dd><p>Document</p>
+<dd><p>Interpolate a new rib based on two others.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>r1</strong> (<a class="reference internal" href="#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – </li>
+<li><strong>r2</strong> (<a class="reference internal" href="#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – </li>
+<li><strong>dist_between</strong> (<em>Float</em>) – Distance between the ribs of the panel we want to interpolate</li>
+<li><strong>dist_interp</strong> (<em>Float</em>) – Distance from the left side at which we perform the interpolation.</li>
+<li><strong>points</strong> (<em>Int</em>) – Number of points to use on each (top/bottom) surface we interpolate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="hotwing_core.rib.Rib.profile">
 <code class="descname">profile</code><a class="headerlink" href="#hotwing_core.rib.Rib.profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the rib profile after scaling and offsets</p>
+<dd><p>Return a copy of the rib profile after scaling and offsets</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="hotwing_core.rib.Rib.sheeted_profile">
 <code class="descname">sheeted_profile</code><a class="headerlink" href="#hotwing_core.rib.Rib.sheeted_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Document</p>
+<dd><p>Return a copy of the rib profile after scaling and offsets but before any sheeting.</p>
 </dd></dl>
 
 </dd></dl>

@@ -50,7 +50,7 @@
 <span class="sd">    surface of an airfoil.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        coordinates: list of Coordinates</span>
+<span class="sd">        coordinates (Coordinate[]): list of Coordinates</span>
 <span class="sd">                        ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING</span>
 <span class="sd">                        ORDER BASED ON X VALUES</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -63,30 +63,30 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the left most Coordinate</span>
+<span class="sd">        Get the left most Coordinate</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate</span>
+<span class="sd">            Coordinate: left-most Coordinate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the right-most Coordinate</span>
+<span class="sd">        Get the right-most Coordinate</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate</span>
+<span class="sd">            Coordinate: right-most Coordinate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets the bounding box of the Surface</span>
+<span class="sd">        Get the bounding box of the Surface</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            (min,max) - tuple of Coordinates with the min xy and the max xy value</span>
+<span class="sd">            (Coordinate,Coordinate): Tuple of Coordinates with the min xy and the max xy value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
         <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
@@ -97,10 +97,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the total length around the area of the surface</span>
+<span class="sd">        Calculate the total length around the area of the surface</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Float</span>
+<span class="sd">            Float: Length around the surface</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">total_len</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">coord_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
@@ -114,16 +114,18 @@
 <div class="viewcode-block" id="Surface.offset_around_profile"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.offset_around_profile">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_around_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offsets the surface around the current surface - evaluates relative angle at each point and</span>
-<span class="sd">        expands/contracts the surface around these angles.</span>
+<span class="sd">        Offset the surface around the current surface.</span>
+
+<span class="sd">        Evaluates relative angle at each point and  expands/contracts </span>
+<span class="sd">        the surface around these angles.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            surface: Surface to offset</span>
-<span class="sd">            offset: Float - distance to offset from surface - positive value offsets upwards, negative</span>
+<span class="sd">            surface (Surface): Surface to offset</span>
+<span class="sd">            offset (Float): Distance to offset from surface - positive value offsets upwards, negative</span>
 <span class="sd">                            value offsets downwards.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Surface: new Surface with the offset applied</span>
+<span class="sd">            Surface: new Surface object with the offset applied</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span>
         <span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
@@ -164,11 +166,11 @@
 <div class="viewcode-block" id="Surface.offset_xy"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offsets the surface using the x and y values in the coordinate</span>
+<span class="sd">        Offset the surface using the x and y values</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            surface : Surface to offset</span>
-<span class="sd">            offset: Coordinate object containing the x and y values to offset</span>
+<span class="sd">            surface (Surface) : Surface object to offset</span>
+<span class="sd">            offset (Coordinate): Coordinate object containing the x and y offset amounts.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Surface: new Surface with the offset applied</span>
@@ -183,11 +185,11 @@
 <div class="viewcode-block" id="Surface.scale"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scales a Surface by a specified value</span>
+<span class="sd">        Scale a Surface by a specified value</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            surface : Surface to offset</span>
-<span class="sd">            scale: Float - value to scale by</span>
+<span class="sd">            surface (Surface): Surface to offset</span>
+<span class="sd">            scale (Float): Scale value</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Surface: new scaled Surface</span>
@@ -223,16 +225,16 @@
 <div class="viewcode-block" id="Surface.trim"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.trim">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Trims a Surface to new starting and ending x values.</span>
+<span class="sd">        Trim a Surface to new starting and ending x values.</span>
 
 <span class="sd">        IMPORTANT - If you specify a value smaller than the min or larger than the max, by default</span>
 <span class="sd">        those values will be interpolated and may actually make the width of the surface larger.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            surface : Surface to trim</span>
-<span class="sd">            x_min (optional): Float - x value to make the left cut on - if not</span>
+<span class="sd">            surface (Surface) : Surface object to trim</span>
+<span class="sd">            x_min (Float): X value to make the left cut on - if not</span>
 <span class="sd">                                        specified, no cut will be made on this side</span>
-<span class="sd">            x_max (optional): Float - x value to make the right cut on - if not</span>
+<span class="sd">            x_max (Float): X value to make the right cut on - if not</span>
 <span class="sd">                                        specified, no cut will be made on this side</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Surface: new Surface trimmed to the min and max x values</span>
@@ -272,17 +274,17 @@
     <span class="k">def</span> <span class="nf">interpolate_new_surface</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new Surface interpolated from two other Surfaces.</span>
+<span class="sd">        Create a new Surface interpolated from two other Surfaces.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            s1: Surface - first surface to interpolate from</span>
-<span class="sd">            s2: Surface - second surface to interpolate from</span>
-<span class="sd">            dist_between: Float - Distance between profiles</span>
-<span class="sd">            dist_interp: Float - Distance from s1 where new surface should be interpolated</span>
-<span class="sd">            points: Int - Number of points to use for interpolating the new surface</span>
+<span class="sd">            s1 (Surface): First Surface to interpolate from</span>
+<span class="sd">            s2 (Surface): Second Surface to interpolate from</span>
+<span class="sd">            dist_between (Float): Distance between profiles</span>
+<span class="sd">            dist_interp (Float): Distance from s1 where new surface should be interpolated</span>
+<span class="sd">            points (Int): Number of points to use for interpolating the new surface</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Surface - New Surface interpolated from s1 and s2</span>
+<span class="sd">            Surface: New Surface interpolated from s1 and s2</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">interpolate_between_points</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">):</span>
@@ -307,15 +309,15 @@
 <div class="viewcode-block" id="Surface.rotate"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotates a surface around a certain point.</span>
+<span class="sd">        Rotate a surface around a certain point.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            origin: Coordinate object that defines the point to rotate surface around</span>
-<span class="sd">            surface: Surface object to rotate</span>
-<span class="sd">            angle: Float - degrees to rotate surface.</span>
+<span class="sd">            origin (Coordinate): Object that defines the point to rotate surface around</span>
+<span class="sd">            surface (Surface): Object to rotate</span>
+<span class="sd">            angle (Float): Degrees to rotate surface.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Surface - New rotated Surface</span>
+<span class="sd">            Surface: New rotated Surface</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_coords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">surface</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
@@ -324,15 +326,15 @@
 
 <div class="viewcode-block" id="Surface.interpolate"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Interpolates the Y position for a given value of X.</span>
+<span class="sd">        Interpolate the Y position for a given value of X.</span>
 
 <span class="sd">        Method uses linear interpolation between two points.  If the point lies outside of the</span>
 <span class="sd">        coordinates, the line is interpolated based on the closest two points extended outwards.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x: Float - value of x where we want to interpolate</span>
+<span class="sd">            x (Float): Value of x where we want to interpolate</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate - (x,y) - original x value provided and solved y value</span>
+<span class="sd">            Coordinate: Coordinate containing original x value provided and solved y value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
         <span class="n">coord_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
@@ -370,27 +372,27 @@
 
 <div class="viewcode-block" id="Surface.interpolate_around_profile_dist_pct"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate_around_profile_dist_pct">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the x-y position along the surface of the profile at a specified PERCENTAGE value of</span>
+<span class="sd">        Find the x-y position along the surface of the profile at a specified PERCENTAGE value of</span>
 <span class="sd">        the total distance around the surface of the profile, starting from the left-most coordinate.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            pos: Float - value to find of distance around profile</span>
+<span class="sd">            pct (Float): Distance around surface, expressed as a percent, to find</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate - interpolated coordinate at position</span>
+<span class="sd">            Coordinate: Interpolated coordinate at position</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolate_around_profile_dist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">pct</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Surface.interpolate_around_profile_dist"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate_around_profile_dist">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the x-y position along the surface of the profile at a specified DISTANCE around the</span>
+<span class="sd">        Find the x-y position along the surface of the profile at a specified DISTANCE around the</span>
 <span class="sd">        surface of the profile, starting from the left-most coordinate.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            pos: Float - value to find of distance around profile</span>
+<span class="sd">            pos:(Float): Distance around surface, expressed in units, to find</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Coordinate - interpolated coordinate at position</span>
+<span class="sd">            Coordinate: Interpolated coordinate at position</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">total_len</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">coord_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
@@ -449,12 +451,12 @@
 
 <div class="viewcode-block" id="Surface.export"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Writes the coordinates to a file</span>
+<span class="sd">        Write the Surface&#39;s list of Coordinates to a file</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            output_file</span>
-<span class="sd">            separator</span>
-<span class="sd">            newline</span>
+<span class="sd">            output_file (String): Path to file output will be written to</span>
+<span class="sd">            separator (String): Separator between data fields</span>
+<span class="sd">            newline (String): Newline operator</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            None</span>
@@ -464,7 +466,7 @@
                 <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.5f%s%.5f%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">separator</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="p">,</span><span class="n">newline</span><span class="p">)</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_remove_duplicate_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface._remove_duplicate_coordinates"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface._remove_duplicate_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_duplicate_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes any duplicates from the coordinates attribute</span>
 <span class="sd">        ASSUMES DUPLICATES ARE NEXT TO EACH OTHER IN LIST!</span>
@@ -476,9 +478,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">unique</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="n">unique</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">unique</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">unique</span></div>
 
-    <span class="k">def</span> <span class="nf">_order_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface._order_coordinates"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface._order_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_order_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reverses the direction of the coordinates attribute, if necessary to put the coordinates</span>
 <span class="sd">        in ascending order.</span>
@@ -497,7 +499,7 @@
                 <span class="n">descending_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">descending_count</span> <span class="o">&gt;</span> <span class="n">ascending_count</span><span class="p">:</span>
             <span class="c1"># list is descending, need to reverse</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>

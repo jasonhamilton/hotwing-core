@@ -47,25 +47,43 @@
 <em class="property">class </em><code class="descclassname">hotwing_core.panel.</code><code class="descname">Panel</code><span class="sig-paren">(</span><em>rib1</em>, <em>rib2</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Panel is a representation of a wing panel and contains all of the items/objects
 necessary to define the attributes of the wing.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>rib1: Rib object
-rib2: Rib object
-width: Float - width of the total wing panel from rib to rib</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rib1</strong> (<a class="reference internal" href="rib.html#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – object</li>
+<li><strong>rib2</strong> (<a class="reference internal" href="rib.html#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – object</li>
+<li><strong>width</strong> (<em>Float</em>) – width of the total wing panel from rib to rib</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="classmethod">
 <dt id="hotwing_core.panel.Panel.trim_panel">
 <em class="property">classmethod </em><code class="descname">trim_panel</code><span class="sig-paren">(</span><em>panel</em>, <em>left=None</em>, <em>right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.trim_panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel.trim_panel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new Panel by taking an existing Panel and trimming off an amount from each 
+<dd><p>Creates a new Panel by taking an existing Panel and trimming off an amount from each
 side to make it shorter.  The new panel’s ribs will be interpolated to the correct shape.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>panel: Panel object to trim
-left: Float - amount to trim from the left side of the panel
-right: Float - amount to trim from the right side of the panel</dd>
-<dt>Returns:</dt>
-<dd>Panel - New trimmed Panel</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>panel</strong> (<a class="reference internal" href="#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel"><em>Panel</em></a>) – object to trim</li>
+<li><strong>left</strong> (<em>Float</em>) – amount to trim from the left side of the panel</li>
+<li><strong>right</strong> (<em>Float</em>) – amount to trim from the right side of the panel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New trimmed Panel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel">Panel</a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

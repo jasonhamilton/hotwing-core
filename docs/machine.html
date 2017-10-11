@@ -48,79 +48,104 @@
 through the series of cuts required to create a complete cutting path.</p>
 <p>The machine takes a Profile object and generates the code to cut that
 profile.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">width: Float or Int - length of the machine’s hotwire cutter
-kerf: Float -</p>
-<blockquote>
-<div>Allowance for the hotwire’s cutter.  This includes the radius of 
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> (<em>Float</em>) – length of the machine’s hotwire cutter</li>
+<li><strong>kerf</strong> (<em>Float</em>) – Allowance for the hotwire’s cutter.  This includes the radius of
 the wire plus any additional allowance for melted foam from direct
-or radiant heat.</div></blockquote>
-<dl class="last docutils">
-<dt>profile_points: Int - </dt>
-<dd>Number of points used when interpolating profiles.  This is the
-number for each (top and bottom) surface of a Profile.</dd>
-<dt>output_profile_images: Boolean - </dt>
-<dd>If true, images of the profiles during the manipulation process 
-will be created.  Used is for debugging purposes.</dd>
-</dl>
-</dd>
-</dl>
+or radiant heat.</li>
+<li><strong>profile_points</strong> (<em>Int</em>) – Number of points used when interpolating profiles.  This is the
+number for each (top and bottom) surface of a Profile.</li>
+<li><strong>output_profile_images</strong> (<em>Boolean</em>) – If true, images of the profiles during the manipulation process
+will be created.  Used is for debugging purposes.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.convert_coords_to_machine_pos">
 <code class="descname">convert_coords_to_machine_pos</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.convert_coords_to_machine_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.convert_coords_to_machine_pos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the XYUV positions for the machine in order to intersect two Coordinates.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>c1: Coordinate
-c2: Coordinate</dd>
-<dt>Returns:</dt>
-<dd>Tuple of Floats (x, y, u, v)</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c1</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – </li>
+<li><strong>c2</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, u, v)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tuple of Floats</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.generate_gcode">
 <code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>le_offset=2.0</em>, <em>te_offset=2.0</em>, <em>safe_height=5</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the gcode to cut the panel.  You must have a panel loaded into the machine,
+<dd><p>Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
 otherwise it cannot cut.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>le_offset: Float - Distance in front of the leading edge the hotwire should extend out</dt>
-<dd>and cut to.  If you want to make sure your foam block is cut in half,
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>le_offset</strong> (<em>Float</em>) – Distance in front of the leading edge the hotwire should extend out
+and cut to.  If you want to make sure your foam block is cut in half,
 make sure this value is long enough to reach the front edge of
-your block.</dd>
-<dt>te_offset: Float - Distance behind the leading the hotwire should cut to. Similar to</dt>
-<dd>the le_offset, except from the trailing edge towards the outside of
-the foam block you are cutting.</dd>
-<dt>safe_height: Float - The height where the machine can move freely without hitting anything.</dt>
-<dd>Make sure this value is greater than the height of your foam block.</dd>
-<dt>normalize: Boolean - When generating the machine path, the x and y values may be &lt; 0.  Setting</dt>
-<dd>this to True translates the values so that all x and y values are &gt;= 0.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>String - Gcode commands separated by newlines.</dd>
-</dl>
+your block.</li>
+<li><strong>te_offset</strong> (<em>Float</em>) – Distance behind the leading the hotwire should cut to. Similar to
+the le_offset, except from the trailing edge towards the outside of
+the foam block you are cutting.</li>
+<li><strong>safe_height</strong> (<em>Float</em>) – The height where the machine can move freely without hitting anything.
+Make sure this value is greater than the height of your foam block.</li>
+<li><strong>normalize</strong> (<em>Boolean</em>) – When generating the machine path, the x and y values may be &lt; 0.  Setting
+this to True translates the values so that all x and y values are &gt;= 0.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Gcode commands separated by newlines.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">String</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.load_panel">
 <code class="descname">load_panel</code><span class="sig-paren">(</span><em>panel</em>, <em>left_offset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.load_panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.load_panel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a Panel object into the machine.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">panel: Panel object - panel to use
-left_offset: Float or Int - How far from the left hotwire post to place</p>
-<blockquote class="last">
-<div>the panel.  If the panel is 24 inches and the machine is 30
+<dd><p>Load a Panel object into the machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>panel</strong> (<a class="reference internal" href="panel.html#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel"><em>Panel</em></a>) – panel to use</li>
+<li><strong>left_offset</strong> (<em>Float</em>) – How far from the left hotwire post to place
+the panel.  If the panel is 24 inches and the machine is 30
 inches, a value of 3 ([30-24]/2) will place the panel centered
-between the CNC’s cutting posts.</div></blockquote>
-</dd>
-<dt>Returns:</dt>
-<dd>None</dd>
-</dl>
+between the CNC’s cutting posts.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

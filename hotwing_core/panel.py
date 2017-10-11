@@ -9,9 +9,9 @@ class Panel():
     necessary to define the attributes of the wing.
 
     Args:
-        rib1: Rib object
-        rib2: Rib object
-        width: Float - width of the total wing panel from rib to rib
+        rib1 (Rib): object
+        rib2 (Rib): object
+        width (Float): width of the total wing panel from rib to rib
     """
     def __init__(self, rib1, rib2, width):
         self.rib1 = rib1
@@ -25,12 +25,12 @@ class Panel():
         side to make it shorter.  The new panel's ribs will be interpolated to the correct shape.
 
         Args:
-            panel: Panel object to trim
-            left: Float - amount to trim from the left side of the panel
-            right: Float - amount to trim from the right side of the panel
+            panel (Panel): object to trim
+            left (Float): amount to trim from the left side of the panel
+            right (Float): amount to trim from the right side of the panel
 
         Returns:
-            Panel - New trimmed Panel
+            Panel: New trimmed Panel
         """
         if left is None or left == 0:
             # no need to trim left

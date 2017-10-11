@@ -93,7 +93,7 @@ class Machine():
             print("no panel loaded into machine.  Load a panel before generating g_code")
             return []
 
-        self.gc = Gcode(self.gcode_formatter_name)
+        self.gc = Gcode(formatter_name=self.gcode_formatter_name)
 
         self._draw_profile(self.panel.rib1.profile, "a_10_foil.png")
         self._draw_profile(self.panel.rib2.profile, "b_10_foil.png")

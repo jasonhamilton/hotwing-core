@@ -15,8 +15,9 @@ class Gcode():
     conversion is delegated to.
     """
 
-    def __init__(self, formatter_name=DEFAULT_FORMATTER):
+    def __init__(self, formatter_name=DEFAULT_FORMATTER, units="inches"):
         self.commands = []
+        self.units = units
         self.set_formatter(formatter_name)
 
     def move(self, coords):
@@ -27,12 +28,12 @@ class Gcode():
 
     def set_formatter(self, formatter_name):
         if formatter_name == 'default':
-            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER]()
+            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER](self)
         elif formatter_name in FORMATTERS:
-            self.gcode_formatter = FORMATTERS[formatter_name]()
+            self.gcode_formatter = FORMATTERS[formatter_name](self)
         else:
             print("ERROR SETTING FORMATTER, FALLING BACK TO DEFAULT")
-            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER]()
+            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER](self)
 
     @property
     def code(self):
@@ -95,15 +96,15 @@ class Gcode():
         if min_x < 0:
             offset_x = min_x
         else:
-            offset_y = 0
+            offset_x = 0
 
         new_commands = []
         for c in self.commands:
             new_commands.append((c[0],
-                                 (c[1][0],
-                                  c[1][1],
-                                  c[1][2],
-                                  c[1][3])
+                                 (c[1][0]-offset_x,
+                                  c[1][1]-offset_y,
+                                  c[1][2]-offset_x,
+                                  c[1][3]-offset_y)
                                  ))
 
         self.commands = new_commands

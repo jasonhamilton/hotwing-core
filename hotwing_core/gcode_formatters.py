@@ -88,9 +88,13 @@ class GenericGcode(GcodeFormatBase):
         out.append("G90")
 
         # Control path mode
-        # G61 - Set Exact Path Control Mode
         # G64 - Set Blended Path Control Mode
-        out.append("G61")
+        # Set path tolerance using P value
+        if self.parent.units.lower() == "inches":
+            out.append("G64 P%.6f" % (1.0/64) )
+        elif self.parent.units.lower() == "millimeters":
+            out.append("G64 P%.2f" % (0.5) )
+        
 
         # Use first work offset
         out.append("G54")

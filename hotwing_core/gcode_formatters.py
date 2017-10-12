@@ -48,7 +48,8 @@ class GcodeFormatDebug(GcodeFormatBase):
 
     def _start_commands(self):
         out = []
-        out.append("Units: " % self.parent.units)
+        out.append("Units: %s" % self.parent.units)
+        out.append("Feedrate: %s" % self.parent.feedrate)
         return out
 
     def _end_commands(self):
@@ -68,6 +69,9 @@ class GenericGcode(GcodeFormatBase):
 
     def _start_commands(self):
         out = []
+
+        # Set feedrate
+        out.append("F%s" % self.parent.feedrate)
 
         ## Working Plane
         out.append("G17") # is this necessary?

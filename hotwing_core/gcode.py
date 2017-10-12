@@ -4,6 +4,8 @@ FORMATTERS = {'generic': GenericGcode,
               'debug': GcodeFormatDebug}
 
 DEFAULT_FORMATTER = 'generic'
+DEFAULT_FEEDRATE_IN = 5
+DEFAULT_FEEDRATE_MM = 125
 
 
 class Gcode():
@@ -15,9 +17,14 @@ class Gcode():
     conversion is delegated to.
     """
 
-    def __init__(self, formatter_name=DEFAULT_FORMATTER, units="inches"):
+    def __init__(self, formatter_name=DEFAULT_FORMATTER, units="inches", feedrate=None):
         self.commands = []
         self.units = units
+        if feedrate:
+            self.feedrate = feedrate
+        else:
+            # feedrate not specified, set to default
+            self.feedrate = DEFAULT_FEEDRATE_IN if units=="inches" else DEFAULT_FEEDRATE_MM
         self.set_formatter(formatter_name)
 
     def move(self, coords):

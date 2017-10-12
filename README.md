@@ -4,6 +4,8 @@
 This repository consists of a Python Module, which contains the core libraries for the HotWing-CLI and HotWing-GUI projects.  This Module provides a series of classes and functions to aid in creating GCode for 4-Axis CNC foam cutters, specifically working with wing profiles, interpolating new profiles, and computing reverse kinematics for the CNC.
 
 [![Build Status](https://travis-ci.org/jasonhamilton/hotwing-core.svg?branch=master)](https://travis-ci.org/jasonhamilton/hotwing-core)
+![Coverage](https://img.shields.io/badge/Coverage-84%25-yellowgreen.svg)
+
 
 
 # Installation

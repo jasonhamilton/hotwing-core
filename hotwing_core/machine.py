@@ -68,7 +68,8 @@ class Machine():
         self.panel = panel
 
     def generate_gcode(self, le_offset=2.0, te_offset=2.0,
-                       safe_height=5, normalize=True):
+                       safe_height=5, normalize=True, 
+                       units="inches", feedrate=None):
         """
         Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
         otherwise it cannot cut.
@@ -93,7 +94,7 @@ class Machine():
             print("no panel loaded into machine.  Load a panel before generating g_code")
             return []
 
-        self.gc = Gcode(formatter_name=self.gcode_formatter_name)
+        self.gc = Gcode(formatter_name=self.gcode_formatter_name,units=units, feedrate=feedrate)
 
         self._draw_profile(self.panel.rib1.profile, "a_10_foil.png")
         self._draw_profile(self.panel.rib2.profile, "b_10_foil.png")

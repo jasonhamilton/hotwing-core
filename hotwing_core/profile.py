@@ -11,6 +11,8 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
+PIL_ERROR_DISPLAYED = False
+
 class Profile():
     """
     Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
@@ -210,7 +212,10 @@ class Profile():
             filepath = filename
             im.save(filepath, "PNG")
         except ImportError:
-            print("error drawing profile")
+            global PIL_ERROR_DISPLAYED
+            if not PIL_ERROR_DISPLAYED:
+                print("Error drawing profile - PILLOW not installed.  Install using 'pip install pillow'")
+                PIL_ERROR_DISPLAYED = True
             pass
 
     @classmethod

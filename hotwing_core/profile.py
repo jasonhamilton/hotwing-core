@@ -3,7 +3,13 @@ from .surface import Surface
 import re
 import copy
 import os
-import urllib2
+import sys
+try:
+    # For Python 3.0 and later
+    import urllib.request
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
 
 class Profile():
     """
@@ -400,10 +406,17 @@ class Profile():
         Returns:
             Tuple of (two) Profiles : (top_profile, bottom_profile)
         """
-        coordinates = []
-        r = urllib2.urlopen(url)
-        contents = r.read()
 
+        if "urllib.request" in sys.modules:
+            req = urllib.request.Request(url)
+            res = urllib.request.urlopen(req)
+            contents = res.read().decode('utf-8')
+        else:
+            # Python 2
+            r = urlopen(url)
+            contents = r.read()
+
+        coordinates = []
         for line in contents.splitlines():
             c = self._parse_dat_file_line(line)
             if c:

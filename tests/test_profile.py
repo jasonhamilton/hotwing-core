@@ -19,7 +19,7 @@ class TestProfile():
             try:
                 p = Profile(url)
             except:
-                print url
+                print(url)
                 raise
         # try bad url - 404
         # try valid URL but not coordinate file

@@ -6,7 +6,10 @@ setup(
     url='https://github.com/jasonhamilton/hotwing-core',
     packages=['hotwing_core',],
     license='GPLv3',
-    long_description=open('README.md').read(),
+    long_description="This Module which contains the core libraries for the HotWing-CLI and HotWing-GUI projects. "
+                     "This Module provides a series of classes and functions to aid in creating GCode for 4-Axis CNC "
+                     "foam cutters, specifically working with wing profiles, interpolating new profiles, and computing "
+                     "reverse kinematics for the CNC.",
     keywords='development cnc gcode airfoil',
     classifiers=[
 

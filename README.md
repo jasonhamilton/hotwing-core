@@ -5,7 +5,8 @@ This repository consists of a Python Module, which contains the core libraries f
 
 [![Build Status](https://travis-ci.org/jasonhamilton/hotwing-core.svg?branch=master)](https://travis-ci.org/jasonhamilton/hotwing-core)
 ![Coverage](https://img.shields.io/badge/Coverage-84%25-yellowgreen.svg)
-
+![Versions](https://img.shields.io/badge/Python-2.7%2C%203.3%2C%203.4%2C%203.5%2C%203.6-blue.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 # Installation

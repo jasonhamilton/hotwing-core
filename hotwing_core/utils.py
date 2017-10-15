@@ -1,4 +1,4 @@
-
+from __future__ import division
 
 # intersection function
 def isect_line_plane_v3(p0, p1, p_co, p_no, epsilon=1e-6):

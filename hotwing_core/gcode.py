@@ -1,3 +1,4 @@
+from __future__ import division
 from .gcode_formatters import GcodeFormatDebug, GenericGcode
 import logging
 logging.getLogger(__name__)

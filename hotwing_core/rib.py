@@ -1,3 +1,4 @@
+from __future__ import division
 from .profile import Profile
 from .utils import isect_line_plane_v3
 from .coordinate import Coordinate

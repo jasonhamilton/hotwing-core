@@ -1,3 +1,4 @@
+from __future__ import division
 from .rib import Rib
 from .profile import Profile
 from .coordinate import Coordinate

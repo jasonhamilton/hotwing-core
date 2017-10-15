@@ -1,3 +1,4 @@
+from __future__ import division
 from .coordinate import Coordinate
 from .surface import Surface
 import re
@@ -96,7 +97,7 @@ class Profile():
         min_x, max_x = self.x_bounds
         top_c = self.top.interpolate(min_x)
         bottom_c = self.bottom.interpolate(min_x)
-        average_y = (top_c.y + bottom_c.y) / 2.0
+        average_y = (top_c.y + bottom_c.y) / 2
         return Coordinate(min_x, average_y)
 
     @property
@@ -116,7 +117,7 @@ class Profile():
 
         top_c = self.top.interpolate(max_x)
         bottom_c = self.bottom.interpolate(max_x)
-        average_y = (top_c.y + bottom_c.y) / 2.0
+        average_y = (top_c.y + bottom_c.y) / 2
         return Coordinate(max_x, average_y)
 
     @classmethod
@@ -187,12 +188,12 @@ class Profile():
             # ticks on x axis
             ticks = 20
             for i in range(ticks - 1):
-                x = (n - x_pad * 2) * (i + 1) * 1.0 / ticks + x_pad
+                x = (n - x_pad * 2) * (i + 1) / ticks + x_pad
                 draw.line((x, y_height / 2 + y_height * 0.01) +
                           (x, y_height / 2 - y_height * 0.01), fill=(0, 0, 0))
             ticks = 10
             for i in range(ticks - 1):
-                x = (n - x_pad * 2) * (i + 1) * 1.0 / ticks + x_pad
+                x = (n - x_pad * 2) * (i + 1) / ticks + x_pad
                 draw.line((x, y_height / 2 + y_height * 0.05) +
                           (x, y_height / 2 - y_height * 0.05), fill=(0, 0, 0))
 
@@ -545,7 +546,7 @@ class Profile():
         for i in range(100):
 
             # set resolution to 1/100th of the search distance
-            resolution = abs(x_start - x_stop) / 100.0
+            resolution = abs(x_start - x_stop) / 100
             region = self._find_region_of_convergence(x_start=x_start,
                                                       x_stop=x_stop,
                                                       resolution=resolution)
@@ -555,7 +556,7 @@ class Profile():
             if abs(region[0] - region[1]) < accuracy:
                 # accuracy is at a level we are happy with, return average of
                 # ranges
-                return (region[0] + region[1]) / 2.0
+                return (region[0] + region[1]) / 2
 
             if direction == "left":
                 x_stop = region[0]

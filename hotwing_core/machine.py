@@ -1,3 +1,4 @@
+from __future__ import division
 from .utils import isect_line_plane_v3
 from .profile import Profile
 from .coordinate import Coordinate
@@ -63,7 +64,7 @@ class Machine():
         """
         if left_offset is None:
             # if offset is not specified, center
-            self.left_offset = (self.width - panel.width) / 2.0
+            self.left_offset = (self.width - panel.width) / 2
         else:
             self.left_offset = left_offset
         self.panel = panel
@@ -192,8 +193,8 @@ class Machine():
         pillar_b = (self.width, 0, 0)
         p_no = (1, 0, 0) # direction/normal of pillar
 
-        c1_3d = (c1_3d[0] * 1.0, c1_3d[1] * 1.0, c1_3d[2] * 1.0)
-        c2_3d = (c2_3d[0] * 1.0, c2_3d[1] * 1.0, c2_3d[2] * 1.0)
+        c1_3d = (c1_3d[0], c1_3d[1], c1_3d[2])
+        c2_3d = (c2_3d[0], c2_3d[1], c2_3d[2])
 
         a = isect_line_plane_v3(c1_3d, c2_3d, pillar_a, p_no)
         b = isect_line_plane_v3(c1_3d, c2_3d, pillar_b, p_no)
@@ -242,7 +243,7 @@ class Machine():
         b_width = b_bounds_max.x - b_bounds_min.x
 
         for i in range(self.profile_points):
-            pct = i * 1.0 / self.profile_points
+            pct = i / self.profile_points
             c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
             self.gc.move(self.convert_coords_to_machine_pos(c1, c2))
@@ -288,7 +289,7 @@ class Machine():
         b_width = b_bounds_max.x - b_bounds_min.x
 
         for i in range(self.profile_points, 0 - 1, -1):
-            pct = i * 1.0 / self.profile_points
+            pct = i / self.profile_points
             c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
             self.gc.move(self.convert_coords_to_machine_pos(c1, c2))

@@ -1,3 +1,4 @@
+from __future__ import division
 import math
 
 
@@ -21,7 +22,7 @@ class Coordinate():
             Float: slope between a and b
         """
         try:
-            slope = (a.y-b.y)*1.0 / (a.x-b.x)
+            slope = (a.y-b.y) / (a.x-b.x)
         except ZeroDivisionError:
             # same x val -> infinite slope
             slope = float('inf')

@@ -1,3 +1,4 @@
+from __future__ import division
 from .coordinate import Coordinate
 from .utils import isect_line_plane_v3
 import math
@@ -107,7 +108,7 @@ class Surface():
                     coordinates[i - 1], coordinates[i])
                 slope = (slope_next + slope_prev) / 2
             try:
-                slope_inv = -1.0 / slope
+                slope_inv = -1 / slope
             except ZeroDivisionError:
                 slope_inv = 10**50
             b = offset / math.sqrt(slope_inv * slope_inv + 1)
@@ -251,14 +252,14 @@ class Surface():
             interp_plane = (dist_interp, 0, 0)
             p_no = (1, 0, 0)  # interp_plane normal -- directon of plane
             # position of ribs
-            c1_3d = (0, c1.x * 1.0, c1.y * 1.0)
-            c2_3d = (dist_between * 1.0, c2.x * 1.0, c2.y * 1.0)
+            c1_3d = (0, c1.x, c1.y)
+            c2_3d = (dist_between, c2.x, c2.y)
             a = isect_line_plane_v3(c1_3d, c2_3d, interp_plane, p_no)
             return a[-2:]
 
         new_coords = []
         for i in range(points):
-            pct = i * 1.0 / (points-1)
+            pct = i / (points-1)
             c1 = s1.interpolate_around_profile_dist_pct(pct)
             c2 = s2.interpolate_around_profile_dist_pct(pct)
             res = interpolate_between_points(c1, c2, 10, 5)

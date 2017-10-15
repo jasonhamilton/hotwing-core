@@ -2,7 +2,8 @@ from .utils import isect_line_plane_v3
 from .profile import Profile
 from .coordinate import Coordinate
 from .gcode import Gcode
-
+import logging
+logging.getLogger(__name__)
 
 class Machine():
     """
@@ -91,7 +92,7 @@ class Machine():
             String: Gcode commands separated by newlines.
         """
         if not hasattr(self, "panel"):
-            print("no panel loaded into machine.  Load a panel before generating g_code")
+            logging.error("No panel loaded into machine.  Load a panel before generating g_code")
             return []
 
         self.gc = Gcode(formatter_name=self.gcode_formatter_name,units=units, feedrate=feedrate)

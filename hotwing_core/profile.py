@@ -4,6 +4,7 @@ import re
 import copy
 import os
 import sys
+import logging
 try:
     # For Python 3.0 and later
     import urllib.request
@@ -11,6 +12,7 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
+logging.getLogger(__name__)
 PIL_ERROR_DISPLAYED = False
 
 class Profile():
@@ -52,7 +54,7 @@ class Profile():
             self.top = args[0]
             self.bottom = args[1]
         else:
-            print("ERROR!!  ---  TODO- IMPLEMENT ERROR IN PROFILE INIT METHOD")
+            raise AttributeError
 
     @property
     def x_bounds(self):
@@ -214,7 +216,7 @@ class Profile():
         except ImportError:
             global PIL_ERROR_DISPLAYED
             if not PIL_ERROR_DISPLAYED:
-                print("Error drawing profile - PILLOW not installed.  Install using 'pip install pillow'")
+                logging.error("Error drawing profile - PILLOW not installed.  Install using 'pip install pillow'")
                 PIL_ERROR_DISPLAYED = True
             pass
 

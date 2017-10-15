@@ -28,6 +28,10 @@ class TestProfile():
         mypath = "tests/profiles"
         return [os.path.join(mypath, f) for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
 
+    def test_init_bad_addribute(self):
+        with pytest.raises(AttributeError):
+            Profile("","","")
+
     def random_profile_file(self):
         return random.choice(self._get_profiles())
 

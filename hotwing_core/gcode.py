@@ -1,4 +1,6 @@
 from .gcode_formatters import GcodeFormatDebug, GenericGcode
+import logging
+logging.getLogger(__name__)
 
 FORMATTERS = {'generic': GenericGcode,
               'debug': GcodeFormatDebug}
@@ -39,7 +41,7 @@ class Gcode():
         elif formatter_name in FORMATTERS:
             self.gcode_formatter = FORMATTERS[formatter_name](self)
         else:
-            print("ERROR SETTING FORMATTER, FALLING BACK TO DEFAULT")
+            logging.error("ERROR SETTING GCODE FORMATTER, FALLING BACK TO DEFAULT")
             self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER](self)
 
     @property

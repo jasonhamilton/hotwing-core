@@ -31,9 +31,9 @@ class Machine():
     def __init__(self, width, kerf=0.075, profile_points=200,
                  output_profile_images=False, cutting_strategy=CuttingStrategy1):
         self.width = width
-        if isinstance(width,int) or isinstance(width,float):
+        if isinstance(kerf,int) or isinstance(kerf,float):
             self.kerf = (kerf,kerf)
-        elif isinstance(width,tuple) and len(width) == 2:
+        elif isinstance(kerf,tuple) and len(kerf) == 2:
             self.kerf = kerf
         else:
             raise AttributeError

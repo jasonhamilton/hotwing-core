@@ -68,7 +68,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         r2_stock = self.machine.panel.rib2.tail_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.fast_move(
+        self.machine.gc.move(
             self.machine.convert_coords_to_machine_pos(
                 Coordinate(c1.x-r1_stock, min_y ),
                 Coordinate(c2.x-r2_stock, min_y )))
@@ -92,7 +92,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         r2_stock = self.machine.panel.rib2.front_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.fast_move(
+        self.machine.gc.move(
             self.machine.convert_coords_to_machine_pos(
                 Coordinate(c1.x+r1_stock, min_y ),
                 Coordinate(c2.x+r2_stock, min_y )))

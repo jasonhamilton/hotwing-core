@@ -3,6 +3,7 @@ from .utils import isect_line_plane_v3
 from .profile import Profile
 from .coordinate import Coordinate
 from .gcode import Gcode
+from .cutting_strategies import CuttingStrategy1
 import logging
 logging.getLogger(__name__)
 
@@ -28,12 +29,13 @@ class Machine():
             will be created.  Used is for debugging purposes.
     """
     def __init__(self, width, kerf=0.075, profile_points=200,
-                 output_profile_images=False):
+                 output_profile_images=False, cutting_strategy=CuttingStrategy1):
         self.width = width
         self.kerf = kerf
         self.profile_points = profile_points
         self.gcode_formatter_name = "default"
         self.output_profile_images = output_profile_images
+        self.cutting_strategy_cls = cutting_strategy
 
     def _draw_profile(self, profile, filename):
         """
@@ -96,60 +98,15 @@ class Machine():
             logging.error("No panel loaded into machine.  Load a panel before generating g_code")
             return []
 
+        self.le_offset = le_offset
+        self.te_offset = te_offset
+        self.safe_height = safe_height
+        self.units = units
+        self.feedrate = feedrate
         self.gc = Gcode(formatter_name=self.gcode_formatter_name,units=units, feedrate=feedrate)
 
-        self._draw_profile(self.panel.rib1.profile, "a_10_foil.png")
-        self._draw_profile(self.panel.rib2.profile, "b_10_foil.png")
-
-
-        # sheet profile
-        profile1 = self.panel.rib1.sheeted_profile
-        profile2 = self.panel.rib2.sheeted_profile
-        self._draw_profile(profile1, "a_20_sheeted.png")
-        self._draw_profile(profile2, "b_20_sheeted.png")
-
-        # Offset profiles for Kerf Value
-        profile1 = Profile.offset_around_profiles(
-            profile1, self.kerf, self.kerf)
-        profile2 = Profile.offset_around_profiles(
-            profile2, self.kerf, self.kerf)
-        self._draw_profile(profile1, "a_30_offset_for_kerf.png")
-        self._draw_profile(profile2, "b_30_offset_for_kerf.png")
-
-        # Trim to the length needed for front and tail stock
-        profile1 = Profile.trim(profile1,
-                                self.panel.rib1.profile.x_bounds[0] +
-                                self.panel.rib1.front_stock - self.kerf,
-                                self.panel.rib1.profile.x_bounds[1] - self.panel.rib1.tail_stock + self.kerf)
-
-        profile2 = Profile.trim(profile2,
-                                self.panel.rib2.profile.x_bounds[0] +
-                                self.panel.rib2.front_stock - self.kerf,
-                                self.panel.rib2.profile.x_bounds[1] - self.panel.rib2.tail_stock + self.kerf)
-        self._draw_profile(profile1, "a_35_trimmed_for_stock.png")
-        self._draw_profile(profile2, "b_35_trimmed_for_stock.png")
-
-        profile1 = Profile.trim_overlap(profile1)
-        profile2 = Profile.trim_overlap(profile2)
-
-        self._draw_profile(profile1, "a_40_trimmed_overlaps.png")
-        self._draw_profile(profile2, "b_40_trimmed_overlaps.png")
-
-        # Need to trim to make sure the Surfaces in the Profiles are the same length
-        # This was originally included in the trim_overlap method but was
-        # removed
-
-        self._move_to_start(profile1, profile2, le_offset, safe_height)
-        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
-        self._cut_to_leading_edge(profile1, profile2)
-        self._cut_top_profile(profile1, profile2)
-        self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
-        self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_bottom_profile(profile1, profile2)
-        self._cut_to_leading_edge(profile1, profile2)
-        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
-        self._cut_to_start(profile1, profile2, le_offset, safe_height)
+        cutting_strategy = self.cutting_strategy_cls(self)
+        cutting_strategy.cut()
 
         if normalize:
             self.gc.normalize()
@@ -200,96 +157,96 @@ class Machine():
         b = isect_line_plane_v3(c1_3d, c2_3d, pillar_b, p_no)
         return a[-2:], b[-2:]
 
-    ##################
-    ## machine moves #
-    ##################
+    # ##################
+    # ## machine moves #
+    # ##################
 
-    def _move_to_start(self, profile1, profile2, le_offset, safe_height):
-        # Move machine to start point, fast
-        c1 = profile1.top.coordinates[0]
-        c2 = profile2.top.coordinates[0]
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.gc.fast_move(
-            self.convert_coords_to_machine_pos(
-                c1 + Coordinate(-le_offset, min_y + safe_height),
-                c2 + Coordinate(-le_offset, min_y + safe_height)))
+    # def _move_to_start(self, profile1, profile2, le_offset, safe_height):
+    #     # Move machine to start point, fast
+    #     c1 = profile1.top.coordinates[0]
+    #     c2 = profile2.top.coordinates[0]
+    #     min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
+    #     self.gc.fast_move(
+    #         self.convert_coords_to_machine_pos(
+    #             c1 + Coordinate(-le_offset, min_y + safe_height),
+    #             c2 + Coordinate(-le_offset, min_y + safe_height)))
 
-    def _cut_to_start(self, profile1, profile2, le_offset, safe_height):
-        # Move machine to start point
-        c1 = profile1.top.coordinates[0]
-        c2 = profile2.top.coordinates[0]
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.gc.move(
-            self.convert_coords_to_machine_pos(
-                c1 + Coordinate(-le_offset, min_y + safe_height),
-                c2 + Coordinate(-le_offset, min_y + safe_height)))
+    # def _cut_to_start(self, profile1, profile2, le_offset, safe_height):
+    #     # Move machine to start point
+    #     c1 = profile1.top.coordinates[0]
+    #     c2 = profile2.top.coordinates[0]
+    #     min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
+    #     self.gc.move(
+    #         self.convert_coords_to_machine_pos(
+    #             c1 + Coordinate(-le_offset, min_y + safe_height),
+    #             c2 + Coordinate(-le_offset, min_y + safe_height)))
 
-    def _cut_to_leading_edge_offset(self, profile1, profile2, le_offset):
-        start_p1 = profile1.left_midpoint
-        start_p2 = profile2.left_midpoint
-        self.gc.move(
-            self.convert_coords_to_machine_pos(
-                start_p1 + Coordinate(-le_offset, 0),
-                start_p2 + Coordinate(-le_offset, 0)))
+    # def _cut_to_leading_edge_offset(self, profile1, profile2, le_offset):
+    #     start_p1 = profile1.left_midpoint
+    #     start_p2 = profile2.left_midpoint
+    #     self.gc.move(
+    #         self.convert_coords_to_machine_pos(
+    #             start_p1 + Coordinate(-le_offset, 0),
+    #             start_p2 + Coordinate(-le_offset, 0)))
 
-    def _cut_top_profile(self, profile1, profile2):
-        # cut top profile
-        c1 = profile1.top.coordinates[0]
-        c2 = profile2.top.coordinates[0]
+    # def _cut_top_profile(self, profile1, profile2):
+    #     # cut top profile
+    #     c1 = profile1.top.coordinates[0]
+    #     c2 = profile2.top.coordinates[0]
 
-        a_bounds_min, a_bounds_max = profile1.top.bounds
-        b_bounds_min, b_bounds_max = profile2.top.bounds
-        a_width = a_bounds_max.x - a_bounds_min.x
-        b_width = b_bounds_max.x - b_bounds_min.x
+    #     a_bounds_min, a_bounds_max = profile1.top.bounds
+    #     b_bounds_min, b_bounds_max = profile2.top.bounds
+    #     a_width = a_bounds_max.x - a_bounds_min.x
+    #     b_width = b_bounds_max.x - b_bounds_min.x
 
-        for i in range(self.profile_points):
-            pct = i / self.profile_points
-            c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
-            c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
-            self.gc.move(self.convert_coords_to_machine_pos(c1, c2))
+    #     for i in range(self.profile_points):
+    #         pct = i / self.profile_points
+    #         c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
+    #         c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
+    #         self.gc.move(self.convert_coords_to_machine_pos(c1, c2))
 
-        # cut to last point
-        self.gc.move(self.convert_coords_to_machine_pos(profile1.top.coordinates[-1],
-                                                        profile2.top.coordinates[-1]))
+    #     # cut to last point
+    #     self.gc.move(self.convert_coords_to_machine_pos(profile1.top.coordinates[-1],
+    #                                                     profile2.top.coordinates[-1]))
 
-    def _cut_to_leading_edge(self, profile1, profile2):
-        start_p1 = profile1.left_midpoint
-        start_p2 = profile2.left_midpoint
+    # def _cut_to_leading_edge(self, profile1, profile2):
+    #     start_p1 = profile1.left_midpoint
+    #     start_p2 = profile2.left_midpoint
 
-        self.gc.move(self.convert_coords_to_machine_pos(start_p1, start_p2))
+    #     self.gc.move(self.convert_coords_to_machine_pos(start_p1, start_p2))
 
-    def _cut_to_trailing_edge_offset(self, profile1, profile2, te_offset):
-        # go to end point with offset
-        end_p1 = profile1.right_midpoint
-        end_p2 = profile2.right_midpoint
+    # def _cut_to_trailing_edge_offset(self, profile1, profile2, te_offset):
+    #     # go to end point with offset
+    #     end_p1 = profile1.right_midpoint
+    #     end_p2 = profile2.right_midpoint
 
-        self.gc.move(
-            self.convert_coords_to_machine_pos(
-                end_p1 + Coordinate(te_offset, 0),
-                end_p2 + Coordinate(te_offset, 0)))
+    #     self.gc.move(
+    #         self.convert_coords_to_machine_pos(
+    #             end_p1 + Coordinate(te_offset, 0),
+    #             end_p2 + Coordinate(te_offset, 0)))
 
-    def _cut_to_trailing_edge(self, profile1, profile2):
-        end_p1 = profile1.right_midpoint
-        end_p2 = profile2.right_midpoint
+    # def _cut_to_trailing_edge(self, profile1, profile2):
+    #     end_p1 = profile1.right_midpoint
+    #     end_p2 = profile2.right_midpoint
 
-        # go to trailing edge
-        self.gc.move(
-            self.convert_coords_to_machine_pos(
-                end_p1,
-                end_p2))
+    #     # go to trailing edge
+    #     self.gc.move(
+    #         self.convert_coords_to_machine_pos(
+    #             end_p1,
+    #             end_p2))
 
-    def _cut_bottom_profile(self, profile1, profile2):
-        # cutting profile from right to left
-        c1 = profile1.top.coordinates[-1]
-        c2 = profile2.top.coordinates[-1]
-        # cut bottom profile
-        a_bounds_min, a_bounds_max = profile1.bottom.bounds
-        b_bounds_min, b_bounds_max = profile2.bottom.bounds
-        a_width = a_bounds_max.x - a_bounds_min.x
-        b_width = b_bounds_max.x - b_bounds_min.x
+    # def _cut_bottom_profile(self, profile1, profile2):
+    #     # cutting profile from right to left
+    #     c1 = profile1.top.coordinates[-1]
+    #     c2 = profile2.top.coordinates[-1]
+    #     # cut bottom profile
+    #     a_bounds_min, a_bounds_max = profile1.bottom.bounds
+    #     b_bounds_min, b_bounds_max = profile2.bottom.bounds
+    #     a_width = a_bounds_max.x - a_bounds_min.x
+    #     b_width = b_bounds_max.x - b_bounds_min.x
 
-        for i in range(self.profile_points, 0 - 1, -1):
-            pct = i / self.profile_points
-            c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
-            c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
-            self.gc.move(self.convert_coords_to_machine_pos(c1, c2))
+    #     for i in range(self.profile_points, 0 - 1, -1):
+    #         pct = i / self.profile_points
+    #         c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
+    #         c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
+    #         self.gc.move(self.convert_coords_to_machine_pos(c1, c2))

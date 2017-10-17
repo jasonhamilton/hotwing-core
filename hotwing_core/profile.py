@@ -77,8 +77,10 @@ class Profile():
         Returns:
             Tuple of Floats: (min_y,max_y) - containing the min and max y values in the profile.
         """
-        min_y = min((self.bottom.min.y, self.top.min.y))
-        max_y = max((self.bottom.max.y, self.top.max.y))
+        top_min, top_max = self.top.bounds
+        bottom_min, bottom_max = self.bottom.bounds
+        min_y = min((top_min.y, bottom_min.y))
+        max_y = max((top_max.y, bottom_max.y))
         return (min_y, max_y)
 
     @property

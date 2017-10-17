@@ -94,9 +94,9 @@ class TestExamples():
                                          #     chord (starting from the front)
 
         # you can get the manipulated profile
-        r1.sheeted_profile
-        # you can get the manipulated profile (pre-sheeting)
         r1.profile
+        # you can get the manipulated profile (pre-sheeting)
+        r1.airfoil
 
     def test_create_panel(self):
         from hotwing_core import Coordinate

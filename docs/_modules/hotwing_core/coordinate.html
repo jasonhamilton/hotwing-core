@@ -39,7 +39,8 @@
           <div class="body" role="main">
             
   <h1>Source code for hotwing_core.coordinate</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 
 <div class="viewcode-block" id="Coordinate"><a class="viewcode-back" href="../../coordinate.html#hotwing_core.coordinate.Coordinate">[docs]</a><span class="k">class</span> <span class="nc">Coordinate</span><span class="p">():</span>
@@ -62,7 +63,7 @@
 <span class="sd">            Float: slope between a and b</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
             <span class="c1"># same x val -&gt; infinite slope</span>
             <span class="n">slope</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
@@ -171,6 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cutting_strategies.html">Cutting Strageties</a></li>
 </ul>
 
 <div class="relations">

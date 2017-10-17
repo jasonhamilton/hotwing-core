@@ -23,6 +23,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cutting Strageties" href="cutting_strategies.html" />
     <link rel="prev" title="GCode Formatters" href="gcode_formatters.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -43,7 +44,7 @@
 <span id="machine"></span><h1>Machine<a class="headerlink" href="#module-hotwing_core.machine" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hotwing_core.machine.Machine">
-<em class="property">class </em><code class="descclassname">hotwing_core.machine.</code><code class="descname">Machine</code><span class="sig-paren">(</span><em>width</em>, <em>kerf=0.075</em>, <em>profile_points=200</em>, <em>output_profile_images=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.machine.</code><code class="descname">Machine</code><span class="sig-paren">(</span><em>width</em>, <em>kerf=0.075</em>, <em>profile_points=200</em>, <em>output_profile_images=False</em>, <em>cutting_strategy=&lt;class hotwing_core.cutting_strategies.cutting_strategy_1.CuttingStrategy1&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Machine class is a representation of a foam cutting machine and goes
 through the series of cuts required to create a complete cutting path.</p>
 <p>The machine takes a Profile object and generates the code to cut that
@@ -92,7 +93,7 @@ will be created.  Used is for debugging purposes.</li>
 
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.generate_gcode">
-<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>le_offset=2.0</em>, <em>te_offset=2.0</em>, <em>safe_height=5</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>le_offset=2.0</em>, <em>te_offset=2.0</em>, <em>safe_height=5</em>, <em>normalize=True</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
 otherwise it cannot cut.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -178,6 +179,7 @@ between the CNC’s cutting posts.</li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cutting_strategies.html">Cutting Strageties</a></li>
 </ul>
 
 <div class="relations">
@@ -185,6 +187,7 @@ between the CNC’s cutting posts.</li>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="gcode_formatters.html" title="previous chapter">GCode Formatters</a></li>
+      <li>Next: <a href="cutting_strategies.html" title="next chapter">Cutting Strageties</a></li>
   </ul></li>
 </ul>
 </div>

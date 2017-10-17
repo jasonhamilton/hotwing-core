@@ -39,7 +39,9 @@
           <div class="body" role="main">
             
   <h1>Source code for hotwing_core.gcode_formatters</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+
 <div class="viewcode-block" id="GcodeFormatBase"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatBase">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatBase</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gcode Formatter&#39;s job is to convert the commands maintained</span>
@@ -89,7 +91,8 @@
 
     <span class="k">def</span> <span class="nf">_start_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Units: &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Units: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Feedrate: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">feedrate</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="nf">_end_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -110,6 +113,9 @@
     <span class="k">def</span> <span class="nf">_start_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="c1"># Set feedrate</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;F</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">feedrate</span><span class="p">)</span>
+
         <span class="c1">## Working Plane</span>
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G17&quot;</span><span class="p">)</span> <span class="c1"># is this necessary?</span>
 
@@ -125,9 +131,13 @@
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G90&quot;</span><span class="p">)</span>
 
         <span class="c1"># Control path mode</span>
-        <span class="c1"># G61 - Set Exact Path Control Mode</span>
         <span class="c1"># G64 - Set Blended Path Control Mode</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G61&quot;</span><span class="p">)</span>
+        <span class="c1"># Set path tolerance using P value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;inches&quot;</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G64 P</span><span class="si">%.6f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">64</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;millimeters&quot;</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G64 P</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="p">)</span>
+        
 
         <span class="c1"># Use first work offset</span>
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;G54&quot;</span><span class="p">)</span>
@@ -166,6 +176,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cutting_strategies.html">Cutting Strageties</a></li>
 </ul>
 
 <div class="relations">

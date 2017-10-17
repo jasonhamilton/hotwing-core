@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>hotwing_core.cutting_strategies.cutting_strategy_1 &#8212; HotWing-Core 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hotwing_core.cutting_strategies.cutting_strategy_1</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">..profile</span> <span class="k">import</span> <span class="n">Profile</span>
+<span class="kn">from</span> <span class="nn">..coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">CuttingStrategyBase</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CuttingStrategy1"><a class="viewcode-back" href="../../../cutting_strategies.html#hotwing_core.cutting_strategies.cutting_strategy_1.CuttingStrategy1">[docs]</a><span class="k">class</span> <span class="nc">CuttingStrategy1</span><span class="p">(</span><span class="n">CuttingStrategyBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The first cutting strategy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CuttingStrategy1.cut"><a class="viewcode-back" href="../../../cutting_strategies.html#hotwing_core.cutting_strategies.cutting_strategy_1.CuttingStrategy1.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span>
+        <span class="c1"># sheet profile</span>
+        <span class="n">profile1</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">profile</span>
+        <span class="n">profile2</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">profile</span>
+
+        <span class="c1"># Offset profiles for Kerf Value</span>
+        <span class="n">profile1</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_around_profiles</span><span class="p">(</span>
+            <span class="n">profile1</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">profile2</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_around_profiles</span><span class="p">(</span>
+            <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Trim to the length needed for front and tail stock</span>
+        <span class="n">profile1</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">airfoil</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">front_stock</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">airfoil</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="o">.</span><span class="n">tail_stock</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">profile2</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile2</span><span class="p">,</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">airfoil</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">front_stock</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">airfoil</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="o">.</span><span class="n">tail_stock</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">profile1</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="n">profile1</span><span class="p">)</span>
+        <span class="n">profile2</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="n">profile2</span><span class="p">)</span>
+
+        <span class="c1"># Need to trim to make sure the Surfaces in the Profiles are the same length</span>
+        <span class="c1"># This was originally included in the trim_overlap method but was</span>
+        <span class="c1"># removed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_start</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">le_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_top_profile</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">te_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_bottom_profile</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">le_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_start</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span></div>
+
+
+    <span class="c1">##################</span>
+    <span class="c1">## machine moves #</span>
+    <span class="c1">##################</span>
+
+    <span class="k">def</span> <span class="nf">_move_to_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
+        <span class="c1"># Move machine to start point, fast</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span>
+                <span class="n">c1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">),</span>
+                <span class="n">c2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_to_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
+        <span class="c1"># Move machine to start point</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span>
+                <span class="n">c1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">),</span>
+                <span class="n">c2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">):</span>
+        <span class="n">start_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span>
+        <span class="n">start_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span>
+                <span class="n">start_p1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">start_p2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_top_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
+        <span class="c1"># cut top profile</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">a_bounds_min</span><span class="p">,</span> <span class="n">a_bounds_max</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">b_bounds_min</span><span class="p">,</span> <span class="n">b_bounds_max</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">a_width</span> <span class="o">=</span> <span class="n">a_bounds_max</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a_bounds_min</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">b_width</span> <span class="o">=</span> <span class="n">b_bounds_max</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">b_bounds_min</span><span class="o">.</span><span class="n">x</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">profile_points</span><span class="p">):</span>
+            <span class="n">pct</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">profile_points</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+            <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">))</span>
+
+        <span class="c1"># cut to last point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                                        <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_to_leading_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
+        <span class="n">start_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span>
+        <span class="n">start_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span><span class="n">start_p1</span><span class="p">,</span> <span class="n">start_p2</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_to_trailing_edge_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">te_offset</span><span class="p">):</span>
+        <span class="c1"># go to end point with offset</span>
+        <span class="n">end_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
+        <span class="n">end_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span>
+                <span class="n">end_p1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">end_p2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_to_trailing_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
+        <span class="n">end_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
+        <span class="n">end_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
+
+        <span class="c1"># go to trailing edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span>
+                <span class="n">end_p1</span><span class="p">,</span>
+                <span class="n">end_p2</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_cut_bottom_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
+        <span class="c1"># cutting profile from right to left</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># cut bottom profile</span>
+        <span class="n">a_bounds_min</span><span class="p">,</span> <span class="n">a_bounds_max</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">b_bounds_min</span><span class="p">,</span> <span class="n">b_bounds_max</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">a_width</span> <span class="o">=</span> <span class="n">a_bounds_max</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a_bounds_min</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">b_width</span> <span class="o">=</span> <span class="n">b_bounds_max</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">b_bounds_min</span><span class="o">.</span><span class="n">x</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">profile_points</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">pct</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">profile_points</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+            <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">convert_coords_to_machine_pos</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">HotWing-Core</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Classes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coordinate.html">Coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../surface.html">Surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../profile.html">Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rib.html">Rib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../panel.html">Panel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcode.html">Gcode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcode_formatters.html">GCode Formatters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cutting_strategies.html">Cutting Strageties</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jason Hamilton.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

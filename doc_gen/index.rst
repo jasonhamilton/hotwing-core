@@ -18,6 +18,7 @@ Welcome to HotWing-Core's documentation!
    gcode
    gcode_formatters
    machine
+   cutting_strategies
    
    
    

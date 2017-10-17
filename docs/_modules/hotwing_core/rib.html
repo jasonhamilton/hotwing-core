@@ -39,7 +39,8 @@
           <div class="body" role="main">
             
   <h1>Source code for hotwing_core.rib</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.profile</span> <span class="k">import</span> <span class="n">Profile</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">.profile</span> <span class="k">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">isect_line_plane_v3</span>
 <span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
 
@@ -63,9 +64,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">airfoil</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xy_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">bottom_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">front_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tail_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotate_pos</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">airfoil</span><span class="p">,</span> <span class="n">Profile</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span> <span class="o">=</span> <span class="n">airfoil</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil_profile</span> <span class="o">=</span> <span class="n">airfoil</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">airfoil</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">airfoil_profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">airfoil</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span> <span class="o">=</span> <span class="n">xy_offset</span>
@@ -77,11 +78,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rotate_pos</span> <span class="o">=</span> <span class="n">rotate_pos</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">airfoil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a copy of the rib profile after scaling and offsets</span>
+<span class="sd">        Return a copy of the scaled and offset airfoil before sheeting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">airfoil_profile</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -94,11 +95,11 @@
         <span class="k">return</span> <span class="n">p</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">sheeted_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a copy of the rib profile after scaling and offsets but before any sheeting.</span>
+<span class="sd">        Return a copy of the rib profile after scaling and offsets</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">airfoil</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_sheet</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_around_profiles</span><span class="p">(</span>
                 <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_sheet</span><span class="p">)</span>
@@ -118,7 +119,7 @@
 <span class="sd">            points (Int): Number of points to use on each (top/bottom) surface we interpolate.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">interpolate_new_profile</span><span class="p">(</span>
-            <span class="n">r1</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+            <span class="n">r1</span><span class="o">.</span><span class="n">airfoil</span><span class="p">,</span> <span class="n">r2</span><span class="o">.</span><span class="n">airfoil</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
         <span class="n">rib</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">rib</span><span class="o">.</span><span class="n">top_sheet</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">top_sheet</span>
         <span class="n">rib</span><span class="o">.</span><span class="n">bottom_sheet</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">bottom_sheet</span>
@@ -152,6 +153,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cutting_strategies.html">Cutting Strageties</a></li>
 </ul>
 
 <div class="relations">

@@ -39,12 +39,23 @@
           <div class="body" role="main">
             
   <h1>Source code for hotwing_core.profile</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
 <span class="kn">from</span> <span class="nn">.surface</span> <span class="k">import</span> <span class="n">Surface</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># For Python 3.0 and later</span>
+    <span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Fall back to Python 2&#39;s urllib2</span>
+    <span class="kn">from</span> <span class="nn">urllib2</span> <span class="k">import</span> <span class="n">urlopen</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -85,7 +96,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR!!  ---  TODO- IMPLEMENT ERROR IN PROFILE INIT METHOD&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -127,7 +138,7 @@
         <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
         <span class="n">top_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">min_x</span><span class="p">)</span>
         <span class="n">bottom_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">min_x</span><span class="p">)</span>
-        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">average_y</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -147,7 +158,7 @@
 
         <span class="n">top_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">max_x</span><span class="p">)</span>
         <span class="n">bottom_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">max_x</span><span class="p">)</span>
-        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">average_y</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
@@ -218,12 +229,12 @@
             <span class="c1"># ticks on x axis</span>
             <span class="n">ticks</span> <span class="o">=</span> <span class="mi">20</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
                 <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span>
                           <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
             <span class="n">ticks</span> <span class="o">=</span> <span class="mi">10</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
                 <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
                           <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
@@ -245,7 +256,10 @@
             <span class="n">filepath</span> <span class="o">=</span> <span class="n">filename</span>
             <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error drawing profile&quot;</span><span class="p">)</span>
+            <span class="k">global</span> <span class="n">PIL_ERROR_DISPLAYED</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PIL_ERROR_DISPLAYED</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error drawing profile - PILLOW not installed.  Install using &#39;pip install pillow&#39;&quot;</span><span class="p">)</span>
+                <span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
@@ -441,10 +455,17 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of (two) Profiles : (top_profile, bottom_profile)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="s2">&quot;urllib.request&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Python 2</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">contents</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
             <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_dat_file_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">c</span><span class="p">:</span>
@@ -566,7 +587,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
 
             <span class="c1"># set resolution to 1/100th of the search distance</span>
-            <span class="n">resolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_start</span> <span class="o">-</span> <span class="n">x_stop</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="n">resolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_start</span> <span class="o">-</span> <span class="n">x_stop</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
             <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_region_of_convergence</span><span class="p">(</span><span class="n">x_start</span><span class="o">=</span><span class="n">x_start</span><span class="p">,</span>
                                                       <span class="n">x_stop</span><span class="o">=</span><span class="n">x_stop</span><span class="p">,</span>
                                                       <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
@@ -576,7 +597,7 @@
             <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">accuracy</span><span class="p">:</span>
                 <span class="c1"># accuracy is at a level we are happy with, return average of</span>
                 <span class="c1"># ranges</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
 
             <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
                 <span class="n">x_stop</span> <span class="o">=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -679,6 +700,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gcode.html">Gcode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../machine.html">Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cutting_strategies.html">Cutting Strageties</a></li>
 </ul>
 
 <div class="relations">

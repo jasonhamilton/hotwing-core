@@ -58,8 +58,8 @@ class CuttingStrategy2(CuttingStrategyBase):
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
             self.machine.convert_coords_to_machine_pos(
-                Coordinate(c1.x-r1_stock, min_y + safe_height),
-                Coordinate(c2.x-r2_stock, min_y + safe_height)))
+                Coordinate(c1.x-r1_stock+m.kerf[0], min_y + safe_height),
+                Coordinate(c2.x-r2_stock+m.kerf[1], min_y + safe_height)))
 
     def _cut_tail_stock(self, profile1, profile2, safe_height):
         c1 = profile1.right_midpoint
@@ -70,8 +70,8 @@ class CuttingStrategy2(CuttingStrategyBase):
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
             self.machine.convert_coords_to_machine_pos(
-                Coordinate(c1.x-r1_stock, min_y ),
-                Coordinate(c2.x-r2_stock, min_y )))
+                Coordinate(c1.x-r1_stock+m.kerf[0], min_y ),
+                Coordinate(c2.x-r2_stock+m.kerf[1], min_y )))
 
     def _move_to_above_front_stock(self, profile1, profile2, safe_height):
         c1 = profile1.left_midpoint
@@ -82,8 +82,8 @@ class CuttingStrategy2(CuttingStrategyBase):
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
             self.machine.convert_coords_to_machine_pos(
-                Coordinate(c1.x+r1_stock, min_y + safe_height),
-                Coordinate(c2.x+r2_stock, min_y + safe_height)))
+                Coordinate(c1.x+r1_stock-m.kerf[0], min_y + safe_height),
+                Coordinate(c2.x+r2_stock-m.kerf[1], min_y + safe_height)))
 
     def _cut_front_stock(self, profile1, profile2, safe_height):
         c1 = profile1.left_midpoint
@@ -94,8 +94,8 @@ class CuttingStrategy2(CuttingStrategyBase):
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
             self.machine.convert_coords_to_machine_pos(
-                Coordinate(c1.x+r1_stock, min_y ),
-                Coordinate(c2.x+r2_stock, min_y )))
+                Coordinate(c1.x+r1_stock-m.kerf[0], min_y ),
+                Coordinate(c2.x+r2_stock-m.kerf[1], min_y )))
 
     def _move_to_start(self, profile1, profile2, le_offset, safe_height):
         # Move machine to start point, fast

@@ -31,7 +31,12 @@ class Machine():
     def __init__(self, width, kerf=0.075, profile_points=200,
                  output_profile_images=False, cutting_strategy=CuttingStrategy1):
         self.width = width
-        self.kerf = kerf
+        if isinstance(width,int) or isinstance(width,float):
+            self.kerf = (kerf,kerf)
+        elif isinstance(width,tuple) and len(width) == 2:
+            self.kerf = kerf
+        else:
+            raise AttributeError
         self.profile_points = profile_points
         self.gcode_formatter_name = "default"
         self.output_profile_images = output_profile_images

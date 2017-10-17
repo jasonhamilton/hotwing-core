@@ -117,7 +117,7 @@ class TestSurface():
         s = Surface(reversed(coordinates))
         assert s.coordinates == list(reversed(coordinates_no_dupe))
 
-    def test_min_max_bounds(self):
+    def test_left_right_bounds(self):
         coords = [
             Coordinate(0.6, 0  ), 
             Coordinate(0.4, 0.2),
@@ -125,14 +125,14 @@ class TestSurface():
             Coordinate(0.1, 0.1)
         ]
         s = Surface(coords)
-        assert s.max == coords[0]
-        assert s.min == coords[-1]
+        assert s.right == coords[0]
+        assert s.left == coords[-1]
         assert s.bounds == (Coordinate(0.1,0),Coordinate(0.6,0.3))
 
         # reverse coords and try again
         s = Surface(list(reversed(coords)))
-        assert s.max == coords[0]
-        assert s.min == coords[-1]
+        assert s.right == coords[0]
+        assert s.left == coords[-1]
         assert s.bounds == (Coordinate(0.1,0),Coordinate(0.6,0.3))
 
     def test_length(self):
@@ -226,32 +226,32 @@ class TestSurface():
         trim_r = 0.75
         s = Surface(coordinates)
         t = Surface.trim(s,trim_l,trim_r)
-        assert t.min.x == trim_l
-        assert t.max.x == trim_r
+        assert t.left.x == trim_l
+        assert t.right.x == trim_r
 
         # trim right side only
         trim_l = None
         trim_r = 0.75
         s = Surface(coordinates)
         t = Surface.trim(s,trim_l,trim_r)
-        assert t.min.x == coordinates[-1].x
-        assert t.max.x == trim_r
+        assert t.left.x == coordinates[-1].x
+        assert t.right.x == trim_r
 
         # trim left side only
         trim_l = 0.25
         trim_r = None
         s = Surface(coordinates)
         t = Surface.trim(s,trim_l,trim_r)
-        assert t.min.x == trim_l
-        assert t.max.x == coordinates[0].x
+        assert t.left.x == trim_l
+        assert t.right.x == coordinates[0].x
 
         # don't trim either
         trim_l = None
         trim_r = None
         s = Surface(coordinates)
         t = Surface.trim(s,trim_l,trim_r)
-        assert t.min.x == coordinates[-1].x
-        assert t.max.x == coordinates[0].x
+        assert t.left.x == coordinates[-1].x
+        assert t.right.x == coordinates[0].x
 
     def test_equality(self):
         s1 = Surface(coordinates)

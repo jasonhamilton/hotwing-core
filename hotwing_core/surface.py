@@ -21,7 +21,7 @@ class Surface():
         self._order_coordinates()
 
     @property
-    def min(self):
+    def left(self):
         """
         Get the left most Coordinate
 
@@ -31,7 +31,7 @@ class Surface():
         return self.coordinates[0]
 
     @property
-    def max(self):
+    def right(self):
         """
         Get the right-most Coordinate
 

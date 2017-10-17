@@ -65,8 +65,8 @@ class Profile():
         Returns:
             Tuple of Floats: (min_x,max_x) - containing the min and max X values in the profile.
         """
-        min_x = min((self.bottom.min.x, self.top.min.x))
-        max_x = max((self.bottom.max.x, self.top.max.x))
+        min_x = min((self.bottom.left.x, self.top.left.x))
+        max_x = max((self.bottom.right.x, self.top.right.x))
         return (min_x, max_x)
 
     @property

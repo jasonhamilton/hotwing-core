@@ -170,10 +170,10 @@ r1 = Rib("http://m-selig.ae.illinois.edu/ads/coord/e374.dat",   # Dat file to us
                                  #     chord (starting from the front)
 
 # you can get the manipulated profile
-r1.sheeted_profile
+r1.profile
 
 # you can get the manipulated profile (pre-sheeting)
-r1.profile
+r1.airfoil
 ```
 
 

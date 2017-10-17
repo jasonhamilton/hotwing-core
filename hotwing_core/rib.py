@@ -23,9 +23,9 @@ class Rib():
     def __init__(self, airfoil, scale=None, xy_offset=None, top_sheet=0,
                  bottom_sheet=0, front_stock=0, tail_stock=0, rotate=0, rotate_pos=0.5):
         if isinstance(airfoil, Profile):
-            self.airfoil = airfoil
+            self.airfoil_profile = airfoil
         else:
-            self.airfoil = Profile(airfoil)
+            self.airfoil_profile = Profile(airfoil)
 
         self.scale = scale
         self.xy_offset = xy_offset
@@ -37,11 +37,11 @@ class Rib():
         self.rotate_pos = rotate_pos
 
     @property
-    def profile(self):
+    def airfoil(self):
         """
-        Return a copy of the rib profile after scaling and offsets
+        Return a copy of the scaled and offset airfoil before sheeting
         """
-        p = Profile.copy(self.airfoil)
+        p = Profile.copy(self.airfoil_profile)
         if not self.scale is None:
             p = Profile.scale(p, self.scale)
         if not self.rotate == 0:
@@ -54,11 +54,11 @@ class Rib():
         return p
 
     @property
-    def sheeted_profile(self):
+    def profile(self):
         """
-        Return a copy of the rib profile after scaling and offsets but before any sheeting.
+        Return a copy of the rib profile after scaling and offsets
         """
-        p = self.profile
+        p = self.airfoil
         if self.top_sheet or self.bottom_sheet:
             p = Profile.offset_around_profiles(
                 p, -self.top_sheet, -self.bottom_sheet)
@@ -78,7 +78,7 @@ class Rib():
             points (Int): Number of points to use on each (top/bottom) surface we interpolate.
         """
         p = Profile.interpolate_new_profile(
-            r1.profile, r2.profile, dist_between, dist_interp, points)
+            r1.airfoil, r2.airfoil, dist_between, dist_interp, points)
         rib = cls(p)
         rib.top_sheet = r1.top_sheet
         rib.bottom_sheet = r1.bottom_sheet

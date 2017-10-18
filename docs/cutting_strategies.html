@@ -44,16 +44,49 @@
 <div class="section" id="base-class">
 <h2>Base Class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h2>
 <p>Cutting strategies must inherit from the Base class and implement the cut method.</p>
-<span class="target" id="module-hotwing_core.cutting_strategies.base"></span><dl class="class">
-<dt id="hotwing_core.cutting_strategies.base.CuttingStrategyBase">
-<em class="property">class </em><code class="descclassname">hotwing_core.cutting_strategies.base.</code><code class="descname">CuttingStrategyBase</code><span class="sig-paren">(</span><em>machine</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/base.html#CuttingStrategyBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.base.CuttingStrategyBase" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyBase">
+<em class="property">class </em><code class="descclassname">hotwing_core.cutting_strategies.</code><code class="descname">CuttingStrategyBase</code><span class="sig-paren">(</span><em>machine</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/base.html#CuttingStrategyBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract class for strategies to implement</p>
 <dl class="method">
-<dt id="hotwing_core.cutting_strategies.base.CuttingStrategyBase.cut">
-<code class="descname">cut</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/base.html#CuttingStrategyBase.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.base.CuttingStrategyBase.cut" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyBase.cut">
+<code class="descname">cut</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/base.html#CuttingStrategyBase.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyBase.cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the command method that the parent object will call to
 generate the paths.</p>
 </dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="factory">
+<h2>Factory<a class="headerlink" href="#factory" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyFactory">
+<em class="property">class </em><code class="descclassname">hotwing_core.cutting_strategies.</code><code class="descname">CuttingStrategyFactory</code><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/factory.html#CuttingStrategyFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyFactory" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyFactory.default">
+<code class="descname">default</code><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyFactory.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">CuttingStrategy2</span></code></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyFactory.get_cls">
+<em class="property">classmethod </em><code class="descname">get_cls</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/cutting_strategies/factory.html#CuttingStrategyFactory.get_cls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyFactory.get_cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a cutting strategy by name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">GcodeFormatter object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.cutting_strategies.CuttingStrategyFactory.strategies">
+<code class="descname">strategies</code><em class="property"> = [&lt;class hotwing_core.cutting_strategies.cutting_strategy_1.CuttingStrategy1&gt;, &lt;class hotwing_core.cutting_strategies.cutting_strategy_2.CuttingStrategy2&gt;]</em><a class="headerlink" href="#hotwing_core.cutting_strategies.CuttingStrategyFactory.strategies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -88,6 +121,7 @@ generate the paths.</p>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Cutting Strageties</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#base-class">Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#factory">Factory</a></li>
 </ul>
 </li>
 </ul>

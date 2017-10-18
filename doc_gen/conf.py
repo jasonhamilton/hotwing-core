@@ -176,3 +176,4 @@ texinfo_documents = [
 ]
 
 
+autodoc_member_order = 'groupwise'

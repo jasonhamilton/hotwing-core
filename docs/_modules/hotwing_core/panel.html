@@ -45,56 +45,116 @@
 <span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
 
 
-<div class="viewcode-block" id="Panel"><a class="viewcode-back" href="../../panel.html#hotwing_core.panel.Panel">[docs]</a><span class="k">class</span> <span class="nc">Panel</span><span class="p">():</span>
+<div class="viewcode-block" id="Panel"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel">[docs]</a><span class="k">class</span> <span class="nc">Panel</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Panel is a representation of a wing panel and contains all of the items/objects</span>
-<span class="sd">    necessary to define the attributes of the wing.</span>
+<span class="sd">    necessary to define a wing.</span>
+
+<span class="sd">    A Panel can be thought of as a wing facing down with rib_1 on the left and rib_2 on the right.</span>
+<span class="sd">    If rib_1 is the root chord and rib_2 is the tip, chord the panel will represent the left part </span>
+<span class="sd">    of a wing.</span>
+
+<span class="sd">    .. code-block:: bash</span>
+
+<span class="sd">                      | ------  width ---------- |</span>
+<span class="sd">            </span>
+<span class="sd">                           trailing edge</span>
+<span class="sd">                      ---------------------------</span>
+<span class="sd">                     |                           |</span>
+<span class="sd">             rib_1   |                           |  rib_2</span>
+<span class="sd">                     |                           |  </span>
+<span class="sd">                      ---------------------------</span>
+<span class="sd">                           leading edge</span>
+
 
 <span class="sd">    Args:</span>
-<span class="sd">        rib1 (Rib): object</span>
-<span class="sd">        rib2 (Rib): object</span>
-<span class="sd">        width (Float): width of the total wing panel from rib to rib</span>
+<span class="sd">        left_rib (Rib): Rib defining the left of the wing</span>
+<span class="sd">        right_rib (Rib): Rib defining the right of the wing</span>
+<span class="sd">        width (Float): Width of the Panel measured from left_rib to right_rib</span>
+
+<span class="sd">    :ivar left_rib: Left Rib</span>
+<span class="sd">    :ivar right_rib: Right Rib</span>
+<span class="sd">    :ivar width: Width</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rib1</span><span class="p">,</span> <span class="n">rib2</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rib1</span> <span class="o">=</span> <span class="n">rib1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rib2</span> <span class="o">=</span> <span class="n">rib2</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left_rib</span><span class="p">,</span> <span class="n">right_rib</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_rib</span> <span class="o">=</span> <span class="n">left_rib</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_rib</span> <span class="o">=</span> <span class="n">right_rib</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
 
-<div class="viewcode-block" id="Panel.trim_panel"><a class="viewcode-back" href="../../panel.html#hotwing_core.panel.Panel.trim_panel">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">trim_panel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">panel</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Panel.copy"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.copy">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">panel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new Panel by taking an existing Panel and trimming off an amount from each </span>
-<span class="sd">        side to make it shorter.  The new panel&#39;s ribs will be interpolated to the correct shape.</span>
+<span class="sd">        Copy a panel</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            panel (Panel): object to copy</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Panel: New panel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Panel.reverse"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.reverse">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">panel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reverse the ribs on the panel.  If you have a left side, it will make it a right side. The ribs</span>
+<span class="sd">        will maintain the same direction, but just switch sides.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            panel (Panel): object to flip</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Panel: New flipped panel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Panel.trim"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.trim">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">panel</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new Panel by taking an existing Panel and trimming it.  </span>
+<span class="sd">        The new panel&#39;s ribs will be interpolated to the correct shape.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            panel (Panel): object to trim</span>
-<span class="sd">            left (Float): amount to trim from the left side of the panel</span>
-<span class="sd">            right (Float): amount to trim from the right side of the panel</span>
+<span class="sd">            left (Float): distance from left rib to make the left side cut</span>
+<span class="sd">            right (Float): distance from left rib to make the right side cut</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Panel: New trimmed Panel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">left</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># no need to trim left</span>
-            <span class="n">r1</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">rib1</span>
+            <span class="n">r1</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span>
             <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># need to interp new left</span>
             <span class="n">r1</span> <span class="o">=</span> <span class="n">Rib</span><span class="o">.</span><span class="n">interpolate_new_rib</span><span class="p">(</span>
-                <span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+                <span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">==</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">:</span>
             <span class="c1"># no need to trim right</span>
-            <span class="n">r2</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">rib2</span>
+            <span class="n">r2</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span>
             <span class="n">right</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">r2</span> <span class="o">=</span> <span class="n">Rib</span><span class="o">.</span><span class="n">interpolate_new_rib</span><span class="p">(</span>
-                <span class="n">panel</span><span class="o">.</span><span class="n">rib1</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">rib2</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+                <span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
 
         <span class="n">new_width</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">new_width</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">p</span></div></div>
+        <span class="k">return</span> <span class="n">p</span></div>
+
+<div class="viewcode-block" id="Panel.__getitem__"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trim Panel using the slice functionality.</span>
+
+<span class="sd">        Ex: panel_obj[2:5], trims from 2 to 5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Panel</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
           </div>

@@ -44,11 +44,12 @@
 <span id="machine"></span><h1>Machine<a class="headerlink" href="#module-hotwing_core.machine" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="hotwing_core.machine.Machine">
-<em class="property">class </em><code class="descclassname">hotwing_core.machine.</code><code class="descname">Machine</code><span class="sig-paren">(</span><em>width</em>, <em>kerf=0.075</em>, <em>profile_points=200</em>, <em>output_profile_images=False</em>, <em>cutting_strategy=&lt;class hotwing_core.cutting_strategies.cutting_strategy_1.CuttingStrategy1&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.machine.</code><code class="descname">Machine</code><span class="sig-paren">(</span><em>width</em>, <em>kerf=0.075</em>, <em>profile_points=200</em>, <em>cutting_strategy_name='default'</em>, <em>gcode_formatter_name='default'</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Machine class is a representation of a foam cutting machine and goes
 through the series of cuts required to create a complete cutting path.</p>
 <p>The machine takes a Profile object and generates the code to cut that
 profile.</p>
+<p>Gcode generation gets delegated to the cutting_strategy.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -60,8 +61,10 @@ the wire plus any additional allowance for melted foam from direct
 or radiant heat.</li>
 <li><strong>profile_points</strong> (<em>Int</em>) – Number of points used when interpolating profiles.  This is the
 number for each (top and bottom) surface of a Profile.</li>
-<li><strong>output_profile_images</strong> (<em>Boolean</em>) – If true, images of the profiles during the manipulation process
-will be created.  Used is for debugging purposes.</li>
+<li><strong>cutting_strategy_name</strong> – </li>
+<li><strong>gcode_formatter_name</strong> – </li>
+<li><strong>units</strong> – </li>
+<li><strong>feedrate</strong> – </li>
 </ul>
 </td>
 </tr>
@@ -76,8 +79,8 @@ will be created.  Used is for debugging purposes.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>c1</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – </li>
-<li><strong>c2</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – </li>
+<li><strong>c1</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – </li>
+<li><strong>c2</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – </li>
 </ul>
 </td>
 </tr>
@@ -93,7 +96,7 @@ will be created.  Used is for debugging purposes.</li>
 
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.generate_gcode">
-<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>le_offset=2.0</em>, <em>te_offset=2.0</em>, <em>safe_height=5</em>, <em>normalize=True</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>safe_height=5</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
 otherwise it cannot cut.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -101,13 +104,6 @@ otherwise it cannot cut.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>le_offset</strong> (<em>Float</em>) – Distance in front of the leading edge the hotwire should extend out
-and cut to.  If you want to make sure your foam block is cut in half,
-make sure this value is long enough to reach the front edge of
-your block.</li>
-<li><strong>te_offset</strong> (<em>Float</em>) – Distance behind the leading the hotwire should cut to. Similar to
-the le_offset, except from the trailing edge towards the outside of
-the foam block you are cutting.</li>
 <li><strong>safe_height</strong> (<em>Float</em>) – The height where the machine can move freely without hitting anything.
 Make sure this value is greater than the height of your foam block.</li>
 <li><strong>normalize</strong> (<em>Boolean</em>) – When generating the machine path, the x and y values may be &lt; 0.  Setting
@@ -134,7 +130,7 @@ this to True translates the values so that all x and y values are &gt;= 0.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>panel</strong> (<a class="reference internal" href="panel.html#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel"><em>Panel</em></a>) – panel to use</li>
+<li><strong>panel</strong> (<a class="reference internal" href="panel.html#hotwing_core.Panel" title="hotwing_core.Panel"><em>Panel</em></a>) – panel to use</li>
 <li><strong>left_offset</strong> (<em>Float</em>) – How far from the left hotwire post to place
 the panel.  If the panel is 24 inches and the machine is 30
 inches, a value of 3 ([30-24]/2) will place the panel centered

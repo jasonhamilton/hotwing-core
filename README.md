@@ -164,16 +164,16 @@ r1 = Rib("http://m-selig.ae.illinois.edu/ads/coord/e374.dat",   # Dat file to us
                                  #     wooden stock here and shape it
          tail_stock=1.25,        # Trims the trailing edge of the foil.  You would put tail stock 
                                  #     here and shape to the foil.
-         rotate=0,               # The angle to rotate the rib in degrees - positive number points 
+         rotation=0,               # The angle to rotate the rib in degrees - positive number points 
                                  #     the nose upward
-         rotate_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the 
+         rotation_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the 
                                  #     chord (starting from the front)
 
 # you can get the manipulated profile
 r1.profile
 
 # you can get the manipulated profile (pre-sheeting)
-r1.airfoil
+r1.airfoil_profile
 ```
 
 
@@ -235,8 +235,7 @@ m = Machine(24,                           # Width between pillars of machine
             kerf=0.075,                   # Allowance for wire size and melted foam
             profile_points=200,           # number of points to use for each surface when 
                                           #  iterpolating
-            output_profile_images=False)  # generates image of the Profile and Rib manipulation for 
-                                          #  Debugging
+            )
 
 # Load panel into machine (p1 is the panel created in the previous step)
 # The offset is the distance the left of the panel will be from the left of the machine --
@@ -291,7 +290,7 @@ p = Panel(r1, r2, 24)
 p1 = Panel.trim_panel(p, 0, 12)
 
 # Setup Machine
-m = Machine(24, kerf=0.075, profile_points=200, output_profile_images=False)
+m = Machine(24, kerf=0.075, profile_points=200)
 
 # Load panel into machine
 m.load_panel(panel=p1,left_offset=6)

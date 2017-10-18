@@ -14,8 +14,8 @@ class CuttingStrategy2(CuttingStrategyBase):
         m = self.machine
 
         # sheet profile
-        profile1 = m.panel.rib1.profile
-        profile2 = m.panel.rib2.profile
+        profile1 = m.panel.left_rib.profile
+        profile2 = m.panel.right_rib.profile
 
         # Offset profiles for Kerf Value
         profile1 = Profile.offset_around_profiles(
@@ -23,24 +23,27 @@ class CuttingStrategy2(CuttingStrategyBase):
         profile2 = Profile.offset_around_profiles(
             profile2, m.kerf[1], m.kerf[1])
 
-        self._move_to_start(profile1, profile2, m.le_offset, m.safe_height)
-        self._cut_to_leading_edge_offset(profile1, profile2, m.le_offset)
+        le_offset = 1
+        te_offset = 1
+
+        self._move_to_start(profile1, profile2, le_offset, m.safe_height)
+        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
         self._cut_to_leading_edge(profile1, profile2)
         self._cut_top_profile(profile1, profile2)
         self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_to_trailing_edge_offset(profile1, profile2, m.te_offset)
+        self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
         self._cut_to_trailing_edge(profile1, profile2)
         self._cut_bottom_profile(profile1, profile2)
         self._cut_to_leading_edge(profile1, profile2)
-        self._cut_to_leading_edge_offset(profile1, profile2, m.le_offset)
-        self._cut_to_start(profile1, profile2, m.le_offset, m.safe_height)
+        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
+        self._cut_to_start(profile1, profile2, le_offset, m.safe_height)
 
-        if m.panel.rib1.tail_stock:
+        if m.panel.left_rib.tail_stock:
             self._move_to_above_tail_stock(profile1, profile2, m.safe_height)
             self._cut_tail_stock(profile1, profile2, m.safe_height)
             self._move_to_above_tail_stock(profile1, profile2, m.safe_height)
 
-        if m.panel.rib1.front_stock:
+        if m.panel.left_rib.front_stock:
             self._move_to_above_front_stock(profile1, profile2, m.safe_height)
             self._cut_front_stock(profile1, profile2, m.safe_height)
             self._move_to_above_front_stock(profile1, profile2, m.safe_height)
@@ -52,8 +55,8 @@ class CuttingStrategy2(CuttingStrategyBase):
     def _move_to_above_tail_stock(self, profile1, profile2, safe_height):
         c1 = profile1.right_midpoint
         c2 = profile2.right_midpoint
-        r1_stock = self.machine.panel.rib1.tail_stock
-        r2_stock = self.machine.panel.rib2.tail_stock
+        r1_stock = self.machine.panel.left_rib.tail_stock
+        r2_stock = self.machine.panel.right_rib.tail_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
@@ -64,8 +67,8 @@ class CuttingStrategy2(CuttingStrategyBase):
     def _cut_tail_stock(self, profile1, profile2, safe_height):
         c1 = profile1.right_midpoint
         c2 = profile2.right_midpoint
-        r1_stock = self.machine.panel.rib1.tail_stock
-        r2_stock = self.machine.panel.rib2.tail_stock
+        r1_stock = self.machine.panel.left_rib.tail_stock
+        r2_stock = self.machine.panel.right_rib.tail_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
@@ -76,8 +79,8 @@ class CuttingStrategy2(CuttingStrategyBase):
     def _move_to_above_front_stock(self, profile1, profile2, safe_height):
         c1 = profile1.left_midpoint
         c2 = profile2.left_midpoint
-        r1_stock = self.machine.panel.rib1.front_stock
-        r2_stock = self.machine.panel.rib2.front_stock
+        r1_stock = self.machine.panel.left_rib.front_stock
+        r2_stock = self.machine.panel.right_rib.front_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
@@ -88,8 +91,8 @@ class CuttingStrategy2(CuttingStrategyBase):
     def _cut_front_stock(self, profile1, profile2, safe_height):
         c1 = profile1.left_midpoint
         c2 = profile2.left_midpoint
-        r1_stock = self.machine.panel.rib1.front_stock
-        r2_stock = self.machine.panel.rib2.front_stock
+        r1_stock = self.machine.panel.left_rib.front_stock
+        r2_stock = self.machine.panel.right_rib.front_stock
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(

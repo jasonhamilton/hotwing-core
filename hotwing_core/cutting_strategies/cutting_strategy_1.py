@@ -13,8 +13,8 @@ class CuttingStrategy1(CuttingStrategyBase):
     def cut(self):
         m = self.machine
         # sheet profile
-        profile1 = m.panel.rib1.profile
-        profile2 = m.panel.rib2.profile
+        profile1 = m.panel.left_rib.profile
+        profile2 = m.panel.right_rib.profile
 
         # Offset profiles for Kerf Value
         profile1 = Profile.offset_around_profiles(
@@ -24,14 +24,14 @@ class CuttingStrategy1(CuttingStrategyBase):
 
         # Trim to the length needed for front and tail stock
         profile1 = Profile.trim(profile1,
-                                m.panel.rib1.airfoil.x_bounds[0] +
-                                m.panel.rib1.front_stock - m.kerf[0],
-                                m.panel.rib1.airfoil.x_bounds[1] - m.panel.rib1.tail_stock + m.kerf[0])
+                                m.panel.left_rib.airfoil_profile.x_bounds[0] +
+                                m.panel.left_rib.front_stock - m.kerf[0],
+                                m.panel.left_rib.airfoil_profile.x_bounds[1] - m.panel.left_rib.tail_stock + m.kerf[0])
 
         profile2 = Profile.trim(profile2,
-                                m.panel.rib2.airfoil.x_bounds[0] +
-                                m.panel.rib2.front_stock - m.kerf[1],
-                                m.panel.rib2.airfoil.x_bounds[1] - m.panel.rib2.tail_stock + m.kerf[1])
+                                m.panel.right_rib.airfoil_profile.x_bounds[0] +
+                                m.panel.right_rib.front_stock - m.kerf[1],
+                                m.panel.right_rib.airfoil_profile.x_bounds[1] - m.panel.right_rib.tail_stock + m.kerf[1])
 
         profile1 = Profile.trim_overlap(profile1)
         profile2 = Profile.trim_overlap(profile2)
@@ -40,17 +40,20 @@ class CuttingStrategy1(CuttingStrategyBase):
         # This was originally included in the trim_overlap method but was
         # removed
 
-        self._move_to_start(profile1, profile2, m.le_offset, m.safe_height)
-        self._cut_to_leading_edge_offset(profile1, profile2, m.le_offset)
+        le_offset = 1
+        te_offset = 1
+        
+        self._move_to_start(profile1, profile2, le_offset, m.safe_height)
+        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
         self._cut_to_leading_edge(profile1, profile2)
         self._cut_top_profile(profile1, profile2)
         self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_to_trailing_edge_offset(profile1, profile2, m.te_offset)
+        self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
         self._cut_to_trailing_edge(profile1, profile2)
         self._cut_bottom_profile(profile1, profile2)
         self._cut_to_leading_edge(profile1, profile2)
-        self._cut_to_leading_edge_offset(profile1, profile2, m.le_offset)
-        self._cut_to_start(profile1, profile2, m.le_offset, m.safe_height)
+        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
+        self._cut_to_start(profile1, profile2, le_offset, m.safe_height)
 
 
     ##################

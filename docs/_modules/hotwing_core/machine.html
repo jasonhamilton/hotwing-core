@@ -44,7 +44,7 @@
 <span class="kn">from</span> <span class="nn">.profile</span> <span class="k">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">.coordinate</span> <span class="k">import</span> <span class="n">Coordinate</span>
 <span class="kn">from</span> <span class="nn">.gcode</span> <span class="k">import</span> <span class="n">Gcode</span>
-<span class="kn">from</span> <span class="nn">.cutting_strategies</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.cutting_strategies</span> <span class="k">import</span> <span class="n">CuttingStrategyFactory</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -56,6 +56,8 @@
 <span class="sd">    The machine takes a Profile object and generates the code to cut that</span>
 <span class="sd">    profile.</span>
 
+<span class="sd">    Gcode generation gets delegated to the cutting_strategy.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        width (Float): length of the machine&#39;s hotwire cutter</span>
 <span class="sd">        kerf (Float):</span>
@@ -65,37 +67,29 @@
 <span class="sd">        profile_points (Int): </span>
 <span class="sd">            Number of points used when interpolating profiles.  This is the</span>
 <span class="sd">            number for each (top and bottom) surface of a Profile.</span>
-<span class="sd">        output_profile_images (Boolean): </span>
-<span class="sd">            If true, images of the profiles during the manipulation process </span>
-<span class="sd">            will be created.  Used is for debugging purposes.</span>
+<span class="sd">        cutting_strategy_name</span>
+<span class="sd">        gcode_formatter_name</span>
+<span class="sd">        units</span>
+<span class="sd">        feedrate</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">kerf</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span> <span class="n">profile_points</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-                 <span class="n">output_profile_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cutting_strategy</span><span class="o">=</span><span class="n">CuttingStrategy1</span><span class="p">):</span>
+                 <span class="n">cutting_strategy_name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+                 <span class="n">gcode_formatter_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+                 <span class="n">units</span><span class="o">=</span><span class="s2">&quot;inches&quot;</span><span class="p">,</span> <span class="n">feedrate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kerf</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kerf</span><span class="p">,</span><span class="nb">float</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">kerf</span> <span class="o">=</span> <span class="p">(</span><span class="n">kerf</span><span class="p">,</span><span class="n">kerf</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kerf</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kerf</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">kerf</span> <span class="o">=</span> <span class="n">kerf</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">profile_points</span> <span class="o">=</span> <span class="n">profile_points</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_profile_images</span> <span class="o">=</span> <span class="n">output_profile_images</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cutting_strategy_cls</span> <span class="o">=</span> <span class="n">cutting_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutting_strategy_name</span> <span class="o">=</span> <span class="n">cutting_strategy_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span> <span class="o">=</span> <span class="n">gcode_formatter_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feedrate</span> <span class="o">=</span> <span class="n">feedrate</span>
 
-    <span class="k">def</span> <span class="nf">_draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Save the profile as an image.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            profile (Profile): object - profile to create image from</span>
-<span class="sd">            filename (String): string-like object - path of filename to write</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_profile_images</span><span class="p">:</span>
-            <span class="n">profile</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Machine.load_panel"><a class="viewcode-back" href="../../machine.html#hotwing_core.machine.Machine.load_panel">[docs]</a>    <span class="k">def</span> <span class="nf">load_panel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">panel</span><span class="p">,</span> <span class="n">left_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -117,21 +111,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">left_offset</span> <span class="o">=</span> <span class="n">left_offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">panel</span></div>
 
-<div class="viewcode-block" id="Machine.generate_gcode"><a class="viewcode-back" href="../../machine.html#hotwing_core.machine.Machine.generate_gcode">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">le_offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">te_offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-                       <span class="n">safe_height</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                       <span class="n">units</span><span class="o">=</span><span class="s2">&quot;inches&quot;</span><span class="p">,</span> <span class="n">feedrate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.generate_gcode"><a class="viewcode-back" href="../../machine.html#hotwing_core.machine.Machine.generate_gcode">[docs]</a>    <span class="k">def</span> <span class="nf">generate_gcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">safe_height</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate the gcode to cut the panel.  You must have a panel loaded into the machine,</span>
 <span class="sd">        otherwise it cannot cut.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            le_offset (Float): Distance in front of the leading edge the hotwire should extend out</span>
-<span class="sd">                               and cut to.  If you want to make sure your foam block is cut in half,</span>
-<span class="sd">                               make sure this value is long enough to reach the front edge of</span>
-<span class="sd">                               your block.</span>
-<span class="sd">            te_offset (Float): Distance behind the leading the hotwire should cut to. Similar to</span>
-<span class="sd">                               the le_offset, except from the trailing edge towards the outside of</span>
-<span class="sd">                               the foam block you are cutting.</span>
 <span class="sd">            safe_height (Float): The height where the machine can move freely without hitting anything.</span>
 <span class="sd">                                 Make sure this value is greater than the height of your foam block.</span>
 <span class="sd">            normalize (Boolean): When generating the machine path, the x and y values may be &lt; 0.  Setting</span>
@@ -144,14 +129,10 @@
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No panel loaded into machine.  Load a panel before generating g_code&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">le_offset</span> <span class="o">=</span> <span class="n">le_offset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">te_offset</span> <span class="o">=</span> <span class="n">te_offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">safe_height</span> <span class="o">=</span> <span class="n">safe_height</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">feedrate</span> <span class="o">=</span> <span class="n">feedrate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gc</span> <span class="o">=</span> <span class="n">Gcode</span><span class="p">(</span><span class="n">formatter_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span> <span class="n">feedrate</span><span class="o">=</span><span class="n">feedrate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gc</span> <span class="o">=</span> <span class="n">Gcode</span><span class="p">(</span><span class="n">formatter_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter_name</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">feedrate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feedrate</span><span class="p">)</span>
 
-        <span class="n">cutting_strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutting_strategy_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">cutting_strategy</span> <span class="o">=</span> <span class="n">CuttingStrategyFactory</span><span class="o">.</span><span class="n">get_cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cutting_strategy_name</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cutting_strategy</span><span class="o">.</span><span class="n">cut</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
@@ -202,100 +183,6 @@
         <span class="n">a</span> <span class="o">=</span> <span class="n">isect_line_plane_v3</span><span class="p">(</span><span class="n">c1_3d</span><span class="p">,</span> <span class="n">c2_3d</span><span class="p">,</span> <span class="n">pillar_a</span><span class="p">,</span> <span class="n">p_no</span><span class="p">)</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">isect_line_plane_v3</span><span class="p">(</span><span class="n">c1_3d</span><span class="p">,</span> <span class="n">c2_3d</span><span class="p">,</span> <span class="n">pillar_b</span><span class="p">,</span> <span class="n">p_no</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span></div>
-
-    <span class="c1"># ##################</span>
-    <span class="c1"># ## machine moves #</span>
-    <span class="c1"># ##################</span>
-
-    <span class="c1"># def _move_to_start(self, profile1, profile2, le_offset, safe_height):</span>
-    <span class="c1">#     # Move machine to start point, fast</span>
-    <span class="c1">#     c1 = profile1.top.coordinates[0]</span>
-    <span class="c1">#     c2 = profile2.top.coordinates[0]</span>
-    <span class="c1">#     min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])</span>
-    <span class="c1">#     self.gc.fast_move(</span>
-    <span class="c1">#         self.convert_coords_to_machine_pos(</span>
-    <span class="c1">#             c1 + Coordinate(-le_offset, min_y + safe_height),</span>
-    <span class="c1">#             c2 + Coordinate(-le_offset, min_y + safe_height)))</span>
-
-    <span class="c1"># def _cut_to_start(self, profile1, profile2, le_offset, safe_height):</span>
-    <span class="c1">#     # Move machine to start point</span>
-    <span class="c1">#     c1 = profile1.top.coordinates[0]</span>
-    <span class="c1">#     c2 = profile2.top.coordinates[0]</span>
-    <span class="c1">#     min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])</span>
-    <span class="c1">#     self.gc.move(</span>
-    <span class="c1">#         self.convert_coords_to_machine_pos(</span>
-    <span class="c1">#             c1 + Coordinate(-le_offset, min_y + safe_height),</span>
-    <span class="c1">#             c2 + Coordinate(-le_offset, min_y + safe_height)))</span>
-
-    <span class="c1"># def _cut_to_leading_edge_offset(self, profile1, profile2, le_offset):</span>
-    <span class="c1">#     start_p1 = profile1.left_midpoint</span>
-    <span class="c1">#     start_p2 = profile2.left_midpoint</span>
-    <span class="c1">#     self.gc.move(</span>
-    <span class="c1">#         self.convert_coords_to_machine_pos(</span>
-    <span class="c1">#             start_p1 + Coordinate(-le_offset, 0),</span>
-    <span class="c1">#             start_p2 + Coordinate(-le_offset, 0)))</span>
-
-    <span class="c1"># def _cut_top_profile(self, profile1, profile2):</span>
-    <span class="c1">#     # cut top profile</span>
-    <span class="c1">#     c1 = profile1.top.coordinates[0]</span>
-    <span class="c1">#     c2 = profile2.top.coordinates[0]</span>
-
-    <span class="c1">#     a_bounds_min, a_bounds_max = profile1.top.bounds</span>
-    <span class="c1">#     b_bounds_min, b_bounds_max = profile2.top.bounds</span>
-    <span class="c1">#     a_width = a_bounds_max.x - a_bounds_min.x</span>
-    <span class="c1">#     b_width = b_bounds_max.x - b_bounds_min.x</span>
-
-    <span class="c1">#     for i in range(self.profile_points):</span>
-    <span class="c1">#         pct = i / self.profile_points</span>
-    <span class="c1">#         c1 = profile1.top.interpolate_around_profile_dist_pct(pct)</span>
-    <span class="c1">#         c2 = profile2.top.interpolate_around_profile_dist_pct(pct)</span>
-    <span class="c1">#         self.gc.move(self.convert_coords_to_machine_pos(c1, c2))</span>
-
-    <span class="c1">#     # cut to last point</span>
-    <span class="c1">#     self.gc.move(self.convert_coords_to_machine_pos(profile1.top.coordinates[-1],</span>
-    <span class="c1">#                                                     profile2.top.coordinates[-1]))</span>
-
-    <span class="c1"># def _cut_to_leading_edge(self, profile1, profile2):</span>
-    <span class="c1">#     start_p1 = profile1.left_midpoint</span>
-    <span class="c1">#     start_p2 = profile2.left_midpoint</span>
-
-    <span class="c1">#     self.gc.move(self.convert_coords_to_machine_pos(start_p1, start_p2))</span>
-
-    <span class="c1"># def _cut_to_trailing_edge_offset(self, profile1, profile2, te_offset):</span>
-    <span class="c1">#     # go to end point with offset</span>
-    <span class="c1">#     end_p1 = profile1.right_midpoint</span>
-    <span class="c1">#     end_p2 = profile2.right_midpoint</span>
-
-    <span class="c1">#     self.gc.move(</span>
-    <span class="c1">#         self.convert_coords_to_machine_pos(</span>
-    <span class="c1">#             end_p1 + Coordinate(te_offset, 0),</span>
-    <span class="c1">#             end_p2 + Coordinate(te_offset, 0)))</span>
-
-    <span class="c1"># def _cut_to_trailing_edge(self, profile1, profile2):</span>
-    <span class="c1">#     end_p1 = profile1.right_midpoint</span>
-    <span class="c1">#     end_p2 = profile2.right_midpoint</span>
-
-    <span class="c1">#     # go to trailing edge</span>
-    <span class="c1">#     self.gc.move(</span>
-    <span class="c1">#         self.convert_coords_to_machine_pos(</span>
-    <span class="c1">#             end_p1,</span>
-    <span class="c1">#             end_p2))</span>
-
-    <span class="c1"># def _cut_bottom_profile(self, profile1, profile2):</span>
-    <span class="c1">#     # cutting profile from right to left</span>
-    <span class="c1">#     c1 = profile1.top.coordinates[-1]</span>
-    <span class="c1">#     c2 = profile2.top.coordinates[-1]</span>
-    <span class="c1">#     # cut bottom profile</span>
-    <span class="c1">#     a_bounds_min, a_bounds_max = profile1.bottom.bounds</span>
-    <span class="c1">#     b_bounds_min, b_bounds_max = profile2.bottom.bounds</span>
-    <span class="c1">#     a_width = a_bounds_max.x - a_bounds_min.x</span>
-    <span class="c1">#     b_width = b_bounds_max.x - b_bounds_min.x</span>
-
-    <span class="c1">#     for i in range(self.profile_points, 0 - 1, -1):</span>
-    <span class="c1">#         pct = i / self.profile_points</span>
-    <span class="c1">#         c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)</span>
-    <span class="c1">#         c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)</span>
-    <span class="c1">#         self.gc.move(self.convert_coords_to_machine_pos(c1, c2))</span>
 </pre></div>
 
           </div>

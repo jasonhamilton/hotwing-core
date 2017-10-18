@@ -88,15 +88,15 @@ class TestExamples():
                                          #     wooden stock here and shape it
                  tail_stock=1.25,        # Trims the trailing edge of the foil.  You would put tail stock 
                                          #     here and shape to the foil.
-                 rotate=0,               # The angle to rotate the rib in degrees - positive number points 
+                 rotation=0,               # The angle to rotate the rib in degrees - positive number points 
                                          #     the nose upward
-                 rotate_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the 
+                 rotation_pos=0.5 )        # Where the rotation point should occur.  0.25 = 25% along the 
                                          #     chord (starting from the front)
 
         # you can get the manipulated profile
         r1.profile
         # you can get the manipulated profile (pre-sheeting)
-        r1.airfoil
+        r1.airfoil_profile
 
     def test_create_panel(self):
         from hotwing_core import Coordinate
@@ -128,8 +128,8 @@ class TestExamples():
         # A Panel can be trimmed.  Say for example, the machine you will be using to cut your wing will
         # only cut wings up to 12 units.  We can use the Panel.trim_panel classmethod to create a new,
         # Panel.  The trim_panel will handle the interpolation and creation of a new Rib and Panel.
-        p1 = Panel.trim_panel(p, 0, 12)# cut at 0 (no cut will occur) and at 12 - new panel is 12 units long.
-        p2 = Panel.trim_panel(p, 12, 24)# cut at 12 and at 24 (no cut will occur) - new panel is 12 units long.
+        p1 = Panel.trim(p, 0, 12)# cut at 0 (no cut will occur) and at 12 - new panel is 12 units long.
+        p2 = Panel.trim(p, 12, 24)# cut at 12 and at 24 (no cut will occur) - new panel is 12 units long.
 
 
     
@@ -162,16 +162,16 @@ class TestExamples():
         p = Panel(r1, r2, 24)
 
         # A Panel can be trimmed.  Say for example, the machine you will be using to cut your wing will
-        # only cut wings up to 12 units.  We can use the Panel.trim_panel classmethod to create a new,
-        # Panel.  The trim_panel will handle the interpolation and creation of a new Rib and Panel.
-        p1 = Panel.trim_panel(p, 0, 12)# cut at 0 (no cut will occur) and at 12 - new panel is 12 units long.
-        p2 = Panel.trim_panel(p, 12, 24)# cut at 12 and at 24 (no cut will occur) - new panel is 12 units long.
+        # only cut wings up to 12 units.  We can use the Panel.trim classmethod to create a new,
+        # Panel.  The trim will handle the interpolation and creation of a new Rib and Panel.
+        p1 = Panel.trim(p, 0, 12)# cut at 0 (no cut will occur) and at 12 - new panel is 12 units long.
+        p2 = Panel.trim(p, 12, 24)# cut at 12 and at 24 (no cut will occur) - new panel is 12 units long.
         from hotwing_core import Machine
         # Setup Machine
         m = Machine(24,                           # Width between pillars of machine
                     kerf=0.075,                   # Allowance for wire size and melted foam
                     profile_points=200,           # number of points to use for each surface when iterpolating
-                    output_profile_images=False)   # generates image of the Profile and Rib manipulation for Debugging
+                    )
 
         # Load panel into machine (p1 is the panel created in the previous step)
         # The offset is the distance the left of the panel will be from the left of the machine --
@@ -208,9 +208,9 @@ class TestExamples():
         # Setup Panel
         p = Panel(r1, r2, 24)
         # Trim Panel
-        p1 = Panel.trim_panel(p, 0, 12)
+        p1 = Panel.trim(p, 0, 12)
         # Setup Machine
-        m = Machine(24, kerf=0.075, profile_points=200, output_profile_images=False)
+        m = Machine(24, kerf=0.075, profile_points=200)
         # Load panel into machine
         m.load_panel(panel=p1,left_offset=6)
         # Generate GCode

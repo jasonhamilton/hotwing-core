@@ -3,7 +3,7 @@ from .utils import isect_line_plane_v3
 from .profile import Profile
 from .coordinate import Coordinate
 from .gcode import Gcode
-from .cutting_strategies import *
+from .cutting_strategies import CuttingStrategyFactory
 import logging
 logging.getLogger(__name__)
 
@@ -15,6 +15,8 @@ class Machine():
     The machine takes a Profile object and generates the code to cut that
     profile.
 
+    Gcode generation gets delegated to the cutting_strategy.
+
     Args:
         width (Float): length of the machine's hotwire cutter
         kerf (Float):
@@ -24,12 +26,16 @@ class Machine():
         profile_points (Int): 
             Number of points used when interpolating profiles.  This is the
             number for each (top and bottom) surface of a Profile.
-        output_profile_images (Boolean): 
-            If true, images of the profiles during the manipulation process 
-            will be created.  Used is for debugging purposes.
+        cutting_strategy_name
+        gcode_formatter_name
+        units
+        feedrate
+
     """
     def __init__(self, width, kerf=0.075, profile_points=200,
-                 output_profile_images=False, cutting_strategy=CuttingStrategy1):
+                 cutting_strategy_name="default",
+                 gcode_formatter_name = "default",
+                 units="inches", feedrate=None):
         self.width = width
         if isinstance(kerf,int) or isinstance(kerf,float):
             self.kerf = (kerf,kerf)
@@ -38,23 +44,11 @@ class Machine():
         else:
             raise AttributeError
         self.profile_points = profile_points
-        self.gcode_formatter_name = "default"
-        self.output_profile_images = output_profile_images
-        self.cutting_strategy_cls = cutting_strategy
+        self.cutting_strategy_name = cutting_strategy_name
+        self.gcode_formatter_name = gcode_formatter_name
+        self.units = units
+        self.feedrate = feedrate
 
-    def _draw_profile(self, profile, filename):
-        """
-        Save the profile as an image.
-
-        Args:
-            profile (Profile): object - profile to create image from
-            filename (String): string-like object - path of filename to write
-
-        Returns:
-            None
-        """
-        if self.output_profile_images:
-            profile.draw(filename)
 
     def load_panel(self, panel, left_offset=None):
         """
@@ -76,21 +70,12 @@ class Machine():
             self.left_offset = left_offset
         self.panel = panel
 
-    def generate_gcode(self, le_offset=2.0, te_offset=2.0,
-                       safe_height=5, normalize=True, 
-                       units="inches", feedrate=None):
+    def generate_gcode(self, safe_height=5, normalize=True ):
         """
         Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
         otherwise it cannot cut.
 
         Args:
-            le_offset (Float): Distance in front of the leading edge the hotwire should extend out
-                               and cut to.  If you want to make sure your foam block is cut in half,
-                               make sure this value is long enough to reach the front edge of
-                               your block.
-            te_offset (Float): Distance behind the leading the hotwire should cut to. Similar to
-                               the le_offset, except from the trailing edge towards the outside of
-                               the foam block you are cutting.
             safe_height (Float): The height where the machine can move freely without hitting anything.
                                  Make sure this value is greater than the height of your foam block.
             normalize (Boolean): When generating the machine path, the x and y values may be < 0.  Setting
@@ -103,14 +88,10 @@ class Machine():
             logging.error("No panel loaded into machine.  Load a panel before generating g_code")
             return []
 
-        self.le_offset = le_offset
-        self.te_offset = te_offset
         self.safe_height = safe_height
-        self.units = units
-        self.feedrate = feedrate
-        self.gc = Gcode(formatter_name=self.gcode_formatter_name,units=units, feedrate=feedrate)
+        self.gc = Gcode(formatter_name=self.gcode_formatter_name, units=self.units, feedrate=self.feedrate)
 
-        cutting_strategy = self.cutting_strategy_cls(self)
+        cutting_strategy = CuttingStrategyFactory.get_cls(self.cutting_strategy_name)(self)
         cutting_strategy.cut()
 
         if normalize:

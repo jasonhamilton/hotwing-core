@@ -40,46 +40,111 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.panel">
-<span id="panel"></span><h1>Panel<a class="headerlink" href="#module-hotwing_core.panel" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="panel">
+<h1>Panel<a class="headerlink" href="#panel" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="hotwing_core.panel.Panel">
-<em class="property">class </em><code class="descclassname">hotwing_core.panel.</code><code class="descname">Panel</code><span class="sig-paren">(</span><em>rib1</em>, <em>rib2</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Panel">
+<em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Panel</code><span class="sig-paren">(</span><em>left_rib</em>, <em>right_rib</em>, <em>width</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Panel" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Panel is a representation of a wing panel and contains all of the items/objects
-necessary to define the attributes of the wing.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rib1</strong> (<a class="reference internal" href="rib.html#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – object</li>
-<li><strong>rib2</strong> (<a class="reference internal" href="rib.html#hotwing_core.rib.Rib" title="hotwing_core.rib.Rib"><em>Rib</em></a>) – object</li>
-<li><strong>width</strong> (<em>Float</em>) – width of the total wing panel from rib to rib</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="classmethod">
-<dt id="hotwing_core.panel.Panel.trim_panel">
-<em class="property">classmethod </em><code class="descname">trim_panel</code><span class="sig-paren">(</span><em>panel</em>, <em>left=None</em>, <em>right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.trim_panel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.panel.Panel.trim_panel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new Panel by taking an existing Panel and trimming off an amount from each
-side to make it shorter.  The new panel’s ribs will be interpolated to the correct shape.</p>
+necessary to define a wing.</p>
+<p>A Panel can be thought of as a wing facing down with rib_1 on the left and rib_2 on the right.
+If rib_1 is the root chord and rib_2 is the tip, chord the panel will represent the left part
+of a wing.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>         <span class="p">|</span> ------  width ---------- <span class="p">|</span>
+
+              trailing edge
+         ---------------------------
+        <span class="p">|</span>                           <span class="p">|</span>
+rib_1   <span class="p">|</span>                           <span class="p">|</span>  rib_2
+        <span class="p">|</span>                           <span class="p">|</span>
+         ---------------------------
+              leading edge
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>panel</strong> (<a class="reference internal" href="#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel"><em>Panel</em></a>) – object to trim</li>
-<li><strong>left</strong> (<em>Float</em>) – amount to trim from the left side of the panel</li>
-<li><strong>right</strong> (<em>Float</em>) – amount to trim from the right side of the panel</li>
+<li><strong>left_rib</strong> (<a class="reference internal" href="rib.html#hotwing_core.Rib" title="hotwing_core.Rib"><em>Rib</em></a>) – Rib defining the left of the wing</li>
+<li><strong>right_rib</strong> (<a class="reference internal" href="rib.html#hotwing_core.Rib" title="hotwing_core.Rib"><em>Rib</em></a>) – Rib defining the right of the wing</li>
+<li><strong>width</strong> (<em>Float</em>) – Width of the Panel measured from left_rib to right_rib</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>left_rib</strong> – Left Rib</li>
+<li><strong>right_rib</strong> – Right Rib</li>
+<li><strong>width</strong> – Width</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hotwing_core.Panel.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Panel.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trim Panel using the slice functionality.</p>
+<p>Ex: panel_obj[2:5], trims from 2 to 5</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Panel.copy">
+<em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>panel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Panel.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a panel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>panel</strong> (<a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel"><em>Panel</em></a>) – object to copy</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">New panel</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel">Panel</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Panel.reverse">
+<em class="property">classmethod </em><code class="descname">reverse</code><span class="sig-paren">(</span><em>panel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.reverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Panel.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse the ribs on the panel.  If you have a left side, it will make it a right side. The ribs
+will maintain the same direction, but just switch sides.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>panel</strong> (<a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel"><em>Panel</em></a>) – object to flip</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">New flipped panel</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel">Panel</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Panel.trim">
+<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>panel</em>, <em>left=None</em>, <em>right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/panel.html#Panel.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Panel.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Panel by taking an existing Panel and trimming it.
+The new panel’s ribs will be interpolated to the correct shape.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>panel</strong> (<a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel"><em>Panel</em></a>) – object to trim</li>
+<li><strong>left</strong> (<em>Float</em>) – distance from left rib to make the left side cut</li>
+<li><strong>right</strong> (<em>Float</em>) – distance from left rib to make the right side cut</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New trimmed Panel</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.panel.Panel" title="hotwing_core.panel.Panel">Panel</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Panel" title="hotwing_core.Panel">Panel</a></p>
 </td>
 </tr>
 </tbody>

@@ -40,45 +40,45 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.gcode">
-<span id="gcode"></span><h1>Gcode<a class="headerlink" href="#module-hotwing_core.gcode" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gcode">
+<h1>Gcode<a class="headerlink" href="#gcode" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="hotwing_core.gcode.Gcode">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode.</code><code class="descname">Gcode</code><span class="sig-paren">(</span><em>formatter_name='generic'</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.Gcode" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Gcode">
+<em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Gcode</code><span class="sig-paren">(</span><em>formatter_name=None</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object maintains gcode when it’s being generated,
 then outputs the gcode in the correct format.</p>
 <p>Contains a GCodeFormatter class, to which all of the
 conversion is delegated to.</p>
-<dl class="attribute">
-<dt id="hotwing_core.gcode.Gcode.code">
-<code class="descname">code</code><a class="headerlink" href="#hotwing_core.gcode.Gcode.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns the gcode as a list</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="hotwing_core.gcode.Gcode.code_as_str">
-<code class="descname">code_as_str</code><a class="headerlink" href="#hotwing_core.gcode.Gcode.code_as_str" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="hotwing_core.Gcode.fast_move">
+<code class="descname">fast_move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.fast_move" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.gcode.Gcode.fast_move">
-<code class="descname">fast_move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.Gcode.fast_move" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Gcode.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.move" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.gcode.Gcode.move">
-<code class="descname">move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.Gcode.move" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="hotwing_core.gcode.Gcode.normalize">
-<code class="descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.Gcode.normalize" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Gcode.normalize">
+<code class="descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>go through the code and offset it so that min values are 0</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.gcode.Gcode.set_formatter">
-<code class="descname">set_formatter</code><span class="sig-paren">(</span><em>formatter_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.set_formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.Gcode.set_formatter" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Gcode.set_formatter">
+<code class="descname">set_formatter</code><span class="sig-paren">(</span><em>formatter_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.set_formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.set_formatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.Gcode.code">
+<code class="descname">code</code><a class="headerlink" href="#hotwing_core.Gcode.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the gcode as a list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.Gcode.code_as_str">
+<code class="descname">code_as_str</code><a class="headerlink" href="#hotwing_core.Gcode.code_as_str" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

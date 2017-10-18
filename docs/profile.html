@@ -40,14 +40,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.profile">
-<span id="profile"></span><h1>Profile<a class="headerlink" href="#module-hotwing_core.profile" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="profile">
+<h1>Profile<a class="headerlink" href="#profile" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="hotwing_core.profile.Profile">
-<em class="property">class </em><code class="descclassname">hotwing_core.profile.</code><code class="descname">Profile</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile">
+<em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Profile</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
 bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
 bottom surfaces.</p>
+<p>The Profile __init__ method can take a variety of different inputs using method overloading.</p>
 <p>Initialization Method Overloading:</p>
 <blockquote>
 <div><dl class="docutils">
@@ -62,27 +63,64 @@ bottom surfaces.</p>
 bottom_surface: Surface - bottom surface to create Profile from</dd>
 </dl>
 </div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>top</strong> – Surface object that makes up the top of the Profile</li>
+<li><strong>bottom</strong> – Surface object that makes up the bottom of the Profile</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hotwing_core.Profile.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.__add__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Profile.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Profile.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.__mul__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Profile.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.__ne__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Profile.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.__sub__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.copy">
-<em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.copy" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.copy">
+<em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a copy of a profile</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to copy</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to copy</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">new copied Profile object</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.profile.Profile.draw">
-<code class="descname">draw</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.draw" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.draw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an image containing the profile and saves it to the disk.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -95,8 +133,8 @@ bottom_surface: Surface - bottom surface to create Profile from</dd>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.interpolate_new_profile">
-<em class="property">classmethod </em><code class="descname">interpolate_new_profile</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.interpolate_new_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.interpolate_new_profile" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.interpolate_new_profile">
+<em class="property">classmethod </em><code class="descname">interpolate_new_profile</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.interpolate_new_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.interpolate_new_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new Profile interpolated from two other Profiles.</p>
 <p>Delagates to the Surface objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -104,8 +142,8 @@ bottom_surface: Surface - bottom surface to create Profile from</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>p1</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – first profile to interpolate from</li>
-<li><strong>p2</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – second profile to interpolate from</li>
+<li><strong>p1</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – first profile to interpolate from</li>
+<li><strong>p2</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – second profile to interpolate from</li>
 <li><strong>dist_between</strong> (<em>Float</em>) – Distance between profiles</li>
 <li><strong>dist_interp</strong> (<em>Float</em>) – Distance from s1 where new profile should be interpolated</li>
 <li><strong>points</strong> (<em>Int</em>) – Number of points to use for interpolating each surface of the profile</li>
@@ -115,41 +153,16 @@ bottom_surface: Surface - bottom surface to create Profile from</dd>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New Profile interpolated from s1 and s2</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="hotwing_core.profile.Profile.left_midpoint">
-<code class="descname">left_midpoint</code><a class="headerlink" href="#hotwing_core.profile.Profile.left_midpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find a XY position at the left-most value of the Profile half way between the two Surfaces</p>
-<ol class="arabic simple">
-<li>Finds the X value for the leftmost point in the Profile</li>
-<li>Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</li>
-<li><dl class="first docutils">
-<dt>Finds the point in between the Coordinates, which is a coordinate vertically mid-way</dt>
-<dd>between the points</dd>
-</dl>
-</li>
-</ol>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.offset_around_profiles">
-<em class="property">classmethod </em><code class="descname">offset_around_profiles</code><span class="sig-paren">(</span><em>profile</em>, <em>top_offset</em>, <em>bottom_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_around_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.offset_around_profiles" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.offset_around_profiles">
+<em class="property">classmethod </em><code class="descname">offset_around_profiles</code><span class="sig-paren">(</span><em>profile</em>, <em>top_offset</em>, <em>bottom_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_around_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.offset_around_profiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Offset each of a Profile’s Surfaces around itself. It can be thought of as scaling the Profile’s
 Surfaces inward or outward around the Surfaces.</p>
 <p>Delagates to the Surface objects’ offset_around_profiles method</p>
@@ -158,7 +171,7 @@ Surfaces inward or outward around the Surfaces.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to offset</li>
+<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to offset</li>
 <li><strong>top_offset</strong> (<em>Float</em>) – <ul>
 <li>Positive value expands profile (offsets upwards/outwards),</li>
 </ul>
@@ -175,7 +188,7 @@ Surfaces inward or outward around the Surfaces.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new offset Profile</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></p>
 </td>
 </tr>
 </tbody>
@@ -183,8 +196,8 @@ Surfaces inward or outward around the Surfaces.</p>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.offset_xy">
-<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>profile</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.offset_xy" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.offset_xy">
+<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>profile</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.offset_xy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Offset a profile left, right, up or down.</p>
 <p>Delagates to the Surface objects’ offset_xy method</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -192,11 +205,11 @@ Surfaces inward or outward around the Surfaces.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to offset</li>
-<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – <ul>
-<li>x,y values to offset profile - this value is simply added to</li>
+<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to offset</li>
+<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – <ul>
+<li>Amount to offset the Profile in the x and y directions - this value is</li>
 </ul>
-<p>each of the coordinates in the Profile’s Surfaces.</p>
+<p>simply added to each of the coordinates in the Profile’s Surfaces.</p>
 </li>
 </ul>
 </td>
@@ -204,17 +217,142 @@ Surfaces inward or outward around the Surfaces.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new offset Profile</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="hotwing_core.Profile.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>profile</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate a profile around a point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>origin</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – object that defines the point to rotate profile around</li>
+<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to rotate</li>
+<li><strong>angle</strong> (<em>Float</em>) – degrees to rotate profile.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New rotated Profile</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Profile.scale">
+<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>profile</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale a profile</p>
+<p>Delagates to the Surface objects’ scale method</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to scale</li>
+<li><strong>scale</strong> (<em>Float</em>) – <ul>
+<li>value to scale profile by.  Value of 1 will produce no effect; 2 will double</li>
+</ul>
+<p>the size; 0.5 will reduce to half the size.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new scaled Profile</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Profile.trim">
+<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>profile</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trim a Profile’s Surfaces to new starting and ending x values.</p>
+<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
+those values will be interpolated and may actually make the width of the surface larger.</p>
+<p>Delagates trim to the Surface objects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to trim</li>
+<li><strong>x_min</strong> (<em>Float</em>) – left-most value to trim the profile to.</li>
+<li><strong>x_max</strong> (<em>Float</em>) – right-most value to trim the profile to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Profile - new trimmed Profile</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Profile.trim_overlap">
+<em class="property">classmethod </em><code class="descname">trim_overlap</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim_overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.trim_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trims a Profiles Surfaces where they overlap.</p>
+<p>After manipulating Surfaces, the profiles may now overlap.  This method finds this point
+using the class’ _find_convergence_points method and then trims the profiles based on the
+results.  If no over lap(s) is/are found, not trimming will occur.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile"><em>Profile</em></a>) – object to trim.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">new trimmed Profile</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.Profile" title="hotwing_core.Profile">Profile</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
-<dt id="hotwing_core.profile.Profile.right_midpoint">
-<code class="descname">right_midpoint</code><a class="headerlink" href="#hotwing_core.profile.Profile.right_midpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find a XY position at the right-most value of the Profile half way between the two Surfaces</p>
+<dt id="hotwing_core.Profile.left_midpoint">
+<code class="descname">left_midpoint</code><a class="headerlink" href="#hotwing_core.Profile.left_midpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find an XY position at the left-most value of the Profile half way vertically between the two Surfaces</p>
+<ol class="arabic simple">
+<li>Finds the X value for the leftmost point in the Profile</li>
+<li>Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</li>
+<li><dl class="first docutils">
+<dt>Finds the point in between the Coordinates, which is a coordinate vertically mid-way</dt>
+<dd>between the points</dd>
+</dl>
+</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.Profile.right_midpoint">
+<code class="descname">right_midpoint</code><a class="headerlink" href="#hotwing_core.Profile.right_midpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a XY position at the right-most value of the Profile half way between vertically the two Surfaces</p>
 <ol class="arabic simple">
 <li>Finds the X value for the right most point in the Profile</li>
 <li>Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</li>
@@ -230,114 +368,15 @@ Surfaces inward or outward around the Surfaces.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.rotate">
-<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>profile</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.rotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotate a profile around a certain point.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origin</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – object that defines the point to rotate profile around</li>
-<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to rotate</li>
-<li><strong>angle</strong> (<em>Float</em>) – degrees to rotate profile.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New rotated Profile</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.scale">
-<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>profile</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale a profile by a value</p>
-<p>Delagates to the Surface objects’ scale method</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to scale</li>
-<li><strong>scale</strong> (<em>Float</em>) – <ul>
-<li>value to scale profile by</li>
-</ul>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new scaled Profile</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.trim">
-<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>profile</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.trim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trim a Profile’s Surfaces to new starting and ending x values.</p>
-<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
-those values will be interpolated and may actually make the width of the surface larger.</p>
-<p>Delagates trim to the Surface objects</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to trim</li>
-<li><strong>x_min</strong> (<em>Float</em>) – left-most value to trim the profile to.</li>
-<li><strong>x_max</strong> (<em>Float</em>) – right-most value to trim the profile to.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Profile - new trimmed Profile</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.profile.Profile.trim_overlap">
-<em class="property">classmethod </em><code class="descname">trim_overlap</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.trim_overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.profile.Profile.trim_overlap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trims a Profiles Surfaces where they overlap.</p>
-<p>After manipulating Surfaces, the profiles may now overlap.  This method finds this point
-using the class’ _find_convergence_points method and then trims the profiles based on the
-results.  If no over lap(s) is/are found, not trimming will occur.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>profile</strong> (<a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile"><em>Profile</em></a>) – object to trim.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">new trimmed Profile</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#hotwing_core.profile.Profile" title="hotwing_core.profile.Profile">Profile</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="hotwing_core.profile.Profile.x_bounds">
-<code class="descname">x_bounds</code><a class="headerlink" href="#hotwing_core.profile.Profile.x_bounds" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.x_bounds">
+<code class="descname">x_bounds</code><a class="headerlink" href="#hotwing_core.Profile.x_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the min and max X values in the Profile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -352,8 +391,8 @@ results.  If no over lap(s) is/are found, not trimming will occur.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="hotwing_core.profile.Profile.y_bounds">
-<code class="descname">y_bounds</code><a class="headerlink" href="#hotwing_core.profile.Profile.y_bounds" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.y_bounds">
+<code class="descname">y_bounds</code><a class="headerlink" href="#hotwing_core.Profile.y_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the min and max Y values in the Profile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

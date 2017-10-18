@@ -1,7 +1,7 @@
 from __future__ import division
 
 
-class GcodeFormatBase():
+class GcodeFormatterBase():
     """
     Gcode Formatter's job is to convert the commands maintained
     by the Gcode class and format them into the appropriate format
@@ -26,7 +26,7 @@ class GcodeFormatBase():
         return []
 
 
-class GcodeFormatDebug(GcodeFormatBase):
+class DebugGcodeFormatter(GcodeFormatterBase):
     """
     This is meant as a debugging class.  It will output the commands
     as a line of text separated by tabs.
@@ -58,7 +58,7 @@ class GcodeFormatDebug(GcodeFormatBase):
         return []
 
 
-class GenericGcode(GcodeFormatBase):
+class GenericGcodeFormatter(GcodeFormatterBase):
     """
     Generic Gcode (RS-274?) formatter
     Made to work with LinuxCNC
@@ -108,3 +108,33 @@ class GenericGcode(GcodeFormatBase):
         # End Program
         out.append("M30")
         return out
+
+
+class GcodeFormatterFactory():
+    formatters = [
+                    GenericGcodeFormatter,
+                    DebugGcodeFormatter
+                 ]
+    default = GenericGcodeFormatter
+
+    @classmethod
+    def get_cls(cls, name):
+        """
+        Get a cutting strategy by name
+
+        Returns:
+            GcodeFormatter object
+        """
+        name = name.lower()
+        
+        if name == "default":
+            return cls.default
+
+        for f in cls.formatters:
+            f_name = f.__class__.__name__.lower()
+            if f_name == name:
+                return f
+
+        logging.error("ERROR: GCODE FORMATTER NAME INCORRECT, FALLING BACK TO DEFAULT")
+        return cls.default
+

@@ -22,6 +22,8 @@ class Profile():
     bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
     bottom surfaces.
 
+    The Profile __init__ method can take a variety of different inputs using method overloading.
+
     Initialization Method Overloading:
 
         Profile(filepath):
@@ -36,6 +38,9 @@ class Profile():
         Profile(top_surface, bottom_surface)
             top_surface: Surface - top surface to create Profile from
             bottom_surface: Surface - bottom surface to create Profile from
+
+    :ivar top: Surface object that makes up the top of the Profile
+    :ivar bottom: Surface object that makes up the bottom of the Profile
     """
 
     def __init__(self, *args):
@@ -86,7 +91,7 @@ class Profile():
     @property
     def left_midpoint(self):
         """
-        Find a XY position at the left-most value of the Profile half way between the two Surfaces
+        Find an XY position at the left-most value of the Profile half way vertically between the two Surfaces
 
         1) Finds the X value for the leftmost point in the Profile
         2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X
@@ -105,7 +110,7 @@ class Profile():
     @property
     def right_midpoint(self):
         """
-        Find a XY position at the right-most value of the Profile half way between the two Surfaces
+        Find a XY position at the right-most value of the Profile half way between vertically the two Surfaces
 
         1) Finds the X value for the right most point in the Profile
         2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X
@@ -125,7 +130,7 @@ class Profile():
     @classmethod
     def rotate(cls, origin, profile, angle):
         """
-        Rotate a profile around a certain point.
+        Rotate a profile around a point.
 
         Args:
             origin (Coordinate): object that defines the point to rotate profile around
@@ -241,13 +246,14 @@ class Profile():
     @classmethod
     def scale(cls, profile, scale):
         """
-        Scale a profile by a value
+        Scale a profile
 
         Delagates to the Surface objects' scale method
 
         Args:
             profile (Profile): object to scale
-            scale (Float): - value to scale profile by
+            scale (Float): - value to scale profile by.  Value of 1 will produce no effect; 2 will double 
+                             the size; 0.5 will reduce to half the size.
 
         Returns:
             Profile: new scaled Profile
@@ -256,23 +262,6 @@ class Profile():
         bottom = Surface.scale(profile.bottom, scale)
         return Profile(top, bottom)
 
-    # @classmethod
-    # def scale_to_width(cls, profile, width):
-    #     """
-    #     Scales a profile to a desired width.
-
-    #     Delagates to the Surface objects' scale_to_width method
-
-    #     Args:
-    #         profile (Profile): object to scale
-    #         width (Float): width to scale profile to
-
-    #     Returns:
-    #         Profile: new scaled Profile
-    #     """
-    #     top = Surface.scale_to_width(profile.top, width)
-    #     bottom = Surface.scale_to_width(profile.bottom, width)
-    #     return Profile(top, bottom)
 
     @classmethod
     def offset_xy(cls, profile, offset):
@@ -283,8 +272,8 @@ class Profile():
 
         Args:
             profile (Profile): object to offset
-            offset (Coordinate): - x,y values to offset profile - this value is simply added to
-                    each of the coordinates in the Profile's Surfaces.
+            offset (Coordinate): - Amount to offset the Profile in the x and y directions - this value is 
+                    simply added to each of the coordinates in the Profile's Surfaces.
 
         Returns:
             Profile: new offset Profile

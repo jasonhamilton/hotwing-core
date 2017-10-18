@@ -45,7 +45,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 
 
-<div class="viewcode-block" id="Surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface">[docs]</a><span class="k">class</span> <span class="nc">Surface</span><span class="p">():</span>
+<div class="viewcode-block" id="Surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface">[docs]</a><span class="k">class</span> <span class="nc">Surface</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A connected group of coordinates connected by lines that make up a top or bottom</span>
 <span class="sd">    surface of an airfoil.</span>
@@ -54,32 +54,14 @@
 <span class="sd">        coordinates (Coordinate[]): list of Coordinates</span>
 <span class="sd">                        ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING</span>
 <span class="sd">                        ORDER BASED ON X VALUES</span>
+
+<span class="sd">    :ivar coordinates: list of Coordinates that make up surface</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">[]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_duplicate_coordinates</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order_coordinates</span><span class="p">()</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the left most Coordinate</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Coordinate: left-most Coordinate</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the right-most Coordinate</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Coordinate: right-most Coordinate</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -94,6 +76,16 @@
         <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
         <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">),</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the left most Coordinate</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Coordinate: left-most Coordinate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -112,7 +104,17 @@
             <span class="n">total_len</span> <span class="o">+=</span> <span class="n">dist</span>
         <span class="k">return</span> <span class="n">total_len</span>
 
-<div class="viewcode-block" id="Surface.offset_around_profile"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.offset_around_profile">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the right-most Coordinate</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Coordinate: right-most Coordinate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Surface.offset_around_profile"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.offset_around_profile">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_around_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset the surface around the current surface.</span>
@@ -164,7 +166,7 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.offset_xy"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.offset_xy"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset the surface using the x and y values</span>
@@ -183,7 +185,7 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.scale"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.scale">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.scale"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Scale a Surface by a specified value</span>
@@ -200,30 +202,7 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def scale_to_width(cls, surface, width):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Scales a Surface to a specified width.  The new surface will start at 0 and go to the width</span>
-
-    <span class="c1">#     Args:</span>
-    <span class="c1">#         surface : Surface to offset</span>
-    <span class="c1">#         width: Float - width of new surface</span>
-
-    <span class="c1">#     Returns:</span>
-    <span class="c1">#         Surface: new Surface scaled to the new width</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     # offset min x to 0</span>
-    <span class="c1">#     min_, max_ = surface.bounds</span>
-    <span class="c1">#     s = Surface.offset_xy(surface, Coordinate(-min_.x,0))</span>
-
-    <span class="c1">#     _, max_ = s.bounds</span>
-    <span class="c1">#     scale_factor = width * 1.00 / max_.x</span>
-    <span class="c1">#     new_coords = []</span>
-    <span class="c1">#     for c in s.coordinates:</span>
-    <span class="c1">#         new_coords.append(c * scale_factor)</span>
-    <span class="c1">#     return cls(new_coords)</span>
-
-<div class="viewcode-block" id="Surface.trim"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.trim">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.trim"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.trim">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trim a Surface to new starting and ending x values.</span>
@@ -271,7 +250,7 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.interpolate_new_surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate_new_surface">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.interpolate_new_surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.interpolate_new_surface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">interpolate_new_surface</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -307,7 +286,7 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.rotate"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.rotate">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.rotate"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Rotate a surface around a certain point.</span>
@@ -325,7 +304,7 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Coordinate</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">angle</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.interpolate"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.interpolate"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the Y position for a given value of X.</span>
 
@@ -371,7 +350,7 @@
 
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">coord</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">change_in_x</span><span class="p">,</span> <span class="n">coord</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">change_in_y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.interpolate_around_profile_dist_pct"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate_around_profile_dist_pct">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.interpolate_around_profile_dist_pct"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.interpolate_around_profile_dist_pct">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist_pct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the x-y position along the surface of the profile at a specified PERCENTAGE value of</span>
 <span class="sd">        the total distance around the surface of the profile, starting from the left-most coordinate.</span>
@@ -384,7 +363,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolate_around_profile_dist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">pct</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.interpolate_around_profile_dist"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.interpolate_around_profile_dist">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.interpolate_around_profile_dist"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.interpolate_around_profile_dist">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_around_profile_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the x-y position along the surface of the profile at a specified DISTANCE around the</span>
 <span class="sd">        surface of the profile, starting from the left-most coordinate.</span>
@@ -450,7 +429,7 @@
 
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.export"><a class="viewcode-back" href="../../surface.html#hotwing_core.surface.Surface.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_file"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write the Surface&#39;s list of Coordinates to a file</span>
 
@@ -509,26 +488,43 @@
             <span class="n">out</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">out</span>
 
-    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.__add__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__add__">[docs]</a>    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a Surface object and a Coordinate object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.__sub__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__sub__">[docs]</a>    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subtract a Surface object and a Coordinate object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="n">new_coord</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<div class="viewcode-block" id="Surface.__mul__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiply a Surface object and a number together</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.__getitem__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trim a surface using the slice functionality.</span>
+
+<span class="sd">        Ex: surface_obj[2:5], trims from 2 to 5</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.__eq__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__eq__">[docs]</a>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare two a Surface objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="c1"># start by comparing coord len</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">coordinates</span><span class="p">):</span>
@@ -540,12 +536,15 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">False</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.__ne__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__ne__">[docs]</a>    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare two a Surface objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
           </div>

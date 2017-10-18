@@ -5,10 +5,32 @@ import math
 class Coordinate():
     """
     2 Dimensional X-Y coordinate.
+
+    Args:
+        x (float): X value of coordinate
+        y (float): Y value of coordinate
+
+    :ivar x: x coordinate
+    :ivar y: y coordinate
     """
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    @classmethod
+    def calc_dist(cls, a, b):
+        """
+        Calculate the distance between two Coordinates.
+
+        Args:
+            a (Coordinate): First Coordinate
+            b (Coordinate): Second Coordinate
+        Returns:
+            Float: Distance between c1 and c2
+
+        """
+        dist = math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
+        return dist
 
     @classmethod
     def calc_slope(cls, a, b):
@@ -27,21 +49,6 @@ class Coordinate():
             # same x val -> infinite slope
             slope = float('inf')
         return slope
-
-    @classmethod
-    def calc_dist(cls, a, b):
-        """
-        Calculate the distance between two Coordinates.
-
-        Args:
-            a (Coordinate): First Coordinate
-            b (Coordinate): Second Coordinate
-        Returns:
-            Float: Distance between c1 and c2
-
-        """
-        dist = math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
-        return dist
 
     @classmethod
     def rotate(cls, origin, coordinate, angle):
@@ -73,6 +80,9 @@ class Coordinate():
         return "Coordinate: %.5f, %.5f" % (self.x, self.y)
 
     def __eq__(self, other):
+        """
+        Compare two a Coordinate objects
+        """
         # comparison tolerance - necessary due to the rounding
         # error with floating point numbers 
         tolerance = 0.00000001
@@ -86,21 +96,33 @@ class Coordinate():
         raise NotImplementedError
 
     def __ne__(self, other):
+        """
+        Compare two a Coordinate objects
+        """
         if isinstance(other, self.__class__):
             return not self.__eq__(other)
         raise NotImplementedError
 
     def __add__(self, other):
+        """
+        Add two a Coordinate objects
+        """
         if isinstance(other, self.__class__):
             return Coordinate(self.x+other.x, self.y+other.y)
         raise NotImplementedError
 
     def __sub__(self, other):
+        """
+        Subtract two a Coordinate objects
+        """
         if isinstance(other, self.__class__):
             return Coordinate(self.x-other.x, self.y-other.y)
         raise NotImplementedError
 
     def __mul__(self, other):
+        """
+        Multiply two a Coordinate objects
+        """
         if isinstance(other, self.__class__):
             return Coordinate(self.x*other.x, self.y*other.y)
         return Coordinate(self.x*other, self.y*other)

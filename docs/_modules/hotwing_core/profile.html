@@ -57,11 +57,13 @@
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">():</span>
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and</span>
 <span class="sd">    bottom.  The job of the profile is to load the coordinates, split them and maintain the top and</span>
 <span class="sd">    bottom surfaces.</span>
+
+<span class="sd">    The Profile __init__ method can take a variety of different inputs using method overloading.</span>
 
 <span class="sd">    Initialization Method Overloading:</span>
 
@@ -77,6 +79,9 @@
 <span class="sd">        Profile(top_surface, bottom_surface)</span>
 <span class="sd">            top_surface: Surface - top surface to create Profile from</span>
 <span class="sd">            bottom_surface: Surface - bottom surface to create Profile from</span>
+
+<span class="sd">    :ivar top: Surface object that makes up the top of the Profile</span>
+<span class="sd">    :ivar bottom: Surface object that makes up the bottom of the Profile</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -127,7 +132,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">left_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find a XY position at the left-most value of the Profile half way between the two Surfaces</span>
+<span class="sd">        Find an XY position at the left-most value of the Profile half way vertically between the two Surfaces</span>
 
 <span class="sd">        1) Finds the X value for the leftmost point in the Profile</span>
 <span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
@@ -146,7 +151,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">right_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find a XY position at the right-most value of the Profile half way between the two Surfaces</span>
+<span class="sd">        Find a XY position at the right-most value of the Profile half way between vertically the two Surfaces</span>
 
 <span class="sd">        1) Finds the X value for the right most point in the Profile</span>
 <span class="sd">        2) Finds/Interpolates the Coordinates on the top and bottom Surfaces for X</span>
@@ -163,10 +168,10 @@
         <span class="n">average_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_c</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">bottom_c</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">average_y</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotate a profile around a certain point.</span>
+<span class="sd">        Rotate a profile around a point.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            origin (Coordinate): object that defines the point to rotate profile around</span>
@@ -180,7 +185,7 @@
         <span class="n">bot_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">top_coords</span><span class="p">,</span> <span class="n">bot_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.draw"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.draw"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create an image containing the profile and saves it to the disk.</span>
 
@@ -264,7 +269,7 @@
                 <span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a copy of a profile</span>
@@ -279,16 +284,17 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.scale"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.scale">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.scale"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scale a profile by a value</span>
+<span class="sd">        Scale a profile</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; scale method</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            profile (Profile): object to scale</span>
-<span class="sd">            scale (Float): - value to scale profile by</span>
+<span class="sd">            scale (Float): - value to scale profile by.  Value of 1 will produce no effect; 2 will double </span>
+<span class="sd">                             the size; 0.5 will reduce to half the size.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Profile: new scaled Profile</span>
@@ -297,25 +303,8 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def scale_to_width(cls, profile, width):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Scales a profile to a desired width.</span>
 
-    <span class="c1">#     Delagates to the Surface objects&#39; scale_to_width method</span>
-
-    <span class="c1">#     Args:</span>
-    <span class="c1">#         profile (Profile): object to scale</span>
-    <span class="c1">#         width (Float): width to scale profile to</span>
-
-    <span class="c1">#     Returns:</span>
-    <span class="c1">#         Profile: new scaled Profile</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     top = Surface.scale_to_width(profile.top, width)</span>
-    <span class="c1">#     bottom = Surface.scale_to_width(profile.bottom, width)</span>
-    <span class="c1">#     return Profile(top, bottom)</span>
-
-<div class="viewcode-block" id="Profile.offset_xy"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.offset_xy"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset a profile left, right, up or down.</span>
@@ -324,8 +313,8 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            profile (Profile): object to offset</span>
-<span class="sd">            offset (Coordinate): - x,y values to offset profile - this value is simply added to</span>
-<span class="sd">                    each of the coordinates in the Profile&#39;s Surfaces.</span>
+<span class="sd">            offset (Coordinate): - Amount to offset the Profile in the x and y directions - this value is </span>
+<span class="sd">                    simply added to each of the coordinates in the Profile&#39;s Surfaces.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Profile: new offset Profile</span>
@@ -334,7 +323,7 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">offset_around_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">,</span> <span class="n">bottom_offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset each of a Profile&#39;s Surfaces around itself. It can be thought of as scaling the Profile&#39;s</span>
@@ -356,7 +345,7 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom_offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.trim"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.trim">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.trim"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.trim">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trim a Profile&#39;s Surfaces to new starting and ending x values.</span>
@@ -378,7 +367,7 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.trim_overlap"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.trim_overlap">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.trim_overlap"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.trim_overlap">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">trim_overlap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trims a Profiles Surfaces where they overlap.</span>
@@ -401,7 +390,7 @@
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="Profile.interpolate_new_profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.profile.Profile.interpolate_new_profile">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Profile.interpolate_new_profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.interpolate_new_profile">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">interpolate_new_profile</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">dist_between</span><span class="p">,</span> <span class="n">dist_interp</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -648,33 +637,33 @@
         <span class="c1"># couldn&#39;t find</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.__eq__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__eq__">[docs]</a>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">top</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">bottom</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.__ne__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__ne__">[docs]</a>    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.__add__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__add__">[docs]</a>    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.__sub__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__sub__">[docs]</a>    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="n">new_coord</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Profile.__mul__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

@@ -25,17 +25,17 @@ r2 = Rib("http://m-selig.ae.illinois.edu/ads/coord/rg14.dat",
 p = Panel(r1, r2, 24)
 
 # Trim Panel
-p = Panel.trim_panel(p, 0, 12)
+p = Panel.trim(p, 0, 12)
 
 # Setup Machine
-m = Machine(24, kerf=0.075, profile_points=300)
+m = Machine(24, kerf=0.075, units="inches", profile_points=300)
 
 # Load panel into machine
 m.load_panel(p)
 #m.gcode_formatter_name = "debug"
 
 # Generate GCode
-gcode = m.generate_gcode(safe_height=3, units="inches")
+gcode = m.generate_gcode(safe_height=3)
 
 # Output to screen
 # print gcode

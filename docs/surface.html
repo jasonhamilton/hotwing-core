@@ -40,42 +40,250 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.surface">
-<span id="surface"></span><h1>Surface<a class="headerlink" href="#module-hotwing_core.surface" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="surface">
+<h1>Surface<a class="headerlink" href="#surface" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="hotwing_core.surface.Surface">
-<em class="property">class </em><code class="descclassname">hotwing_core.surface.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>coordinates=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface">
+<em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>coordinates=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface" title="Permalink to this definition">¶</a></dt>
 <dd><p>A connected group of coordinates connected by lines that make up a top or bottom
 surface of an airfoil.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coordinates</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a><em>[</em><em>]</em>) – list of Coordinates
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coordinates</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a><em>[</em><em>]</em>) – list of Coordinates
 ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
 ORDER BASED ON X VALUES</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><strong>coordinates</strong> – list of Coordinates that make up surface</td>
+</tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="hotwing_core.surface.Surface.bounds">
-<code class="descname">bounds</code><a class="headerlink" href="#hotwing_core.surface.Surface.bounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the bounding box of the Surface</p>
+<dl class="method">
+<dt id="hotwing_core.Surface.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__add__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Surface object and a Coordinate object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two a Surface objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trim a surface using the slice functionality.</p>
+<p>Ex: surface_obj[2:5], trims from 2 to 5</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__mul__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply a Surface object and a number together</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__ne__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two a Surface objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.__sub__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract a Surface object and a Coordinate object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.interpolate">
+<code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the Y position for a given value of X.</p>
+<p>Method uses linear interpolation between two points.  If the point lies outside of the
+coordinates, the line is interpolated based on the closest two points extended outwards.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of Coordinates with the min xy and the max xy value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>Float</em>) – Value of x where we want to interpolate</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a>,<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a>)</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coordinate containing original x value provided and solved y value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.surface.Surface.export">
-<code class="descname">export</code><span class="sig-paren">(</span><em>output_file</em>, <em>separator='\t'</em>, <em>newline='\n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.export" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface.interpolate_around_profile_dist">
+<code class="descname">interpolate_around_profile_dist</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.interpolate_around_profile_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the x-y position along the surface of the profile at a specified DISTANCE around the
+surface of the profile, starting from the left-most coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> – (Float): Distance around surface, expressed in units, to find</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interpolated coordinate at position</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.interpolate_around_profile_dist_pct">
+<code class="descname">interpolate_around_profile_dist_pct</code><span class="sig-paren">(</span><em>pct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist_pct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.interpolate_around_profile_dist_pct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the x-y position along the surface of the profile at a specified PERCENTAGE value of
+the total distance around the surface of the profile, starting from the left-most coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pct</strong> (<em>Float</em>) – Distance around surface, expressed as a percent, to find</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interpolated coordinate at position</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.interpolate_new_surface">
+<em class="property">classmethod </em><code class="descname">interpolate_new_surface</code><span class="sig-paren">(</span><em>s1</em>, <em>s2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_new_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.interpolate_new_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Surface interpolated from two other Surfaces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>s1</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – First Surface to interpolate from</li>
+<li><strong>s2</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Second Surface to interpolate from</li>
+<li><strong>dist_between</strong> (<em>Float</em>) – Distance between profiles</li>
+<li><strong>dist_interp</strong> (<em>Float</em>) – Distance from s1 where new surface should be interpolated</li>
+<li><strong>points</strong> (<em>Int</em>) – Number of points to use for interpolating the new surface</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New Surface interpolated from s1 and s2</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.offset_around_profile">
+<em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_around_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offset the surface around the current surface.</p>
+<p>Evaluates relative angle at each point and  expands/contracts
+the surface around these angles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface to offset</li>
+<li><strong>offset</strong> (<em>Float</em>) – Distance to offset from surface - positive value offsets upwards, negative
+value offsets downwards.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface object with the offset applied</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.offset_xy">
+<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offset the surface using the x and y values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface object to offset</li>
+<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Coordinate object containing the x and y offset amounts.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface with the offset applied</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>surface</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate a surface around a certain point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>origin</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Object that defines the point to rotate surface around</li>
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Object to rotate</li>
+<li><strong>angle</strong> (<em>Float</em>) – Degrees to rotate surface.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New rotated Surface</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.scale">
+<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>surface</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale a Surface by a specified value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface to offset</li>
+<li><strong>scale</strong> (<em>Float</em>) – Scale value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new scaled Surface</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Surface.to_file">
+<code class="descname">to_file</code><span class="sig-paren">(</span><em>output_file</em>, <em>separator='\t'</em>, <em>newline='\n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the Surface’s list of Coordinates to a file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -95,85 +303,29 @@ ORDER BASED ON X VALUES</td>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="hotwing_core.surface.Surface.interpolate">
-<code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpolate the Y position for a given value of X.</p>
-<p>Method uses linear interpolation between two points.  If the point lies outside of the
-coordinates, the line is interpolated based on the closest two points extended outwards.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>Float</em>) – Value of x where we want to interpolate</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coordinate containing original x value provided and solved y value</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="hotwing_core.surface.Surface.interpolate_around_profile_dist">
-<code class="descname">interpolate_around_profile_dist</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_around_profile_dist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the x-y position along the surface of the profile at a specified DISTANCE around the
-surface of the profile, starting from the left-most coordinate.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> – (Float): Distance around surface, expressed in units, to find</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interpolated coordinate at position</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="hotwing_core.surface.Surface.interpolate_around_profile_dist_pct">
-<code class="descname">interpolate_around_profile_dist_pct</code><span class="sig-paren">(</span><em>pct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_around_profile_dist_pct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_around_profile_dist_pct" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the x-y position along the surface of the profile at a specified PERCENTAGE value of
-the total distance around the surface of the profile, starting from the left-most coordinate.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pct</strong> (<em>Float</em>) – Distance around surface, expressed as a percent, to find</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interpolated coordinate at position</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.interpolate_new_surface">
-<em class="property">classmethod </em><code class="descname">interpolate_new_surface</code><span class="sig-paren">(</span><em>s1</em>, <em>s2</em>, <em>dist_between</em>, <em>dist_interp</em>, <em>points=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate_new_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.interpolate_new_surface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new Surface interpolated from two other Surfaces.</p>
+<dt id="hotwing_core.Surface.trim">
+<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>surface</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trim a Surface to new starting and ending x values.</p>
+<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
+those values will be interpolated and may actually make the width of the surface larger.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>s1</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – First Surface to interpolate from</li>
-<li><strong>s2</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Second Surface to interpolate from</li>
-<li><strong>dist_between</strong> (<em>Float</em>) – Distance between profiles</li>
-<li><strong>dist_interp</strong> (<em>Float</em>) – Distance from s1 where new surface should be interpolated</li>
-<li><strong>points</strong> (<em>Int</em>) – Number of points to use for interpolating the new surface</li>
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface object to trim</li>
+<li><strong>x_min</strong> (<em>Float</em>) – X value to make the left cut on - if not
+specified, no cut will be made on this side</li>
+<li><strong>x_max</strong> (<em>Float</em>) – X value to make the right cut on - if not
+specified, no cut will be made on this side</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New Surface interpolated from s1 and s2</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface trimmed to the min and max x values</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
 </td>
 </tr>
 </tbody>
@@ -181,8 +333,24 @@ the total distance around the surface of the profile, starting from the left-mos
 </dd></dl>
 
 <dl class="attribute">
-<dt id="hotwing_core.surface.Surface.left">
-<code class="descname">left</code><a class="headerlink" href="#hotwing_core.surface.Surface.left" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface.bounds">
+<code class="descname">bounds</code><a class="headerlink" href="#hotwing_core.Surface.bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bounding box of the Surface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple of Coordinates with the min xy and the max xy value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a>,<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hotwing_core.Surface.left">
+<code class="descname">left</code><a class="headerlink" href="#hotwing_core.Surface.left" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the left most Coordinate</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -190,15 +358,15 @@ the total distance around the surface of the profile, starting from the left-mos
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">left-most Coordinate</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="hotwing_core.surface.Surface.length">
-<code class="descname">length</code><a class="headerlink" href="#hotwing_core.surface.Surface.length" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface.length">
+<code class="descname">length</code><a class="headerlink" href="#hotwing_core.Surface.length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the total length around the area of the surface</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -212,60 +380,9 @@ the total distance around the surface of the profile, starting from the left-mos
 </table>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.offset_around_profile">
-<em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.offset_around_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Offset the surface around the current surface.</p>
-<p>Evaluates relative angle at each point and  expands/contracts
-the surface around these angles.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Surface to offset</li>
-<li><strong>offset</strong> (<em>Float</em>) – Distance to offset from surface - positive value offsets upwards, negative
-value offsets downwards.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface object with the offset applied</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.offset_xy">
-<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.offset_xy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Offset the surface using the x and y values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Surface object to offset</li>
-<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – Coordinate object containing the x and y offset amounts.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface with the offset applied</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
-<dt id="hotwing_core.surface.Surface.right">
-<code class="descname">right</code><a class="headerlink" href="#hotwing_core.surface.Surface.right" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface.right">
+<code class="descname">right</code><a class="headerlink" href="#hotwing_core.Surface.right" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the right-most Coordinate</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -273,85 +390,7 @@ value offsets downwards.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">right-most Coordinate</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.rotate">
-<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>surface</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.rotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotate a surface around a certain point.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origin</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – Object that defines the point to rotate surface around</li>
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Object to rotate</li>
-<li><strong>angle</strong> (<em>Float</em>) – Degrees to rotate surface.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New rotated Surface</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.scale">
-<em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>surface</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale a Surface by a specified value</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Surface to offset</li>
-<li><strong>scale</strong> (<em>Float</em>) – Scale value</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new scaled Surface</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.surface.Surface.trim">
-<em class="property">classmethod </em><code class="descname">trim</code><span class="sig-paren">(</span><em>surface</em>, <em>x_min=None</em>, <em>x_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.surface.Surface.trim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trim a Surface to new starting and ending x values.</p>
-<p>IMPORTANT - If you specify a value smaller than the min or larger than the max, by default
-those values will be interpolated and may actually make the width of the surface larger.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface"><em>Surface</em></a>) – Surface object to trim</li>
-<li><strong>x_min</strong> (<em>Float</em>) – X value to make the left cut on - if not
-specified, no cut will be made on this side</li>
-<li><strong>x_max</strong> (<em>Float</em>) – X value to make the right cut on - if not
-specified, no cut will be made on this side</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface trimmed to the min and max x values</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.surface.Surface" title="hotwing_core.surface.Surface">Surface</a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></td>
 </tr>
 </tbody>
 </table>

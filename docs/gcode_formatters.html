@@ -40,11 +40,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.gcode_formatters">
-<span id="gcode-formatters"></span><h1>GCode Formatters<a class="headerlink" href="#module-hotwing_core.gcode_formatters" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gcode-formatters">
+<h1>GCode Formatters<a class="headerlink" href="#gcode-formatters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="base-class">
+<h2>Base Class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="hotwing_core.gcode_formatters.GcodeFormatBase">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gcode Formatter’s job is to convert the commands maintained
 by the Gcode class and format them into the appropriate format
 for the specification of Gcode being generated.</p>
@@ -52,22 +54,40 @@ for the specification of Gcode being generated.</p>
 the _process_move and _process_fast_move commands.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="factory">
+<h2>Factory<a class="headerlink" href="#factory" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="hotwing_core.gcode_formatters.GcodeFormatDebug">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatDebug</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatDebug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatDebug" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
-<p>This is meant as a debugging class.  It will output the commands
-as a line of text separated by tabs.</p>
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterFactory</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.default">
+<code class="descname">default</code><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">GenericGcodeFormatter</span></code></p>
 </dd></dl>
 
-<dl class="class">
-<dt id="hotwing_core.gcode_formatters.GenericGcode">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GenericGcode</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GenericGcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GenericGcode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#hotwing_core.gcode_formatters.GcodeFormatBase" title="hotwing_core.gcode_formatters.GcodeFormatBase"><code class="xref py py-class docutils literal"><span class="pre">hotwing_core.gcode_formatters.GcodeFormatBase</span></code></a></p>
-<p>Generic Gcode (RS-274?) formatter
-Made to work with LinuxCNC</p>
+<dl class="classmethod">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls">
+<em class="property">classmethod </em><code class="descname">get_cls</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterFactory.get_cls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a cutting strategy by name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">GcodeFormatter object</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.formatters">
+<code class="descname">formatters</code><em class="property"> = [&lt;class hotwing_core.gcode_formatters.GenericGcodeFormatter&gt;, &lt;class hotwing_core.gcode_formatters.DebugGcodeFormatter&gt;]</em><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.formatters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -94,7 +114,11 @@ Made to work with LinuxCNC</p>
 <li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
 <li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">GCode Formatters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GCode Formatters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-class">Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#factory">Factory</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cutting_strategies.html">Cutting Strageties</a></li>
 </ul>

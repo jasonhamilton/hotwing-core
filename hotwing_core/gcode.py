@@ -1,12 +1,9 @@
 from __future__ import division
-from .gcode_formatters import GcodeFormatDebug, GenericGcode
+from .gcode_formatters import GcodeFormatterFactory
 import logging
 logging.getLogger(__name__)
 
-FORMATTERS = {'generic': GenericGcode,
-              'debug': GcodeFormatDebug}
 
-DEFAULT_FORMATTER = 'generic'
 DEFAULT_FEEDRATE_IN = 5
 DEFAULT_FEEDRATE_MM = 125
 
@@ -20,7 +17,7 @@ class Gcode():
     conversion is delegated to.
     """
 
-    def __init__(self, formatter_name=DEFAULT_FORMATTER, units="inches", feedrate=None):
+    def __init__(self, formatter_name=None, units="inches", feedrate=None):
         self.commands = []
         self.units = units
         if feedrate:
@@ -37,14 +34,9 @@ class Gcode():
         self.commands.append(("FAST_MOVE", coords))
 
     def set_formatter(self, formatter_name):
-        if formatter_name == 'default':
-            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER](self)
-        elif formatter_name in FORMATTERS:
-            self.gcode_formatter = FORMATTERS[formatter_name](self)
-        else:
-            logging.error("ERROR SETTING GCODE FORMATTER, FALLING BACK TO DEFAULT")
-            self.gcode_formatter = FORMATTERS[DEFAULT_FORMATTER](self)
-
+        formatter_cls = GcodeFormatterFactory.get_cls(formatter_name)
+        self.gcode_formatter = formatter_cls(self)
+            
     @property
     def code(self):
         """

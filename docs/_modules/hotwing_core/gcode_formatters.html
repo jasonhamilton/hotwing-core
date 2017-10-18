@@ -42,7 +42,7 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 
-<div class="viewcode-block" id="GcodeFormatBase"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatBase">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatBase</span><span class="p">():</span>
+<div class="viewcode-block" id="GcodeFormatterBase"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatterBase</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gcode Formatter&#39;s job is to convert the commands maintained</span>
 <span class="sd">    by the Gcode class and format them into the appropriate format</span>
@@ -67,7 +67,7 @@
         <span class="k">return</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="GcodeFormatDebug"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatDebug">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatDebug</span><span class="p">(</span><span class="n">GcodeFormatBase</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DebugGcodeFormatter</span><span class="p">(</span><span class="n">GcodeFormatterBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is meant as a debugging class.  It will output the commands</span>
 <span class="sd">    as a line of text separated by tabs.</span>
@@ -96,10 +96,10 @@
         <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="nf">_end_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[]</span></div>
+        <span class="k">return</span> <span class="p">[]</span>
 
 
-<div class="viewcode-block" id="GenericGcode"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GenericGcode">[docs]</a><span class="k">class</span> <span class="nc">GenericGcode</span><span class="p">(</span><span class="n">GcodeFormatBase</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GenericGcodeFormatter</span><span class="p">(</span><span class="n">GcodeFormatterBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic Gcode (RS-274?) formatter</span>
 <span class="sd">    Made to work with LinuxCNC</span>
@@ -148,7 +148,37 @@
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># End Program</span>
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;M30&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">out</span></div>
+        <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="GcodeFormatterFactory"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterFactory">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatterFactory</span><span class="p">():</span>
+    <span class="n">formatters</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">GenericGcodeFormatter</span><span class="p">,</span>
+                    <span class="n">DebugGcodeFormatter</span>
+                 <span class="p">]</span>
+    <span class="n">default</span> <span class="o">=</span> <span class="n">GenericGcodeFormatter</span>
+
+<div class="viewcode-block" id="GcodeFormatterFactory.get_cls"><a class="viewcode-back" href="../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_cls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a cutting strategy by name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GcodeFormatter object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">default</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">formatters</span><span class="p">:</span>
+            <span class="n">f_name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">f_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ERROR: GCODE FORMATTER NAME INCORRECT, FALLING BACK TO DEFAULT&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">default</span></div></div>
+
 </pre></div>
 
           </div>

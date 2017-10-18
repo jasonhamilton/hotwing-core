@@ -13,32 +13,14 @@ class Surface():
         coordinates (Coordinate[]): list of Coordinates
                         ASSUMED TO BE IN EITHER ASCENDING OR DESCENDING
                         ORDER BASED ON X VALUES
+
+    :ivar coordinates: list of Coordinates that make up surface
     """
 
     def __init__(self, coordinates=[]):
         self.coordinates = coordinates
         self._remove_duplicate_coordinates()
         self._order_coordinates()
-
-    @property
-    def left(self):
-        """
-        Get the left most Coordinate
-
-        Returns:
-            Coordinate: left-most Coordinate
-        """
-        return self.coordinates[0]
-
-    @property
-    def right(self):
-        """
-        Get the right-most Coordinate
-
-        Returns:
-            Coordinate: right-most Coordinate
-        """
-        return self.coordinates[-1]
 
     @property
     def bounds(self):
@@ -53,6 +35,16 @@ class Surface():
         max_x = max([c.x for c in self.coordinates])
         max_y = max([c.y for c in self.coordinates])
         return (Coordinate(min_x, min_y), Coordinate(max_x, max_y))
+
+    @property
+    def left(self):
+        """
+        Get the left most Coordinate
+
+        Returns:
+            Coordinate: left-most Coordinate
+        """
+        return self.coordinates[0]
 
     @property
     def length(self):
@@ -70,6 +62,16 @@ class Surface():
             dist = Coordinate.calc_dist(a, b)
             total_len += dist
         return total_len
+
+    @property
+    def right(self):
+        """
+        Get the right-most Coordinate
+
+        Returns:
+            Coordinate: right-most Coordinate
+        """
+        return self.coordinates[-1]
 
     @classmethod
     def offset_around_profile(cls, surface, offset):
@@ -158,29 +160,6 @@ class Surface():
         for c in surface.coordinates:
             new_coords.append(c * scale)
         return cls(new_coords)
-
-    # @classmethod
-    # def scale_to_width(cls, surface, width):
-    #     """
-    #     Scales a Surface to a specified width.  The new surface will start at 0 and go to the width
-
-    #     Args:
-    #         surface : Surface to offset
-    #         width: Float - width of new surface
-
-    #     Returns:
-    #         Surface: new Surface scaled to the new width
-    #     """
-    #     # offset min x to 0
-    #     min_, max_ = surface.bounds
-    #     s = Surface.offset_xy(surface, Coordinate(-min_.x,0))
-
-    #     _, max_ = s.bounds
-    #     scale_factor = width * 1.00 / max_.x
-    #     new_coords = []
-    #     for c in s.coordinates:
-    #         new_coords.append(c * scale_factor)
-    #     return cls(new_coords)
 
     @classmethod
     def trim(cls, surface, x_min=None, x_max=None):
@@ -409,7 +388,7 @@ class Surface():
 
         return Coordinate(x, y)
 
-    def export(self, output_file, separator="\t", newline="\n"):
+    def to_file(self, output_file, separator="\t", newline="\n"):
         """
         Write the Surface's list of Coordinates to a file
 
@@ -469,25 +448,42 @@ class Surface():
         return out
 
     def __add__(self, other):
+        """
+        Add a Surface object and a Coordinate object
+        """
         if isinstance(other, Coordinate):
             return Surface.offset_xy(self,other)
         raise NotImplementedError
 
     def __sub__(self, other):
+        """
+        Subtract a Surface object and a Coordinate object
+        """
         if isinstance(other, Coordinate):
             new_coord = Coordinate(-other.x,-other.y)
             return Surface.offset_xy(self,new_coord)
         raise NotImplementedError
 
     def __mul__(self, other):
+        """
+        Multiply a Surface object and a number together
+        """
         return Surface.scale(self, other)
 
     def __getitem__(self, key):
+        """
+        Trim a surface using the slice functionality.
+
+        Ex: surface_obj[2:5], trims from 2 to 5
+        """
         if isinstance(key, slice):
             return Surface.trim(self,key.start,key.stop)
         raise NotImplementedError
 
     def __eq__(self, other):
+        """
+        Compare two a Surface objects
+        """
         if isinstance(other, self.__class__):
             # start by comparing coord len
             if not len(self.coordinates) == len(other.coordinates):
@@ -502,6 +498,9 @@ class Surface():
         raise NotImplementedError
 
     def __ne__(self, other):
+        """
+        Compare two a Surface objects
+        """
         if isinstance(other, self.__class__):
             return not self.__eq__(other)
         raise NotImplementedError

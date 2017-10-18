@@ -40,23 +40,71 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-hotwing_core.coordinate">
-<span id="coordinate"></span><h1>Coordinate<a class="headerlink" href="#module-hotwing_core.coordinate" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="coordinate">
+<h1>Coordinate<a class="headerlink" href="#coordinate" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="hotwing_core.coordinate.Coordinate">
-<em class="property">class </em><code class="descclassname">hotwing_core.coordinate.</code><code class="descname">Coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Coordinate">
+<em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>2 Dimensional X-Y coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>float</em>) – X value of coordinate</li>
+<li><strong>y</strong> (<em>float</em>) – Y value of coordinate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> – x coordinate</li>
+<li><strong>y</strong> – y coordinate</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hotwing_core.Coordinate.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.__add__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add two a Coordinate objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Coordinate.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two a Coordinate objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Coordinate.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.__mul__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply two a Coordinate objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Coordinate.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.__ne__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two a Coordinate objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.Coordinate.__sub__">
+<code class="descname">__sub__</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.__sub__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract two a Coordinate objects</p>
+</dd></dl>
+
 <dl class="classmethod">
-<dt id="hotwing_core.coordinate.Coordinate.calc_dist">
-<em class="property">classmethod </em><code class="descname">calc_dist</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.calc_dist" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Coordinate.calc_dist">
+<em class="property">classmethod </em><code class="descname">calc_dist</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.calc_dist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the distance between two Coordinates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – First Coordinate</li>
-<li><strong>b</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – Second Coordinate</li>
+<li><strong>a</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – First Coordinate</li>
+<li><strong>b</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Second Coordinate</li>
 </ul>
 </td>
 </tr>
@@ -71,16 +119,16 @@
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.coordinate.Coordinate.calc_slope">
-<em class="property">classmethod </em><code class="descname">calc_slope</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_slope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.calc_slope" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Coordinate.calc_slope">
+<em class="property">classmethod </em><code class="descname">calc_slope</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.calc_slope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.calc_slope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the slope between two Coordinates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – First Coordinate</li>
-<li><strong>b</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – Second Coordinate</li>
+<li><strong>a</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – First Coordinate</li>
+<li><strong>b</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Second Coordinate</li>
 </ul>
 </td>
 </tr>
@@ -95,16 +143,16 @@
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.coordinate.Coordinate.rotate">
-<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>coordinate</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.coordinate.Coordinate.rotate" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Coordinate.rotate">
+<em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>coordinate</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/coordinate.html#Coordinate.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Coordinate.rotate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotate a Coordinate around a point in 2D space.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>origin</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – Defines the point to rotate around</li>
-<li><strong>coordinate</strong> (<a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate"><em>Coordinate</em></a>) – The Coordinate to rotate</li>
+<li><strong>origin</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Defines the point to rotate around</li>
+<li><strong>coordinate</strong> (<a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – The Coordinate to rotate</li>
 <li><strong>angle</strong> (<em>Float</em>) – Degrees to rotate Coordinate</li>
 </ul>
 </td>
@@ -112,7 +160,7 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New rotated Coordinate</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.coordinate.Coordinate" title="hotwing_core.coordinate.Coordinate">Coordinate</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Coordinate" title="hotwing_core.Coordinate">Coordinate</a></p>
 </td>
 </tr>
 </tbody>

@@ -5,4 +5,4 @@ from .profile import Profile
 from .rib import Rib
 from .surface import Surface
 from .gcode import Gcode
-from . import cutting_strategies
+from .cutting_strategies import CuttingStrategyBase

@@ -3,7 +3,7 @@ from .utils import isect_line_plane_v3
 from .profile import Profile
 from .coordinate import Coordinate
 from .gcode import Gcode
-from .cutting_strategies import CuttingStrategyFactory
+from .cutting_strategies import *
 import logging
 logging.getLogger(__name__)
 

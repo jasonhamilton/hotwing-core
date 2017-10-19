@@ -30,7 +30,6 @@ class GcodeFormatterFactory():
             return cls.debug
 
         for f in cls.formatters:
-            print f.__name__
             f_name = f.__name__.lower()
             if f_name == name:
                 return f

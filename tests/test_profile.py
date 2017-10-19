@@ -135,7 +135,7 @@ class TestProfile():
         assert p6.x_bounds[0] == 0.2
         assert p6.x_bounds[1] == 0.8
 
-    def test_offset_xy(self):
+    def test_translate(self):
         top = [
             Coordinate(0.2, 0.4), 
             Coordinate(0.4, 0.5),
@@ -151,7 +151,7 @@ class TestProfile():
         # trim using the min and max x - should not change
         p1 = Profile(top+bottom)
         offset = Coordinate(1,2)
-        p2 = Profile.offset_xy(p1,offset)
+        p2 = Profile.translate(p1,offset)
         for i in range(len(p1.top.coordinates)):
             assert p2.top.coordinates[i] == p1.top.coordinates[i] + offset
         p3 = p1+offset

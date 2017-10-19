@@ -6,8 +6,8 @@ import math
 
 class Surface():
     """
-    A connected group of coordinates connected by lines that make up a top or bottom
-    surface of an airfoil.
+    A Surface is a list of Coordinates that when connected together by lines make up the shape of 
+    the surface.  A Surface is used to define the top or bottom surfaces of an airfoil.
 
     Args:
         coordinates (Coordinate[]): list of Coordinates
@@ -78,8 +78,11 @@ class Surface():
         """
         Offset the surface around the current surface.
 
-        Evaluates relative angle at each point and  expands/contracts 
-        the surface around these angles.
+        Evaluates the relative angle of each Coordinate with relation to the Coordinates on either side of it and
+        moves the each Coordinate along its relative angle.  By moving each of the Surface's Coordinates this way
+        the Survace is expanded/contracted in a way that accurately accounts for a sheeting allowance.
+
+        If the ends of the Surface are more horizontal than vertical, the surface will become narrower.
 
         Args:
             surface (Surface): Surface to offset
@@ -126,9 +129,9 @@ class Surface():
         return cls(new_coords)
 
     @classmethod
-    def offset_xy(cls, surface, offset):
+    def translate(cls, surface, offset):
         """
-        Offset the surface using the x and y values
+        Offset the surface (up, down, left, right) using a Coordinate's x and y values
 
         Args:
             surface (Surface) : Surface object to offset
@@ -452,7 +455,7 @@ class Surface():
         Add a Surface object and a Coordinate object
         """
         if isinstance(other, Coordinate):
-            return Surface.offset_xy(self,other)
+            return Surface.translate(self,other)
         raise NotImplementedError
 
     def __sub__(self, other):
@@ -461,7 +464,7 @@ class Surface():
         """
         if isinstance(other, Coordinate):
             new_coord = Coordinate(-other.x,-other.y)
-            return Surface.offset_xy(self,new_coord)
+            return Surface.translate(self,new_coord)
         raise NotImplementedError
 
     def __mul__(self, other):

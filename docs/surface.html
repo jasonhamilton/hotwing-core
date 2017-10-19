@@ -45,8 +45,8 @@
 <dl class="class">
 <dt id="hotwing_core.Surface">
 <em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Surface</code><span class="sig-paren">(</span><em>coordinates=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface" title="Permalink to this definition">¶</a></dt>
-<dd><p>A connected group of coordinates connected by lines that make up a top or bottom
-surface of an airfoil.</p>
+<dd><p>A Surface is a list of Coordinates that when connected together by lines make up the shape of
+the surface.  A Surface is used to define the top or bottom surfaces of an airfoil.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -185,8 +185,10 @@ the total distance around the surface of the profile, starting from the left-mos
 <dt id="hotwing_core.Surface.offset_around_profile">
 <em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_around_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Offset the surface around the current surface.</p>
-<p>Evaluates relative angle at each point and  expands/contracts
-the surface around these angles.</p>
+<p>Evaluates the relative angle of each Coordinate with relation to the Coordinates on either side of it and
+moves the each Coordinate along its relative angle.  By moving each of the Surface’s Coordinates this way
+the Survace is expanded/contracted in a way that accurately accounts for a sheeting allowance.</p>
+<p>If the ends of the Surface are more horizontal than vertical, the surface will become narrower.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -199,30 +201,6 @@ value offsets downwards.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface object with the offset applied</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="hotwing_core.Surface.offset_xy">
-<em class="property">classmethod </em><code class="descname">offset_xy</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_xy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_xy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Offset the surface using the x and y values</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface object to offset</li>
-<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Coordinate object containing the x and y offset amounts.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface with the offset applied</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
@@ -297,6 +275,30 @@ value offsets downwards.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hotwing_core.Surface.translate">
+<em class="property">classmethod </em><code class="descname">translate</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offset the surface (up, down, left, right) using a Coordinate’s x and y values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>surface</strong> (<a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface"><em>Surface</em></a>) – Surface object to offset</li>
+<li><strong>offset</strong> (<a class="reference internal" href="coordinate.html#hotwing_core.Coordinate" title="hotwing_core.Coordinate"><em>Coordinate</em></a>) – Coordinate object containing the x and y offset amounts.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new Surface with the offset applied</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#hotwing_core.Surface" title="hotwing_core.Surface">Surface</a></p>
 </td>
 </tr>
 </tbody>

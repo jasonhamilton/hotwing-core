@@ -8,17 +8,35 @@ DEFAULT_FEEDRATE_IN = 5
 DEFAULT_FEEDRATE_MM = 125
 
 
+
+class MachineCommand():
+    def __init__(self, type_, coordinates, options=[]):
+        self.type_ = type_
+        self.coordinates = coordinates
+        self.options = options
+
+    def has_option(self, option):
+        for o in self.options:
+            if option in self.options:
+                return True
+        return False
+
+
+
 class Gcode():
     """
-    Object maintains gcode when it's being generated,
-    then outputs the gcode in the correct format.
+    The Gcode object maintains a list of gcode commands and allows you
+    to add commands easily.  
     
-    Contains a GCodeFormatter class, to which all of the
-    conversion is delegated to.
+    Contains a GCodeFormatter class, to which all of the formatting is 
+    delegated to.
+
+    :ivar units: units - "inches" or "millimeters"
+    :ivar feedrate: feedrate - units per min (default 5 for inch units, 125 for mm units)
     """
 
     def __init__(self, formatter_name=None, units="inches", feedrate=None):
-        self.commands = []
+        self._commands = []
         self.units = units
         if feedrate:
             self.feedrate = feedrate
@@ -27,11 +45,11 @@ class Gcode():
             self.feedrate = DEFAULT_FEEDRATE_IN if units=="inches" else DEFAULT_FEEDRATE_MM
         self.set_formatter(formatter_name)
 
-    def move(self, coords):
-        self.commands.append(("MOVE", coords))
+    def move(self, coords, options=[]):
+        self._commands.append(MachineCommand("MOVE", coords, options))
 
-    def fast_move(self, coords):
-        self.commands.append(("FAST_MOVE", coords))
+    def fast_move(self, coords, options=[]):
+        self._commands.append(MachineCommand("FAST_MOVE", coords, options))
 
     def set_formatter(self, formatter_name):
         formatter_cls = GcodeFormatterFactory.get_cls(formatter_name)
@@ -44,7 +62,7 @@ class Gcode():
         """
         output = []
         output += self._start_commands()
-        output += [self._process_command(c) for c in self.commands]
+        output += [self._process_command(c) for c in self._commands]
         output += self._end_commands()
         return output
 
@@ -53,13 +71,13 @@ class Gcode():
         return "\n".join(self.code)
 
     def _start_commands(self):
-        return self.gcode_formatter._start_commands()
+        return self.gcode_formatter.start_commands()
 
     def _end_commands(self):
-        return self.gcode_formatter._end_commands()
+        return self.gcode_formatter.end_commands()
 
     def _process_command(self, command):
-        cmd_type = command[0]
+        cmd_type = command.type_
         if cmd_type == "MOVE":
             return self._process_move(command)
         elif cmd_type == "FAST_MOVE":
@@ -69,25 +87,26 @@ class Gcode():
 
     def _process_move(self, command):
         # delegates to the formatter
-        return self.gcode_formatter._process_move(command)
+        return self.gcode_formatter.process_move(command)
 
     def _process_fast_move(self, command):
         # delegates to the formatter
-        return self.gcode_formatter._process_fast_move(command)
+        return self.gcode_formatter.process_fast_move(command)
 
     def normalize(self):
         """
         go through the code and offset it so that min values are 0
         """
+        moves = []
+        for c in self._commands:
+            if not c.has_option("do_not_normalize"):
+                moves.append(c)
 
-        moves = [c for c in self.commands if
-                 c[0] == "MOVE" or c[0] == "FAST_MOVE"]
-
-        min_x = min([min([m[1][0] for m in moves]),
-                     min([m[1][2] for m in moves])]
+        min_x = min([min([m.coordinates['x'] for m in moves if 'x' in m.coordinates]),
+                     min([m.coordinates['u'] for m in moves if 'u' in m.coordinates])]
                     )
-        min_y = min([min([m[1][1] for m in moves]),
-                     min([m[1][3] for m in moves])]
+        min_y = min([min([m.coordinates['y'] for m in moves if 'y' in m.coordinates]),
+                     min([m.coordinates['v'] for m in moves if 'v' in m.coordinates])]
                     )
 
         if min_y < 0:
@@ -101,12 +120,14 @@ class Gcode():
             offset_x = 0
 
         new_commands = []
-        for c in self.commands:
-            new_commands.append((c[0],
-                                 (c[1][0]-offset_x,
-                                  c[1][1]-offset_y,
-                                  c[1][2]-offset_x,
-                                  c[1][3]-offset_y)
-                                 ))
+        for c in self._commands:
+            if not c.has_option("do_not_normalize"):
+                if 'x' in c.coordinates:
+                    c.coordinates['x'] = c.coordinates['x'] - offset_x
+                if 'y' in c.coordinates:
+                    c.coordinates['y'] = c.coordinates['y'] - offset_y
+                if 'u' in c.coordinates:
+                    c.coordinates['u'] = c.coordinates['u'] - offset_x
+                if 'v' in c.coordinates:
+                    c.coordinates['v'] = c.coordinates['v'] - offset_y
 
-        self.commands = new_commands

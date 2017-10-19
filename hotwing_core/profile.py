@@ -14,13 +14,13 @@ except ImportError:
     from urllib2 import urlopen
 
 logging.getLogger(__name__)
-PIL_ERROR_DISPLAYED = False
+
 
 class Profile():
     """
-    Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and
-    bottom.  The job of the profile is to load the coordinates, split them and maintain the top and
-    bottom surfaces.
+    A Profile holds a representation of an airfoil, consisting of two Surface objects defining the top
+    and bottom.  The job of the Profile is to load a profile depending on the input the user initialized
+    it with and maintain the Surfaces.
 
     The Profile __init__ method can take a variety of different inputs using method overloading.
 
@@ -144,90 +144,6 @@ class Profile():
         bot_coords = Surface.rotate(origin, profile.bottom, angle)
         return cls(top_coords, bot_coords)
 
-    def draw(self, filename):
-        """
-        Create an image containing the profile and saves it to the disk.
-
-        Args:
-            filename (String) - String-like object containing the path and filename to output the image
-
-        """
-        try:
-            from PIL import Image, ImageDraw
-
-            scale = 8000
-            x_pad = int(scale * 0.1)
-            y_height = int(scale * 0.2)
-            width = scale - x_pad * 2
-
-            bounds = self.x_bounds
-            rib_width = bounds[1] - bounds[0]
-            rib_scale = 1 / 10.0
-
-            n = scale + x_pad * 2
-            m = y_height
-            im = Image.new('RGB', (n, m))
-
-            draw = ImageDraw.Draw(im)
-            draw.rectangle([0, 0, n, m], fill=(255, 255, 255))
-
-            # setup chart
-            # horizontal line
-            draw.line((x_pad, y_height / 2) +
-                      (n - x_pad, y_height / 2), fill=(0, 0, 0))
-
-            # Left and right of vertical lines on x axis
-            draw.line((x_pad, y_height / 2 + width * 0.1) +
-                      (x_pad, y_height / 2 - width * 0.1), fill=(0, 0, 0))
-            draw.line((n - x_pad, y_height / 2 + width * 0.1) +
-                      (n - x_pad, y_height / 2 - width * 0.1), fill=(0, 0, 0))
-
-            # ticks on y axis
-            draw.line((x_pad - (x_pad * 0.01), y_height / 2 - width * 0.05) +
-                      (x_pad + (x_pad * 0.01), y_height / 2 - width * 0.05), fill=(0, 0, 0))
-            draw.line((x_pad - (x_pad * 0.05), y_height / 2 - width * 0.10) +
-                      (x_pad + (x_pad * 0.05), y_height / 2 - width * 0.10), fill=(0, 0, 0))
-            draw.line((x_pad - (x_pad * 0.01), y_height / 2 + width * 0.05) +
-                      (x_pad + (x_pad * 0.01), y_height / 2 + width * 0.05), fill=(0, 0, 0))
-            draw.line((x_pad - (x_pad * 0.05), y_height / 2 + width * 0.10) +
-                      (x_pad + (x_pad * 0.05), y_height / 2 + width * 0.10), fill=(0, 0, 0))
-
-            # ticks on x axis
-            ticks = 20
-            for i in range(ticks - 1):
-                x = (n - x_pad * 2) * (i + 1) / ticks + x_pad
-                draw.line((x, y_height / 2 + y_height * 0.01) +
-                          (x, y_height / 2 - y_height * 0.01), fill=(0, 0, 0))
-            ticks = 10
-            for i in range(ticks - 1):
-                x = (n - x_pad * 2) * (i + 1) / ticks + x_pad
-                draw.line((x, y_height / 2 + y_height * 0.05) +
-                          (x, y_height / 2 - y_height * 0.05), fill=(0, 0, 0))
-
-            def draw_profile(profile, draw_obj, color):
-                for i in range(len(profile.coordinates) - 1):
-                    c1 = profile.coordinates[i]
-                    c2 = profile.coordinates[i + 1]
-                    c1_x = c1.x * scale * rib_scale + x_pad
-                    c1_y = c1.y * scale * rib_scale
-                    c2_x = c2.x * scale * rib_scale + x_pad
-                    c2_y = c2.y * scale * rib_scale
-                    draw_obj.line((c1_x, m - (c1_y + m / 2)) +
-                                  (c2_x, m - (c2_y + m / 2)), fill=color)
-            draw_profile(self.top, draw, (255, 0, 0))
-            draw_profile(self.bottom, draw, (0, 255, 0))
-
-            del draw
-            # filepath = os.path.join("img",filename)
-            filepath = filename
-            im.save(filepath, "PNG")
-        except ImportError:
-            global PIL_ERROR_DISPLAYED
-            if not PIL_ERROR_DISPLAYED:
-                logging.error("Error drawing profile - PILLOW not installed.  Install using 'pip install pillow'")
-                PIL_ERROR_DISPLAYED = True
-            pass
-
     @classmethod
     def copy(cls, profile):
         """
@@ -264,11 +180,11 @@ class Profile():
 
 
     @classmethod
-    def offset_xy(cls, profile, offset):
+    def translate(cls, profile, offset):
         """
         Offset a profile left, right, up or down.
 
-        Delagates to the Surface objects' offset_xy method
+        Delagates to the Surface objects' translate method
 
         Args:
             profile (Profile): object to offset
@@ -278,8 +194,8 @@ class Profile():
         Returns:
             Profile: new offset Profile
         """
-        top = Surface.offset_xy(profile.top, offset)
-        bottom = Surface.offset_xy(profile.bottom, offset)
+        top = Surface.translate(profile.top, offset)
+        bottom = Surface.translate(profile.bottom, offset)
         return Profile(top, bottom)
 
     @classmethod
@@ -612,13 +528,13 @@ class Profile():
 
     def __add__(self, other):
         if isinstance(other, Coordinate):
-            return Profile.offset_xy(self,other)
+            return Profile.translate(self,other)
         raise NotImplementedError
 
     def __sub__(self, other):
         if isinstance(other, Coordinate):
             new_coord = Coordinate(-other.x,-other.y)
-            return Profile.offset_xy(self,new_coord)
+            return Profile.translate(self,new_coord)
         raise NotImplementedError
 
     def __mul__(self, other):

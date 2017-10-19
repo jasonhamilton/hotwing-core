@@ -30,6 +30,7 @@ class Rib():
                               foil around a point 50% from the tip.  A value of 0.25% will rotate the value 25% from
                               the tip.
     
+    :ivar foil_definition: foil_definition
     :ivar scale: scale
     :ivar xy_offset: xy_offset
     :ivar top_sheet: top_sheet
@@ -43,10 +44,9 @@ class Rib():
     def __init__(self, foil_data, scale=None, xy_offset=None, top_sheet=0,
                  bottom_sheet=0, front_stock=0, tail_stock=0, rotation=0, rotation_pos=0.5):
         if isinstance(foil_data, Profile):
-            #: Profile object that contains the foil data
-            self.foil_profile = foil_data
+            self.foil_definition = foil_data
         else:
-            self.foil_profile = Profile(foil_data)
+            self.foil_definition = Profile(foil_data)
         self.scale = scale
         self.xy_offset = xy_offset
         self.top_sheet = top_sheet
@@ -62,7 +62,7 @@ class Rib():
         A copy of the scaled and offset airfoil before sheeting.  This represents the surface of the wing
         at the Rib's position.  This includes the entire foil and doesn't exclude the front_stock or tail_stock.
         """
-        p = Profile.copy(self.foil_profile)
+        p = Profile.copy(self.foil_definition)
         if not self.scale is None:
             p = Profile.scale(p, self.scale)
         if not self.rotation == 0:
@@ -71,7 +71,7 @@ class Rib():
             mid_point = x_bounds[0] + x_len * self.rotation_pos
             p = Profile.rotate(Coordinate(mid_point, 0), p, -self.rotation)
         if self.xy_offset:
-            p = Profile.offset_xy(p, self.xy_offset)
+            p = Profile.translate(p, self.xy_offset)
         return p
 
     @property

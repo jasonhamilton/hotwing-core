@@ -49,17 +49,35 @@
 <span class="n">DEFAULT_FEEDRATE_MM</span> <span class="o">=</span> <span class="mi">125</span>
 
 
+
+<span class="k">class</span> <span class="nc">MachineCommand</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="k">def</span> <span class="nf">has_option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+
 <div class="viewcode-block" id="Gcode"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode">[docs]</a><span class="k">class</span> <span class="nc">Gcode</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Object maintains gcode when it&#39;s being generated,</span>
-<span class="sd">    then outputs the gcode in the correct format.</span>
+<span class="sd">    The Gcode object maintains a list of gcode commands and allows you</span>
+<span class="sd">    to add commands easily.  </span>
 <span class="sd">    </span>
-<span class="sd">    Contains a GCodeFormatter class, to which all of the</span>
-<span class="sd">    conversion is delegated to.</span>
+<span class="sd">    Contains a GCodeFormatter class, to which all of the formatting is </span>
+<span class="sd">    delegated to.</span>
+
+<span class="sd">    :ivar units: units - &quot;inches&quot; or &quot;millimeters&quot;</span>
+<span class="sd">    :ivar feedrate: feedrate - units per min (default 5 for inch units, 125 for mm units)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;inches&quot;</span><span class="p">,</span> <span class="n">feedrate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
         <span class="k">if</span> <span class="n">feedrate</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">feedrate</span> <span class="o">=</span> <span class="n">feedrate</span>
@@ -68,11 +86,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">feedrate</span> <span class="o">=</span> <span class="n">DEFAULT_FEEDRATE_IN</span> <span class="k">if</span> <span class="n">units</span><span class="o">==</span><span class="s2">&quot;inches&quot;</span> <span class="k">else</span> <span class="n">DEFAULT_FEEDRATE_MM</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_formatter</span><span class="p">(</span><span class="n">formatter_name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Gcode.move"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Gcode.move"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MachineCommand</span><span class="p">(</span><span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">options</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Gcode.fast_move"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.fast_move">[docs]</a>    <span class="k">def</span> <span class="nf">fast_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;FAST_MOVE&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Gcode.fast_move"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.fast_move">[docs]</a>    <span class="k">def</span> <span class="nf">fast_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MachineCommand</span><span class="p">(</span><span class="s2">&quot;FAST_MOVE&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">options</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Gcode.set_formatter"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.set_formatter">[docs]</a>    <span class="k">def</span> <span class="nf">set_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter_name</span><span class="p">):</span>
         <span class="n">formatter_cls</span> <span class="o">=</span> <span class="n">GcodeFormatterFactory</span><span class="o">.</span><span class="n">get_cls</span><span class="p">(</span><span class="n">formatter_name</span><span class="p">)</span>
@@ -85,7 +103,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_commands</span><span class="p">()</span>
-        <span class="n">output</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_command</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">]</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_command</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">]</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_commands</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">output</span>
 
@@ -94,13 +112,13 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_start_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">_start_commands</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">start_commands</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_end_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">_end_commands</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">end_commands</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_process_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-        <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">command</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">type_</span>
         <span class="k">if</span> <span class="n">cmd_type</span> <span class="o">==</span> <span class="s2">&quot;MOVE&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_move</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">cmd_type</span> <span class="o">==</span> <span class="s2">&quot;FAST_MOVE&quot;</span><span class="p">:</span>
@@ -110,25 +128,26 @@
 
     <span class="k">def</span> <span class="nf">_process_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="c1"># delegates to the formatter</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">_process_move</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">process_move</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_process_fast_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="c1"># delegates to the formatter</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">_process_fast_move</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcode_formatter</span><span class="o">.</span><span class="n">process_fast_move</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Gcode.normalize"><a class="viewcode-back" href="../../gcode.html#hotwing_core.Gcode.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        go through the code and offset it so that min values are 0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">moves</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">):</span>
+                <span class="n">moves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
-        <span class="n">moves</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="k">if</span>
-                 <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;MOVE&quot;</span> <span class="ow">or</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;FAST_MOVE&quot;</span><span class="p">]</span>
-
-        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">]),</span>
-                     <span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">])]</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">]),</span>
+                     <span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="s1">&#39;u&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])]</span>
                     <span class="p">)</span>
-        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">]),</span>
-                     <span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">])]</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">]),</span>
+                     <span class="nb">min</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="s1">&#39;v&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])]</span>
                     <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">min_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -142,15 +161,17 @@
             <span class="n">offset_x</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">new_commands</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">:</span>
-            <span class="n">new_commands</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                 <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">offset_x</span><span class="p">,</span>
-                                  <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">offset_y</span><span class="p">,</span>
-                                  <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">offset_x</span><span class="p">,</span>
-                                  <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="n">offset_y</span><span class="p">)</span>
-                                 <span class="p">))</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset_x</span>
+                <span class="k">if</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset_y</span>
+                <span class="k">if</span> <span class="s1">&#39;u&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset_x</span>
+                <span class="k">if</span> <span class="s1">&#39;v&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset_y</span></div></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="n">new_commands</span></div></div>
 </pre></div>
 
           </div>

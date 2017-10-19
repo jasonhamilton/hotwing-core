@@ -26,6 +26,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         le_offset = 1
         te_offset = 1
 
+        self._move_to_safe_height()
         self._move_to_start(profile1, profile2, le_offset, m.safe_height)
         self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
         self._cut_to_leading_edge(profile1, profile2)
@@ -52,6 +53,8 @@ class CuttingStrategy2(CuttingStrategyBase):
     ##################
     ## machine moves #
     ##################
+
+
     def _move_to_above_tail_stock(self, profile1, profile2, safe_height):
         c1 = profile1.right_midpoint
         c2 = profile2.right_midpoint
@@ -60,7 +63,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 Coordinate(c1.x-r1_stock+self.machine.kerf[0], min_y + safe_height),
                 Coordinate(c2.x-r2_stock+self.machine.kerf[1], min_y + safe_height)))
 
@@ -72,7 +75,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 Coordinate(c1.x-r1_stock+self.machine.kerf[0], min_y ),
                 Coordinate(c2.x-r2_stock+self.machine.kerf[1], min_y )))
 
@@ -84,7 +87,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 Coordinate(c1.x+r1_stock-self.machine.kerf[0], min_y + safe_height),
                 Coordinate(c2.x+r2_stock-self.machine.kerf[1], min_y + safe_height)))
 
@@ -96,7 +99,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 Coordinate(c1.x+r1_stock-self.machine.kerf[0], min_y ),
                 Coordinate(c2.x+r2_stock-self.machine.kerf[1], min_y )))
 
@@ -106,7 +109,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         c2 = profile2.top.coordinates[0]
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.fast_move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 c1 + Coordinate(-le_offset, min_y + safe_height),
                 c2 + Coordinate(-le_offset, min_y + safe_height)))
 
@@ -116,7 +119,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         c2 = profile2.top.coordinates[0]
         min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 c1 + Coordinate(-le_offset, min_y + safe_height),
                 c2 + Coordinate(-le_offset, min_y + safe_height)))
 
@@ -124,7 +127,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         start_p1 = profile1.left_midpoint
         start_p2 = profile2.left_midpoint
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 start_p1 + Coordinate(-le_offset, 0),
                 start_p2 + Coordinate(-le_offset, 0)))
 
@@ -142,17 +145,17 @@ class CuttingStrategy2(CuttingStrategyBase):
             pct = i / self.machine.profile_points
             c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
-            self.machine.gc.move(self.machine.convert_coords_to_machine_pos(c1, c2))
+            self.machine.gc.move(self.machine.calculate_move(c1, c2))
 
         # cut to last point
-        self.machine.gc.move(self.machine.convert_coords_to_machine_pos(profile1.top.coordinates[-1],
+        self.machine.gc.move(self.machine.calculate_move(profile1.top.coordinates[-1],
                                                         profile2.top.coordinates[-1]))
 
     def _cut_to_leading_edge(self, profile1, profile2):
         start_p1 = profile1.left_midpoint
         start_p2 = profile2.left_midpoint
 
-        self.machine.gc.move(self.machine.convert_coords_to_machine_pos(start_p1, start_p2))
+        self.machine.gc.move(self.machine.calculate_move(start_p1, start_p2))
 
     def _cut_to_trailing_edge_offset(self, profile1, profile2, te_offset):
         # go to end point with offset
@@ -160,7 +163,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         end_p2 = profile2.right_midpoint
 
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 end_p1 + Coordinate(te_offset, 0),
                 end_p2 + Coordinate(te_offset, 0)))
 
@@ -170,7 +173,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         # go to trailing edge
         self.machine.gc.move(
-            self.machine.convert_coords_to_machine_pos(
+            self.machine.calculate_move(
                 end_p1,
                 end_p2))
 
@@ -188,4 +191,4 @@ class CuttingStrategy2(CuttingStrategyBase):
             pct = i / self.machine.profile_points
             c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
-            self.machine.gc.move(self.machine.convert_coords_to_machine_pos(c1, c2))
+            self.machine.gc.move(self.machine.calculate_move(c1, c2))

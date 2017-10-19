@@ -47,8 +47,8 @@
 
 <div class="viewcode-block" id="Surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface">[docs]</a><span class="k">class</span> <span class="nc">Surface</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A connected group of coordinates connected by lines that make up a top or bottom</span>
-<span class="sd">    surface of an airfoil.</span>
+<span class="sd">    A Surface is a list of Coordinates that when connected together by lines make up the shape of </span>
+<span class="sd">    the surface.  A Surface is used to define the top or bottom surfaces of an airfoil.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        coordinates (Coordinate[]): list of Coordinates</span>
@@ -119,8 +119,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset the surface around the current surface.</span>
 
-<span class="sd">        Evaluates relative angle at each point and  expands/contracts </span>
-<span class="sd">        the surface around these angles.</span>
+<span class="sd">        Evaluates the relative angle of each Coordinate with relation to the Coordinates on either side of it and</span>
+<span class="sd">        moves the each Coordinate along its relative angle.  By moving each of the Surface&#39;s Coordinates this way</span>
+<span class="sd">        the Survace is expanded/contracted in a way that accurately accounts for a sheeting allowance.</span>
+
+<span class="sd">        If the ends of the Surface are more horizontal than vertical, the surface will become narrower.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            surface (Surface): Surface to offset</span>
@@ -166,10 +169,10 @@
             <span class="n">new_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Surface.offset_xy"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.translate"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.translate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offset the surface using the x and y values</span>
+<span class="sd">        Offset the surface (up, down, left, right) using a Coordinate&#39;s x and y values</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            surface (Surface) : Surface object to offset</span>
@@ -493,7 +496,7 @@
 <span class="sd">        Add a Surface object and a Coordinate object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Surface.__sub__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__sub__">[docs]</a>    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -502,7 +505,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="n">new_coord</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Surface</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Surface.__mul__"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>

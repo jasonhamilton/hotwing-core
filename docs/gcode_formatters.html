@@ -46,12 +46,43 @@
 <h2>Base Class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterBase">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gcode Formatter’s job is to convert the commands maintained
 by the Gcode class and format them into the appropriate format
 for the specification of Gcode being generated.</p>
-<p>On any subclass, you are expected to implement at a minimum
-the _process_move and _process_fast_move commands.</p>
+<p>You can inherit from this class to create any GcodeFormatter objects.
+On any subclass, you are expected to implement at a minimum
+the process_move and process_fast_move commands.</p>
+<p>The object contains an instance variable parent that provides access to the
+Gcode object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>parent</strong> – parent gcode instance</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.end_commands">
+<code class="descname">end_commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.end_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.end_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.process_fast_move">
+<code class="descname">process_fast_move</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.process_fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.process_fast_move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.process_move">
+<code class="descname">process_move</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.process_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.process_move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.start_commands">
+<code class="descname">start_commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.start_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.start_commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -59,8 +90,14 @@ the _process_move and _process_fast_move commands.</p>
 <h2>Factory<a class="headerlink" href="#factory" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory">
-<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterFactory</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterFactory</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/factory.html#GcodeFormatterFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.debug">
+<code class="descname">debug</code><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">DebugGcodeFormatter</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.default">
 <code class="descname">default</code><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.default" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">GenericGcodeFormatter</span></code></p>
@@ -68,7 +105,7 @@ the _process_move and _process_fast_move commands.</p>
 
 <dl class="classmethod">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls">
-<em class="property">classmethod </em><code class="descname">get_cls</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters.html#GcodeFormatterFactory.get_cls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">get_cls</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/factory.html#GcodeFormatterFactory.get_cls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.get_cls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a cutting strategy by name</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -82,7 +119,7 @@ the _process_move and _process_fast_move commands.</p>
 
 <dl class="attribute">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory.formatters">
-<code class="descname">formatters</code><em class="property"> = [&lt;class hotwing_core.gcode_formatters.GenericGcodeFormatter&gt;, &lt;class hotwing_core.gcode_formatters.DebugGcodeFormatter&gt;]</em><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.formatters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">formatters</code><em class="property"> = [&lt;class hotwing_core.gcode_formatters.generic.GenericGcodeFormatter&gt;, &lt;class hotwing_core.gcode_formatters.debug_formatter.DebugGcodeFormatter&gt;]</em><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory.formatters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

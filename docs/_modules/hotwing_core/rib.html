@@ -71,6 +71,7 @@
 <span class="sd">                              foil around a point 50% from the tip.  A value of 0.25% will rotate the value 25% from</span>
 <span class="sd">                              the tip.</span>
 <span class="sd">    </span>
+<span class="sd">    :ivar foil_definition: foil_definition</span>
 <span class="sd">    :ivar scale: scale</span>
 <span class="sd">    :ivar xy_offset: xy_offset</span>
 <span class="sd">    :ivar top_sheet: top_sheet</span>
@@ -84,10 +85,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foil_data</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xy_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">bottom_sheet</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">front_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tail_stock</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotation_pos</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">foil_data</span><span class="p">,</span> <span class="n">Profile</span><span class="p">):</span>
-            <span class="c1">#: Profile object that contains the foil data</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">foil_profile</span> <span class="o">=</span> <span class="n">foil_data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">foil_definition</span> <span class="o">=</span> <span class="n">foil_data</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">foil_profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">foil_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">foil_definition</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">foil_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span> <span class="o">=</span> <span class="n">xy_offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">top_sheet</span> <span class="o">=</span> <span class="n">top_sheet</span>
@@ -103,7 +103,7 @@
 <span class="sd">        A copy of the scaled and offset airfoil before sheeting.  This represents the surface of the wing</span>
 <span class="sd">        at the Rib&#39;s position.  This includes the entire foil and doesn&#39;t exclude the front_stock or tail_stock.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">foil_profile</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">foil_definition</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -112,7 +112,7 @@
             <span class="n">mid_point</span> <span class="o">=</span> <span class="n">x_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_len</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_pos</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">mid_point</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span><span class="p">:</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xy_offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">p</span>
 
     <span class="nd">@property</span>

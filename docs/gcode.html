@@ -45,18 +45,30 @@
 <dl class="class">
 <dt id="hotwing_core.Gcode">
 <em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Gcode</code><span class="sig-paren">(</span><em>formatter_name=None</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object maintains gcode when it’s being generated,
-then outputs the gcode in the correct format.</p>
-<p>Contains a GCodeFormatter class, to which all of the
-conversion is delegated to.</p>
+<dd><p>The Gcode object maintains a list of gcode commands and allows you
+to add commands easily.</p>
+<p>Contains a GCodeFormatter class, to which all of the formatting is
+delegated to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>units</strong> – units - “inches” or “millimeters”</li>
+<li><strong>feedrate</strong> – feedrate - units per min (default 5 for inch units, 125 for mm units)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="hotwing_core.Gcode.fast_move">
-<code class="descname">fast_move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.fast_move" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fast_move</code><span class="sig-paren">(</span><em>coords</em>, <em>options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.fast_move" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hotwing_core.Gcode.move">
-<code class="descname">move</code><span class="sig-paren">(</span><em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.move" title="Permalink to this definition">¶</a></dt>
+<code class="descname">move</code><span class="sig-paren">(</span><em>coords</em>, <em>options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.move" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

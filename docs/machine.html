@@ -54,7 +54,7 @@ profile.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>width</strong> (<em>Float</em>) – length of the machine’s hotwire cutter</li>
 <li><strong>kerf</strong> (<em>Float</em>) – Allowance for the hotwire’s cutter.  This includes the radius of
 the wire plus any additional allowance for melted foam from direct
@@ -68,11 +68,26 @@ number for each (top and bottom) surface of a Profile.</li>
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> – width</li>
+<li><strong>kerf</strong> – kerf</li>
+<li><strong>profile_points</strong> – profile_points</li>
+<li><strong>cutting_strategy_name</strong> – cutting_strategy_name</li>
+<li><strong>gcode_formatter_name</strong> – gcode_formatter_name</li>
+<li><strong>units</strong> – units</li>
+<li><strong>feedrate</strong> – feedrate</li>
+<li><strong>left_offset</strong> – left_offset</li>
+<li><strong>panel</strong> – panel</li>
+<li><strong>safe_height</strong> – safe_height</li>
+<li><a class="reference internal" href="gcode.html#hotwing_core.Gcode.normalize" title="hotwing_core.Gcode.normalize"><strong>normalize</strong></a> – normalize</li>
+</ul>
+</td>
+</tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="hotwing_core.machine.Machine.convert_coords_to_machine_pos">
-<code class="descname">convert_coords_to_machine_pos</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.convert_coords_to_machine_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.convert_coords_to_machine_pos" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.machine.Machine.calculate_move">
+<code class="descname">calculate_move</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.calculate_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.calculate_move" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the XYUV positions for the machine in order to intersect two Coordinates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -84,10 +99,10 @@ number for each (top and bottom) surface of a Profile.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(x, y, u, v)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">{“x”:1.1,”y”:1.1,”u”:1.1,”v”:1.1}</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tuple of Floats</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Dict</p>
 </td>
 </tr>
 </tbody>
@@ -96,7 +111,7 @@ number for each (top and bottom) surface of a Profile.</li>
 
 <dl class="method">
 <dt id="hotwing_core.machine.Machine.generate_gcode">
-<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>safe_height=5</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_gcode</code><span class="sig-paren">(</span><em>safe_height=5</em>, <em>foam_height=2</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/machine.html#Machine.generate_gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.machine.Machine.generate_gcode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
 otherwise it cannot cut.</p>
 <table class="docutils field-list" frame="void" rules="none">

@@ -167,7 +167,7 @@ class TestSurface():
     def test_offset_around_profile(self):
         pass
 
-    def test_offset_xy(self):
+    def test_translate(self):
         offset_x = 5
         offset_y = 11
         offset_coord = Coordinate(5,11)
@@ -179,7 +179,7 @@ class TestSurface():
 
         ]
         s1 = Surface(coords)
-        s2 = Surface.offset_xy(s1, offset_coord)
+        s2 = Surface.translate(s1, offset_coord)
         for i in range(len(s2.coordinates)):
             orig_coord = coords[i]
             surface_coord = s2.coordinates[i]
@@ -188,7 +188,7 @@ class TestSurface():
 
         #test offset with invalid object
         with pytest.raises(TypeError):
-            Surface.offset_xy(s2, 1)
+            Surface.translate(s2, 1)
 
         # try using +/- operators
         s3 = s1+offset_coord

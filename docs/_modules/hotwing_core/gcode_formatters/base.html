@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>hotwing_core.cutting_strategies.base &#8212; HotWing-Core 0.1.0 documentation</title>
+    <title>hotwing_core.gcode_formatters.base &#8212; HotWing-Core 0.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -38,27 +38,39 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for hotwing_core.cutting_strategies.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+  <h1>Source code for hotwing_core.gcode_formatters.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 
-<div class="viewcode-block" id="CuttingStrategyBase"><a class="viewcode-back" href="../../../cutting_strategies.html#hotwing_core.cutting_strategies.CuttingStrategyBase">[docs]</a><span class="k">class</span> <span class="nc">CuttingStrategyBase</span><span class="p">():</span>
+<div class="viewcode-block" id="GcodeFormatterBase"><a class="viewcode-back" href="../../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase">[docs]</a><span class="k">class</span> <span class="nc">GcodeFormatterBase</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstract class for strategies to implement</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span> <span class="o">=</span> <span class="n">machine</span>
+<span class="sd">    Gcode Formatter&#39;s job is to convert the commands maintained</span>
+<span class="sd">    by the Gcode class and format them into the appropriate format</span>
+<span class="sd">    for the specification of Gcode being generated.</span>
 
-<div class="viewcode-block" id="CuttingStrategyBase.cut"><a class="viewcode-back" href="../../../cutting_strategies.html#hotwing_core.cutting_strategies.CuttingStrategyBase.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is the command method that the parent object will call to</span>
-<span class="sd">        generate the paths.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    You can inherit from this class to create any GcodeFormatter objects.</span>
+<span class="sd">    On any subclass, you are expected to implement at a minimum</span>
+<span class="sd">    the process_move and process_fast_move commands.</span>
+
+<span class="sd">    The object contains an instance variable parent that provides access to the</span>
+<span class="sd">    Gcode object.</span>
+
+<span class="sd">    :ivar parent: parent gcode instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="GcodeFormatterBase.process_move"><a class="viewcode-back" href="../../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase.process_move">[docs]</a>    <span class="k">def</span> <span class="nf">process_move</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">_move_to_safe_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">safe_height</span><span class="p">,</span><span class="s1">&#39;u&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">safe_height</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span></div>
+<div class="viewcode-block" id="GcodeFormatterBase.process_fast_move"><a class="viewcode-back" href="../../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase.process_fast_move">[docs]</a>    <span class="k">def</span> <span class="nf">process_fast_move</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="GcodeFormatterBase.start_commands"><a class="viewcode-back" href="../../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase.start_commands">[docs]</a>    <span class="k">def</span> <span class="nf">start_commands</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GcodeFormatterBase.end_commands"><a class="viewcode-back" href="../../../gcode_formatters.html#hotwing_core.gcode_formatters.GcodeFormatterBase.end_commands">[docs]</a>    <span class="k">def</span> <span class="nf">end_commands</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[]</span></div></div>
 </pre></div>
 
           </div>
@@ -94,6 +106,8 @@
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../gcode_formatters.html">hotwing_core.gcode_formatters</a><ul>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>

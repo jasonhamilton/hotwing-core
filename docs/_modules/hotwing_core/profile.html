@@ -55,13 +55,13 @@
     <span class="kn">from</span> <span class="nn">urllib2</span> <span class="k">import</span> <span class="n">urlopen</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">False</span>
+
 
 <div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Profile is a collection of coordinates.  The coordinates are broken into two surfaces - top and</span>
-<span class="sd">    bottom.  The job of the profile is to load the coordinates, split them and maintain the top and</span>
-<span class="sd">    bottom surfaces.</span>
+<span class="sd">    A Profile holds a representation of an airfoil, consisting of two Surface objects defining the top</span>
+<span class="sd">    and bottom.  The job of the Profile is to load a profile depending on the input the user initialized</span>
+<span class="sd">    it with and maintain the Surfaces.</span>
 
 <span class="sd">    The Profile __init__ method can take a variety of different inputs using method overloading.</span>
 
@@ -185,90 +185,6 @@
         <span class="n">bot_coords</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">top_coords</span><span class="p">,</span> <span class="n">bot_coords</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.draw"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create an image containing the profile and saves it to the disk.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            filename (String) - String-like object containing the path and filename to output the image</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
-
-            <span class="n">scale</span> <span class="o">=</span> <span class="mi">8000</span>
-            <span class="n">x_pad</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
-            <span class="n">y_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span>
-
-            <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
-            <span class="n">rib_width</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">rib_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">10.0</span>
-
-            <span class="n">n</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">+</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">y_height</span>
-            <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
-
-            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
-
-            <span class="c1"># setup chart</span>
-            <span class="c1"># horizontal line</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-            <span class="c1"># Left and right of vertical lines on x axis</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-            <span class="c1"># ticks on y axis</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x_pad</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="p">(</span><span class="n">x_pad</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_pad</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.10</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-            <span class="c1"># ticks on x axis</span>
-            <span class="n">ticks</span> <span class="o">=</span> <span class="mi">20</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
-                <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span>
-                          <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">ticks</span> <span class="o">=</span> <span class="mi">10</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ticks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x_pad</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">ticks</span> <span class="o">+</span> <span class="n">x_pad</span>
-                <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">+</span>
-                          <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">y_height</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-            <span class="k">def</span> <span class="nf">draw_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">draw_obj</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="n">c1</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                    <span class="n">c2</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-                    <span class="n">c1_x</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span> <span class="o">+</span> <span class="n">x_pad</span>
-                    <span class="n">c1_y</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span>
-                    <span class="n">c2_x</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span> <span class="o">+</span> <span class="n">x_pad</span>
-                    <span class="n">c2_y</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rib_scale</span>
-                    <span class="n">draw_obj</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">c1_x</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="p">(</span><span class="n">c1_y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
-                                  <span class="p">(</span><span class="n">c2_x</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="p">(</span><span class="n">c2_y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-            <span class="n">draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">draw_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-
-            <span class="k">del</span> <span class="n">draw</span>
-            <span class="c1"># filepath = os.path.join(&quot;img&quot;,filename)</span>
-            <span class="n">filepath</span> <span class="o">=</span> <span class="n">filename</span>
-            <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">global</span> <span class="n">PIL_ERROR_DISPLAYED</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">PIL_ERROR_DISPLAYED</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error drawing profile - PILLOW not installed.  Install using &#39;pip install pillow&#39;&quot;</span><span class="p">)</span>
-                <span class="n">PIL_ERROR_DISPLAYED</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">pass</span></div>
-
 <div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -304,12 +220,12 @@
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Profile.offset_xy"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_xy">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">offset_xy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.translate"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.translate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset a profile left, right, up or down.</span>
 
-<span class="sd">        Delagates to the Surface objects&#39; offset_xy method</span>
+<span class="sd">        Delagates to the Surface objects&#39; translate method</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            profile (Profile): object to offset</span>
@@ -319,8 +235,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Profile: new offset Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
@@ -653,13 +569,13 @@
 
 <div class="viewcode-block" id="Profile.__add__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__add__">[docs]</a>    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Profile.__sub__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__sub__">[docs]</a>    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Coordinate</span><span class="p">):</span>
             <span class="n">new_coord</span> <span class="o">=</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">offset_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_coord</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Profile.__mul__"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>

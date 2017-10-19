@@ -4,7 +4,7 @@ setup(
     name='hotwing-core',
     version='0.1.0',
     url='https://github.com/jasonhamilton/hotwing-core',
-    packages=['hotwing_core',],
+    packages=['hotwing_core','hotwing_core.cutting_strategies'],
     license='GPLv3',
     long_description="This Module which contains the core libraries for the HotWing-CLI and HotWing-GUI projects. "
                      "This Module provides a series of classes and functions to aid in creating GCode for 4-Axis CNC "

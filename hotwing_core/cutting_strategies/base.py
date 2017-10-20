@@ -17,4 +17,4 @@ class CuttingStrategyBase():
         raise NotImplementedError
 
     def _move_to_safe_height(self):
-        self.machine.gc.fast_move( {'y':self.machine.safe_height,'u':self.machine.safe_height}, ["do_not_normalize"] )
+        self.machine.gc.fast_move( {'y':self.machine.safe_height,'v':self.machine.safe_height}, ["do_not_normalize"] )

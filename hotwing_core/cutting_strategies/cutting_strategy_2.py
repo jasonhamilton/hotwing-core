@@ -26,23 +26,95 @@ class CuttingStrategy2(CuttingStrategyBase):
         le_offset = 1
         te_offset = 1
 
+        # MOVE TO SAFE HEIGHT
         self._move_to_safe_height()
-        self._move_to_start(profile1, profile2, le_offset, m.safe_height)
-        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
-        self._cut_to_leading_edge(profile1, profile2)
+
+        # calc le offset pos
+        pos = self.machine.calculate_move(
+                profile1.left_midpoint - Coordinate(le_offset, 0),
+                profile2.left_midpoint- Coordinate(le_offset, 0))
+
+        ## MOVE FAST HORIZONTALLY TO SPOT ABOVE LE OFFSET
+        self.machine.gc.fast_move( {'x':pos['x'],'u':pos['u']} )
+
+        ## MOVE DOWN TO JUST ABOVE FOAM
+        self.machine.gc.fast_move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
+
+        # CUT DOWN TO LEADING EDGE OFFSET
+        self.machine.gc.move(pos)
+
+        # CUT INWARDS TO LEADING EDGE
+        self.machine.gc.move(self.machine.calculate_move(profile1.left_midpoint, profile2.left_midpoint))
+
+        # CUT THE TOP PROFILE
         self._cut_top_profile(profile1, profile2)
-        self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
-        self._cut_to_trailing_edge(profile1, profile2)
+
+        # CUT TO TRAILING EDGE AT MIDDLE OF PROFILE
+        self.machine.gc.move(
+            self.machine.calculate_move(
+                profile1.right_midpoint,
+                profile2.right_midpoint)
+        )
+
+        # CUT TO TRAILING EDGE OFFSET
+        self.machine.gc.move(
+            self.machine.calculate_move(
+                profile1.right_midpoint + Coordinate(te_offset,0),
+                profile2.right_midpoint + Coordinate(te_offset,0))
+        )
+
+        # CUT TO TRAILING EDGE AT MIDDLE OF PROFILE
+        self.machine.gc.move(
+            self.machine.calculate_move(
+                profile1.right_midpoint,
+                profile2.right_midpoint)
+        )
+
+        # CUT BOTTOM PROFILE
         self._cut_bottom_profile(profile1, profile2)
-        self._cut_to_leading_edge(profile1, profile2)
-        self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
-        self._cut_to_start(profile1, profile2, le_offset, m.safe_height)
+
+        # CUT TO LEADING EDGE
+        self.machine.gc.move(self.machine.calculate_move(profile1.left_midpoint, profile2.left_midpoint))
+
+        # CUT TO LEADING EDGE OFFSET
+        self.machine.gc.move(
+            self.machine.calculate_move(
+                profile1.left_midpoint - Coordinate(le_offset,0),
+                profile2.left_midpoint - Coordinate(le_offset,0))
+        )
+
+        # CUT UPWARD TO JUST ABOVE FOAM
+        self.machine.gc.move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
+
+        # MOVE TO SAFE HEIGHT
+        self._move_to_safe_height()
 
         if m.panel.left_rib.tail_stock:
-            self._move_to_above_tail_stock(profile1, profile2, m.safe_height)
-            self._cut_tail_stock(profile1, profile2, m.safe_height)
-            self._move_to_above_tail_stock(profile1, profile2, m.safe_height)
+            # calculate position above tail stock
+            r1_stock = m.panel.left_rib.tail_stock
+            r2_stock = m.panel.right_rib.tail_stock
+            min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
+            
+            ts_pos = self.machine.calculate_move(
+                Coordinate(profile1.right_midpoint.x - r1_stock + self.machine.kerf[0],0),
+                Coordinate(profile2.right_midpoint.x - r2_stock + self.machine.kerf[1],0)
+            )
+
+            # MOVE TO ABOVE TAIL STOCK
+            self.machine.gc.fast_move({'x':ts_pos['x'],'u':ts_pos['u']} )
+
+            # MOVE DOWN TO JUST ABOVE FOAM
+            self.machine.gc.fast_move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
+
+            # CUT DOWN TO 0 HEIGHT
+            self.machine.gc.move( {'y':0,'v':0}, ["do_not_normalize"] )
+
+            # CUT UP TO JUST ABOVE FOAM
+            self.machine.gc.move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
+
+            # MOVE TO SAFE HEIGHT
+            self._move_to_safe_height()
+
 
         if m.panel.left_rib.front_stock:
             self._move_to_above_front_stock(profile1, profile2, m.safe_height)
@@ -54,30 +126,6 @@ class CuttingStrategy2(CuttingStrategyBase):
     ## machine moves #
     ##################
 
-
-    def _move_to_above_tail_stock(self, profile1, profile2, safe_height):
-        c1 = profile1.right_midpoint
-        c2 = profile2.right_midpoint
-        r1_stock = self.machine.panel.left_rib.tail_stock
-        r2_stock = self.machine.panel.right_rib.tail_stock
-
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.fast_move(
-            self.machine.calculate_move(
-                Coordinate(c1.x-r1_stock+self.machine.kerf[0], min_y + safe_height),
-                Coordinate(c2.x-r2_stock+self.machine.kerf[1], min_y + safe_height)))
-
-    def _cut_tail_stock(self, profile1, profile2, safe_height):
-        c1 = profile1.right_midpoint
-        c2 = profile2.right_midpoint
-        r1_stock = self.machine.panel.left_rib.tail_stock
-        r2_stock = self.machine.panel.right_rib.tail_stock
-
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.move(
-            self.machine.calculate_move(
-                Coordinate(c1.x-r1_stock+self.machine.kerf[0], min_y ),
-                Coordinate(c2.x-r2_stock+self.machine.kerf[1], min_y )))
 
     def _move_to_above_front_stock(self, profile1, profile2, safe_height):
         c1 = profile1.left_midpoint
@@ -103,33 +151,8 @@ class CuttingStrategy2(CuttingStrategyBase):
                 Coordinate(c1.x+r1_stock-self.machine.kerf[0], min_y ),
                 Coordinate(c2.x+r2_stock-self.machine.kerf[1], min_y )))
 
-    def _move_to_start(self, profile1, profile2, le_offset, safe_height):
-        # Move machine to start point, fast
-        c1 = profile1.top.coordinates[0]
-        c2 = profile2.top.coordinates[0]
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.fast_move(
-            self.machine.calculate_move(
-                c1 + Coordinate(-le_offset, min_y + safe_height),
-                c2 + Coordinate(-le_offset, min_y + safe_height)))
 
-    def _cut_to_start(self, profile1, profile2, le_offset, safe_height):
-        # Move machine to start point
-        c1 = profile1.top.coordinates[0]
-        c2 = profile2.top.coordinates[0]
-        min_y = min(profile1.y_bounds[0], profile2.y_bounds[0])
-        self.machine.gc.move(
-            self.machine.calculate_move(
-                c1 + Coordinate(-le_offset, min_y + safe_height),
-                c2 + Coordinate(-le_offset, min_y + safe_height)))
 
-    def _cut_to_leading_edge_offset(self, profile1, profile2, le_offset):
-        start_p1 = profile1.left_midpoint
-        start_p2 = profile2.left_midpoint
-        self.machine.gc.move(
-            self.machine.calculate_move(
-                start_p1 + Coordinate(-le_offset, 0),
-                start_p2 + Coordinate(-le_offset, 0)))
 
     def _cut_top_profile(self, profile1, profile2):
         # cut top profile
@@ -151,31 +174,6 @@ class CuttingStrategy2(CuttingStrategyBase):
         self.machine.gc.move(self.machine.calculate_move(profile1.top.coordinates[-1],
                                                         profile2.top.coordinates[-1]))
 
-    def _cut_to_leading_edge(self, profile1, profile2):
-        start_p1 = profile1.left_midpoint
-        start_p2 = profile2.left_midpoint
-
-        self.machine.gc.move(self.machine.calculate_move(start_p1, start_p2))
-
-    def _cut_to_trailing_edge_offset(self, profile1, profile2, te_offset):
-        # go to end point with offset
-        end_p1 = profile1.right_midpoint
-        end_p2 = profile2.right_midpoint
-
-        self.machine.gc.move(
-            self.machine.calculate_move(
-                end_p1 + Coordinate(te_offset, 0),
-                end_p2 + Coordinate(te_offset, 0)))
-
-    def _cut_to_trailing_edge(self, profile1, profile2):
-        end_p1 = profile1.right_midpoint
-        end_p2 = profile2.right_midpoint
-
-        # go to trailing edge
-        self.machine.gc.move(
-            self.machine.calculate_move(
-                end_p1,
-                end_p2))
 
     def _cut_bottom_profile(self, profile1, profile2):
         # cutting profile from right to left

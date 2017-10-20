@@ -42,8 +42,8 @@
             
   <div class="section" id="gcode-formatters">
 <h1>GCode Formatters<a class="headerlink" href="#gcode-formatters" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="base-class">
-<h2>Base Class<a class="headerlink" href="#base-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gcodeformatterbase">
+<h2>GcodeFormatterBase<a class="headerlink" href="#gcodeformatterbase" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterBase">
 <em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterBase</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase" title="Permalink to this definition">¶</a></dt>
@@ -69,13 +69,8 @@ Gcode object.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.process_fast_move">
-<code class="descname">process_fast_move</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.process_fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.process_fast_move" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.process_move">
-<code class="descname">process_move</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.process_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.process_move" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.gcode_formatters.GcodeFormatterBase.process_command">
+<code class="descname">process_command</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/base.html#GcodeFormatterBase.process_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterBase.process_command" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -86,8 +81,8 @@ Gcode object.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="factory">
-<h2>Factory<a class="headerlink" href="#factory" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gcodeformatterfactory">
+<h2>GcodeFormatterFactory<a class="headerlink" href="#gcodeformatterfactory" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hotwing_core.gcode_formatters.GcodeFormatterFactory">
 <em class="property">class </em><code class="descclassname">hotwing_core.gcode_formatters.</code><code class="descname">GcodeFormatterFactory</code><a class="reference internal" href="_modules/hotwing_core/gcode_formatters/factory.html#GcodeFormatterFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode_formatters.GcodeFormatterFactory" title="Permalink to this definition">¶</a></dt>
@@ -152,8 +147,8 @@ Gcode object.</p>
 <li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcode.html">Gcode</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GCode Formatters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#base-class">Base Class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#factory">Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gcodeformatterbase">GcodeFormatterBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gcodeformatterfactory">GcodeFormatterFactory</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>

@@ -3,7 +3,7 @@ Cutting Strageties
 ========================================
 
 
-Base Class
+CuttingStrategyBase
 ------------------
 
 Cutting strategies must inherit from the Base class and implement the cut method.
@@ -16,7 +16,7 @@ Cutting strategies must inherit from the Base class and implement the cut method
    :exclude-members: __str__, __repr__, __module__, __init__
 
 
-Factory
+CuttingStrategyFactory
 ------------------
 
 .. autoclass:: hotwing_core.cutting_strategies.CuttingStrategyFactory

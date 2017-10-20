@@ -42,6 +42,8 @@
             
   <div class="section" id="gcode">
 <h1>Gcode<a class="headerlink" href="#gcode" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Gcode<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hotwing_core.Gcode">
 <em class="property">class </em><code class="descclassname">hotwing_core.</code><code class="descname">Gcode</code><span class="sig-paren">(</span><em>formatter_name=None</em>, <em>units='inches'</em>, <em>feedrate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode" title="Permalink to this definition">¶</a></dt>
@@ -61,6 +63,12 @@ delegated to.</p>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="hotwing_core.Gcode.dwell">
+<code class="descname">dwell</code><span class="sig-paren">(</span><em>time</em>, <em>options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.dwell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.dwell" title="Permalink to this definition">¶</a></dt>
+<dd><p>time in seconds</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="hotwing_core.Gcode.fast_move">
 <code class="descname">fast_move</code><span class="sig-paren">(</span><em>coords</em>, <em>options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#Gcode.fast_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Gcode.fast_move" title="Permalink to this definition">¶</a></dt>
@@ -96,6 +104,52 @@ delegated to.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="machinecommand">
+<h2>MachineCommand<a class="headerlink" href="#machinecommand" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hotwing_core.gcode.MachineCommand">
+<em class="property">class </em><code class="descclassname">hotwing_core.gcode.</code><code class="descname">MachineCommand</code><span class="sig-paren">(</span><em>type_</em>, <em>data</em>, <em>options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#MachineCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.MachineCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>This represents the data for a single command for a machine move.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type_</strong> (<em>str</em>) – type of command</li>
+<li><strong>values</strong> (<em>dict</em>) – data to hold data related to the command</li>
+<li><strong>options</strong> (<em>list</em>) – additional options that can be read and utilized when formatting
+or outputting gcode.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type_</strong> (<em>str</em>) – type of command</li>
+<li><strong>data</strong> (<em>dict</em>) – data to hold data related to the command</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hotwing_core.gcode.MachineCommand.has_option">
+<code class="descname">has_option</code><span class="sig-paren">(</span><em>option</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/gcode.html#MachineCommand.has_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.gcode.MachineCommand.has_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if value is in the options list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option</strong> (<em>str</em>) – value to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 
 
           </div>
@@ -120,7 +174,11 @@ delegated to.</p>
 <li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rib.html">Rib</a></li>
 <li class="toctree-l1"><a class="reference internal" href="panel.html">Panel</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Gcode</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Gcode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Gcode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#machinecommand">MachineCommand</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="gcode_formatters.html">GCode Formatters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machine.html">Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cutting_strategies.html">Cutting Strageties</a></li>

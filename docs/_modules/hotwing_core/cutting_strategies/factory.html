@@ -67,8 +67,8 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">default</span>
 
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">strategies</span><span class="p">:</span>
-            <span class="n">s_name</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">f_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">s_name</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">s_name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">s</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ERROR: CUTTING STRATEGY FACTORY - NAME INCORRECT, FALLING BACK TO DEFAULT&quot;</span><span class="p">)</span>

@@ -67,23 +67,95 @@
         <span class="n">le_offset</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">te_offset</span> <span class="o">=</span> <span class="mi">1</span>
 
+        <span class="c1"># MOVE TO SAFE HEIGHT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_safe_height</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_start</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+
+        <span class="c1"># calc le offset pos</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span> <span class="o">-</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span><span class="o">-</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1">## MOVE FAST HORIZONTALLY TO SPOT ABOVE LE OFFSET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span><span class="s1">&#39;u&#39;</span><span class="p">:</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]}</span> <span class="p">)</span>
+
+        <span class="c1">## MOVE DOWN TO JUST ABOVE FOAM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="c1"># CUT DOWN TO LEADING EDGE OFFSET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+        <span class="c1"># CUT INWARDS TO LEADING EDGE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span><span class="p">,</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span><span class="p">))</span>
+
+        <span class="c1"># CUT THE TOP PROFILE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cut_top_profile</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">te_offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_trailing_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
+
+        <span class="c1"># CUT TO TRAILING EDGE AT MIDDLE OF PROFILE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span><span class="p">,</span>
+                <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># CUT TO TRAILING EDGE OFFSET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="c1"># CUT TO TRAILING EDGE AT MIDDLE OF PROFILE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span><span class="p">,</span>
+                <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># CUT BOTTOM PROFILE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cut_bottom_profile</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cut_to_start</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
+
+        <span class="c1"># CUT TO LEADING EDGE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span><span class="p">,</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span><span class="p">))</span>
+
+        <span class="c1"># CUT TO LEADING EDGE OFFSET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span> <span class="o">-</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">le_offset</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span> <span class="o">-</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">le_offset</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="c1"># CUT UPWARD TO JUST ABOVE FOAM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="c1"># MOVE TO SAFE HEIGHT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_safe_height</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">tail_stock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_above_tail_stock</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cut_tail_stock</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_above_tail_stock</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
+            <span class="c1"># calculate position above tail stock</span>
+            <span class="n">r1_stock</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">tail_stock</span>
+            <span class="n">r2_stock</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="o">.</span><span class="n">tail_stock</span>
+            <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            
+            <span class="n">ts_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
+                <span class="n">Coordinate</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">r1_stock</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">Coordinate</span><span class="p">(</span><span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">r2_stock</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># MOVE TO ABOVE TAIL STOCK</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="n">ts_pos</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span><span class="s1">&#39;u&#39;</span><span class="p">:</span><span class="n">ts_pos</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]}</span> <span class="p">)</span>
+
+            <span class="c1"># MOVE DOWN TO JUST ABOVE FOAM</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="c1"># CUT DOWN TO 0 HEIGHT</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="c1"># CUT UP TO JUST ABOVE FOAM</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">:</span><span class="n">m</span><span class="o">.</span><span class="n">foam_height</span><span class="o">*</span><span class="mf">1.1</span><span class="p">},</span> <span class="p">[</span><span class="s2">&quot;do_not_normalize&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="c1"># MOVE TO SAFE HEIGHT</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_safe_height</span><span class="p">()</span>
+
 
         <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">front_stock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_move_to_above_front_stock</span><span class="p">(</span><span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">safe_height</span><span class="p">)</span>
@@ -95,30 +167,6 @@
     <span class="c1">## machine moves #</span>
     <span class="c1">##################</span>
 
-
-    <span class="k">def</span> <span class="nf">_move_to_above_tail_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
-        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">r1_stock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">tail_stock</span>
-        <span class="n">r2_stock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="o">.</span><span class="n">tail_stock</span>
-
-        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">Coordinate</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">r1_stock</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">),</span>
-                <span class="n">Coordinate</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">r2_stock</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">)))</span>
-
-    <span class="k">def</span> <span class="nf">_cut_tail_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
-        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">r1_stock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">tail_stock</span>
-        <span class="n">r2_stock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">right_rib</span><span class="o">.</span><span class="n">tail_stock</span>
-
-        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">Coordinate</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">r1_stock</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_y</span> <span class="p">),</span>
-                <span class="n">Coordinate</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">r2_stock</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">min_y</span> <span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">_move_to_above_front_stock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
         <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span>
@@ -144,33 +192,8 @@
                 <span class="n">Coordinate</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="n">r1_stock</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_y</span> <span class="p">),</span>
                 <span class="n">Coordinate</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="n">r2_stock</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">kerf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">min_y</span> <span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">_move_to_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
-        <span class="c1"># Move machine to start point, fast</span>
-        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">fast_move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">c1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">),</span>
-                <span class="n">c2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">_cut_to_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">,</span> <span class="n">safe_height</span><span class="p">):</span>
-        <span class="c1"># Move machine to start point</span>
-        <span class="n">c1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">c2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">profile2</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">c1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">),</span>
-                <span class="n">c2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">+</span> <span class="n">safe_height</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">_cut_to_leading_edge_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">le_offset</span><span class="p">):</span>
-        <span class="n">start_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span>
-        <span class="n">start_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">start_p1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                <span class="n">start_p2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="o">-</span><span class="n">le_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">_cut_top_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
         <span class="c1"># cut top profile</span>
@@ -192,31 +215,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span><span class="n">profile1</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
                                                         <span class="n">profile2</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="k">def</span> <span class="nf">_cut_to_leading_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
-        <span class="n">start_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">left_midpoint</span>
-        <span class="n">start_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">left_midpoint</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span><span class="n">start_p1</span><span class="p">,</span> <span class="n">start_p2</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_cut_to_trailing_edge_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">,</span> <span class="n">te_offset</span><span class="p">):</span>
-        <span class="c1"># go to end point with offset</span>
-        <span class="n">end_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">end_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">end_p1</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                <span class="n">end_p2</span> <span class="o">+</span> <span class="n">Coordinate</span><span class="p">(</span><span class="n">te_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
-
-    <span class="k">def</span> <span class="nf">_cut_to_trailing_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
-        <span class="n">end_p1</span> <span class="o">=</span> <span class="n">profile1</span><span class="o">.</span><span class="n">right_midpoint</span>
-        <span class="n">end_p2</span> <span class="o">=</span> <span class="n">profile2</span><span class="o">.</span><span class="n">right_midpoint</span>
-
-        <span class="c1"># go to trailing edge</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">gc</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">calculate_move</span><span class="p">(</span>
-                <span class="n">end_p1</span><span class="p">,</span>
-                <span class="n">end_p2</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_cut_bottom_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile1</span><span class="p">,</span> <span class="n">profile2</span><span class="p">):</span>
         <span class="c1"># cutting profile from right to left</span>

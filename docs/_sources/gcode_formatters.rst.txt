@@ -2,7 +2,7 @@
 GCode Formatters
 ========================================
 
-Base Class
+GcodeFormatterBase
 ------------------
 
 .. autoclass:: hotwing_core.gcode_formatters.GcodeFormatterBase
@@ -13,7 +13,7 @@ Base Class
    :exclude-members: __str__, __repr__, __module__, __init__
 
 
-Factory
+GcodeFormatterFactory
 ------------------
 
 .. autoclass:: hotwing_core.gcode_formatters.GcodeFormatterFactory

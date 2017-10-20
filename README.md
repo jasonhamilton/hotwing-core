@@ -11,10 +11,7 @@ This repository consists of a Python Module, which contains the core libraries f
 
 # Installation
 
-1) Download or clone the Github repository.
-2) Open you Terminal or Command Line and navigate to the code (you should be in the file that contains the setup.py document).
-   ```cd /my/folder/hotwing-core``` 
-3) Install the module ```pip install .```
+```pip install hotwing-core```
 
 # Docs
 

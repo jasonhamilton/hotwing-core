@@ -26,8 +26,8 @@ class CuttingStrategyFactory():
             return cls.default
 
         for s in cls.strategies:
-            s_name = s.__class__.__name__.lower()
-            if f_name == name:
+            s_name = s.__name__.lower()
+            if s_name == name:
                 return s
 
         logging.error("ERROR: CUTTING STRATEGY FACTORY - NAME INCORRECT, FALLING BACK TO DEFAULT")

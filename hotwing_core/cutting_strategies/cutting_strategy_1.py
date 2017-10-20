@@ -48,17 +48,17 @@ class CuttingStrategy1(CuttingStrategyBase):
         
         self._move_to_start(profile1, profile2, le_offset, m.safe_height)
         self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
+        self.machine.gc.dwell(dwell_time)
         self._cut_to_leading_edge(profile1, profile2)
-        m.gc.dwell(dwell_time)
-        self._cut_top_profile(profile1, profile2)
-        m.gc.dwell(dwell_time)
+        self.machine.gc.dwell(dwell_time)
+        self._cut_top_profile(profile1, profile2, dwell_time)
         self._cut_to_trailing_edge(profile1, profile2)
         m.gc.dwell(dwell_time)
         self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
         m.gc.dwell(dwell_time)
         self._cut_to_trailing_edge(profile1, profile2)
-        self._cut_bottom_profile(profile1, profile2)
-        m.gc.dwell(dwell_time)
+        self.machine.gc.dwell(dwell_time)
+        self._cut_bottom_profile(profile1, profile2, dwell_time)
         self._cut_to_leading_edge(profile1, profile2)
         m.gc.dwell(dwell_time)
         self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
@@ -97,7 +97,7 @@ class CuttingStrategy1(CuttingStrategyBase):
                 start_p1 + Coordinate(-le_offset, 0),
                 start_p2 + Coordinate(-le_offset, 0)))
 
-    def _cut_top_profile(self, profile1, profile2):
+    def _cut_top_profile(self, profile1, profile2, dwell_time):
         # cut top profile
         c1 = profile1.top.coordinates[0]
         c2 = profile2.top.coordinates[0]
@@ -112,10 +112,14 @@ class CuttingStrategy1(CuttingStrategyBase):
             c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
             self.machine.gc.move(self.machine.calculate_move(c1, c2))
+            if i == 0:
+                # dwell on first point
+                self.machine.gc.dwell(dwell_time)
 
         # cut to last point
         self.machine.gc.move(self.machine.calculate_move(profile1.top.coordinates[-1],
                                                         profile2.top.coordinates[-1]))
+        self.machine.gc.dwell(dwell_time)
 
     def _cut_to_leading_edge(self, profile1, profile2):
         start_p1 = profile1.left_midpoint
@@ -143,7 +147,7 @@ class CuttingStrategy1(CuttingStrategyBase):
                 end_p1,
                 end_p2))
 
-    def _cut_bottom_profile(self, profile1, profile2):
+    def _cut_bottom_profile(self, profile1, profile2, dwell_time):
         # cutting profile from right to left
         c1 = profile1.top.coordinates[-1]
         c2 = profile2.top.coordinates[-1]
@@ -158,3 +162,8 @@ class CuttingStrategy1(CuttingStrategyBase):
             c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
             self.machine.gc.move(self.machine.calculate_move(c1, c2))
+            if i == self.machine.profile_points:
+                # dwell on first point
+                self.machine.gc.dwell(dwell_time)
+
+        self.machine.gc.dwell(dwell_time)

@@ -12,6 +12,11 @@ class CuttingStrategy1(CuttingStrategyBase):
     """
     def cut(self):
         m = self.machine
+        
+        dwell_time = 1
+        le_offset = 1
+        te_offset = 1
+
         # sheet profile
         profile1 = m.panel.left_rib.profile
         profile2 = m.panel.right_rib.profile
@@ -40,18 +45,22 @@ class CuttingStrategy1(CuttingStrategyBase):
         # This was originally included in the trim_overlap method but was
         # removed
 
-        le_offset = 1
-        te_offset = 1
         
         self._move_to_start(profile1, profile2, le_offset, m.safe_height)
         self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
         self._cut_to_leading_edge(profile1, profile2)
+        m.gc.dwell(dwell_time)
         self._cut_top_profile(profile1, profile2)
+        m.gc.dwell(dwell_time)
         self._cut_to_trailing_edge(profile1, profile2)
+        m.gc.dwell(dwell_time)
         self._cut_to_trailing_edge_offset(profile1, profile2, te_offset)
+        m.gc.dwell(dwell_time)
         self._cut_to_trailing_edge(profile1, profile2)
         self._cut_bottom_profile(profile1, profile2)
+        m.gc.dwell(dwell_time)
         self._cut_to_leading_edge(profile1, profile2)
+        m.gc.dwell(dwell_time)
         self._cut_to_leading_edge_offset(profile1, profile2, le_offset)
         self._cut_to_start(profile1, profile2, le_offset, m.safe_height)
 

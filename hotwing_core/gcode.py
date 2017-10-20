@@ -10,14 +10,35 @@ DEFAULT_FEEDRATE_MM = 125
 
 
 class MachineCommand():
-    def __init__(self, type_, coordinates, options=[]):
+    """
+    This represents the data for a single command for a machine move.
+
+    Args:
+        type\_ (str): type of command
+        values (dict):  data to hold data related to the command
+        options (list): additional options that can be read and utilized when formatting
+                        or outputting gcode.
+
+    :ivar str type\_:  type of command
+    :ivar dict data: data to hold data related to the command
+    """
+    def __init__(self, type_, data, options=[]):
         self.type_ = type_
-        self.coordinates = coordinates
-        self.options = options
+        self.data = data
+        self._options = options
 
     def has_option(self, option):
-        for o in self.options:
-            if option in self.options:
+        """
+        Determine if value is in the options list
+
+        Args:
+            option (str): value to check
+
+        Returns:
+            Boolean
+        """
+        for o in self._options:
+            if option in self._options:
                 return True
         return False
 
@@ -51,6 +72,12 @@ class Gcode():
     def fast_move(self, coords, options=[]):
         self._commands.append(MachineCommand("FAST_MOVE", coords, options))
 
+    def dwell(self, time, options=[]):
+        """
+        time in seconds
+        """
+        self._commands.append(MachineCommand("DWELL", {"p":time}, options))
+
     def set_formatter(self, formatter_name):
         formatter_cls = GcodeFormatterFactory.get_cls(formatter_name)
         self.gcode_formatter = formatter_cls(self)
@@ -77,21 +104,7 @@ class Gcode():
         return self.gcode_formatter.end_commands()
 
     def _process_command(self, command):
-        cmd_type = command.type_
-        if cmd_type == "MOVE":
-            return self._process_move(command)
-        elif cmd_type == "FAST_MOVE":
-            return self._process_fast_move(command)
-        else:
-            return ""
-
-    def _process_move(self, command):
-        # delegates to the formatter
-        return self.gcode_formatter.process_move(command)
-
-    def _process_fast_move(self, command):
-        # delegates to the formatter
-        return self.gcode_formatter.process_fast_move(command)
+        return self.gcode_formatter.process_command(command)
 
     def normalize(self):
         """
@@ -99,14 +112,14 @@ class Gcode():
         """
         moves = []
         for c in self._commands:
-            if not c.has_option("do_not_normalize"):
+            if c.type_ in ["MOVE","FAST_MOVE"] and not c.has_option("do_not_normalize"):
                 moves.append(c)
 
-        min_x = min([min([m.coordinates['x'] for m in moves if 'x' in m.coordinates]),
-                     min([m.coordinates['u'] for m in moves if 'u' in m.coordinates])]
+        min_x = min([min([m.data['x'] for m in moves if 'x' in m.data]),
+                     min([m.data['u'] for m in moves if 'u' in m.data])]
                     )
-        min_y = min([min([m.coordinates['y'] for m in moves if 'y' in m.coordinates]),
-                     min([m.coordinates['v'] for m in moves if 'v' in m.coordinates])]
+        min_y = min([min([m.data['y'] for m in moves if 'y' in m.data]),
+                     min([m.data['v'] for m in moves if 'v' in m.data])]
                     )
 
         if min_y < 0:
@@ -121,13 +134,13 @@ class Gcode():
 
         new_commands = []
         for c in self._commands:
-            if not c.has_option("do_not_normalize"):
-                if 'x' in c.coordinates:
-                    c.coordinates['x'] = c.coordinates['x'] - offset_x
-                if 'y' in c.coordinates:
-                    c.coordinates['y'] = c.coordinates['y'] - offset_y
-                if 'u' in c.coordinates:
-                    c.coordinates['u'] = c.coordinates['u'] - offset_x
-                if 'v' in c.coordinates:
-                    c.coordinates['v'] = c.coordinates['v'] - offset_y
+            if c.type_ in ["MOVE","FAST_MOVE"] and not c.has_option("do_not_normalize"):
+                if 'x' in c.data:
+                    c.data['x'] = c.data['x'] - offset_x
+                if 'y' in c.data:
+                    c.data['y'] = c.data['y'] - offset_y
+                if 'u' in c.data:
+                    c.data['u'] = c.data['u'] - offset_x
+                if 'v' in c.data:
+                    c.data['v'] = c.data['v'] - offset_y
 

@@ -19,10 +19,7 @@ class GcodeFormatterBase():
     def __init__(self, parent):
         self.parent = parent
 
-    def process_move(cls, command):
-        raise NotImplementedError
-
-    def process_fast_move(cls, command):
+    def process_command(self, command):
         raise NotImplementedError
 
     def start_commands():
@@ -30,3 +27,6 @@ class GcodeFormatterBase():
 
     def end_commands():
         return []
+
+    def _log_unrecognized_command(self, command):
+        logging.warning("GCODE FORMATTER RECEIVED UNKNOWN COMMAND '%s'" % command.type_)

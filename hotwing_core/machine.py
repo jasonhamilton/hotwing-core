@@ -81,7 +81,7 @@ class Machine():
             self.left_offset = left_offset
         self.panel = panel
 
-    def generate_gcode(self, safe_height=5, foam_height=2, normalize=True ):
+    def generate_gcode(self, safe_height=5, foam_height=2, normalize=True):
         """
         Generate the gcode to cut the panel.  You must have a panel loaded into the machine,
         otherwise it cannot cut.

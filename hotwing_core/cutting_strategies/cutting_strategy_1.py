@@ -22,9 +22,9 @@ class CuttingStrategy1(CuttingStrategyBase):
         profile2 = m.panel.right_rib.profile
 
         # Offset profiles for Kerf Value
-        profile1 = Profile.offset_around_profiles(
+        profile1 = Profile.offset_around_profile(
             profile1, m.kerf[0], m.kerf[0])
-        profile2 = Profile.offset_around_profiles(
+        profile2 = Profile.offset_around_profile(
             profile2, m.kerf[1], m.kerf[1])
 
         # Trim to the length needed for front and tail stock

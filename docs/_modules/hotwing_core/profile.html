@@ -171,7 +171,7 @@
 <div class="viewcode-block" id="Profile.rotate"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotate a profile around a point.</span>
+<span class="sd">        Rotate a Profile around a point.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            origin (Coordinate): object that defines the point to rotate profile around</span>
@@ -188,7 +188,7 @@
 <div class="viewcode-block" id="Profile.copy"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.copy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a copy of a profile</span>
+<span class="sd">        Create a copy of a Profile</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            profile (Profile): object to copy</span>
@@ -203,7 +203,7 @@
 <div class="viewcode-block" id="Profile.scale"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.scale">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scale a profile</span>
+<span class="sd">        Scale a Profile</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; scale method</span>
 
@@ -223,7 +223,7 @@
 <div class="viewcode-block" id="Profile.translate"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.translate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Offset a profile left, right, up or down.</span>
+<span class="sd">        Offset a Profile left, right, up or down.</span>
 
 <span class="sd">        Delagates to the Surface objects&#39; translate method</span>
 
@@ -239,26 +239,26 @@
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Profile.offset_around_profiles"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_around_profiles">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">offset_around_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">,</span> <span class="n">bottom_offset</span><span class="p">):</span>
+<div class="viewcode-block" id="Profile.offset_around_profile"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.offset_around_profile">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">offset_around_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">,</span> <span class="n">bottom_offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset each of a Profile&#39;s Surfaces around itself. It can be thought of as scaling the Profile&#39;s</span>
 <span class="sd">        Surfaces inward or outward around the Surfaces.</span>
 
-<span class="sd">        Delagates to the Surface objects&#39; offset_around_profiles method</span>
+<span class="sd">        Delagates to the Surface objects&#39; offset_around_surface method</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            profile (Profile): object to offset</span>
 <span class="sd">            top_offset    (Float): -  Positive value expands profile (offsets upwards/outwards),</span>
-<span class="sd">                                    negative value contracs profile (offsets inwards/downwards).</span>
-<span class="sd">            bottom_offset (Float): -  Positive value expands profile (offsets upwards/downwards),</span>
-<span class="sd">                                    negative value contracs profile (offsets inwards/upwards).</span>
+<span class="sd">                                    negative value contracs profile (offsets downwards/inwards).</span>
+<span class="sd">            bottom_offset (Float): -  Positive value expands profile (offsets downwards/outwards),</span>
+<span class="sd">                                    negative value contracs profile (offsets upwards/inwards).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Profile: new offset Profile</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">)</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_profile</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom_offset</span><span class="p">)</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_surface</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">top_offset</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">Surface</span><span class="o">.</span><span class="n">offset_around_surface</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="o">-</span><span class="n">bottom_offset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Profile.trim"><a class="viewcode-back" href="../../profile.html#hotwing_core.Profile.trim">[docs]</a>    <span class="nd">@classmethod</span>

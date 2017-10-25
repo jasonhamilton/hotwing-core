@@ -114,8 +114,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Surface.offset_around_profile"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.offset_around_profile">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">offset_around_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.offset_around_surface"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.offset_around_surface">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">offset_around_surface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Offset the surface around the current surface.</span>
 
@@ -292,7 +292,7 @@
 <div class="viewcode-block" id="Surface.rotate"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.rotate">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rotate a surface around a certain point.</span>
+<span class="sd">        Rotate a surface around a point.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            origin (Coordinate): Object that defines the point to rotate surface around</span>
@@ -309,7 +309,7 @@
 
 <div class="viewcode-block" id="Surface.interpolate"><a class="viewcode-back" href="../../surface.html#hotwing_core.Surface.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Interpolate the Y position for a given value of X.</span>
+<span class="sd">        Interpolate a point on the surface for a given value of X.</span>
 
 <span class="sd">        Method uses linear interpolation between two points.  If the point lies outside of the</span>
 <span class="sd">        coordinates, the line is interpolated based on the closest two points extended outwards.</span>

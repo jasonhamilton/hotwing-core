@@ -103,7 +103,7 @@ bottom_surface: Surface - bottom surface to create Profile from</dd>
 <dl class="classmethod">
 <dt id="hotwing_core.Profile.copy">
 <em class="property">classmethod </em><code class="descname">copy</code><span class="sig-paren">(</span><em>profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a copy of a profile</p>
+<dd><p>Create a copy of a Profile</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -147,11 +147,11 @@ bottom_surface: Surface - bottom surface to create Profile from</dd>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.Profile.offset_around_profiles">
-<em class="property">classmethod </em><code class="descname">offset_around_profiles</code><span class="sig-paren">(</span><em>profile</em>, <em>top_offset</em>, <em>bottom_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_around_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.offset_around_profiles" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Profile.offset_around_profile">
+<em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>profile</em>, <em>top_offset</em>, <em>bottom_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.offset_around_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Offset each of a Profile’s Surfaces around itself. It can be thought of as scaling the Profile’s
 Surfaces inward or outward around the Surfaces.</p>
-<p>Delagates to the Surface objects’ offset_around_profiles method</p>
+<p>Delagates to the Surface objects’ offset_around_surface method</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -161,12 +161,12 @@ Surfaces inward or outward around the Surfaces.</p>
 <li><strong>top_offset</strong> (<em>Float</em>) – <ul>
 <li>Positive value expands profile (offsets upwards/outwards),</li>
 </ul>
-<p>negative value contracs profile (offsets inwards/downwards).</p>
+<p>negative value contracs profile (offsets downwards/inwards).</p>
 </li>
 <li><strong>bottom_offset</strong> (<em>Float</em>) – <ul>
-<li>Positive value expands profile (offsets upwards/downwards),</li>
+<li>Positive value expands profile (offsets downwards/outwards),</li>
 </ul>
-<p>negative value contracs profile (offsets inwards/upwards).</p>
+<p>negative value contracs profile (offsets upwards/inwards).</p>
 </li>
 </ul>
 </td>
@@ -184,7 +184,7 @@ Surfaces inward or outward around the Surfaces.</p>
 <dl class="classmethod">
 <dt id="hotwing_core.Profile.rotate">
 <em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>profile</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.rotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotate a profile around a point.</p>
+<dd><p>Rotate a Profile around a point.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -209,7 +209,7 @@ Surfaces inward or outward around the Surfaces.</p>
 <dl class="classmethod">
 <dt id="hotwing_core.Profile.scale">
 <em class="property">classmethod </em><code class="descname">scale</code><span class="sig-paren">(</span><em>profile</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale a profile</p>
+<dd><p>Scale a Profile</p>
 <p>Delagates to the Surface objects’ scale method</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -238,7 +238,7 @@ Surfaces inward or outward around the Surfaces.</p>
 <dl class="classmethod">
 <dt id="hotwing_core.Profile.translate">
 <em class="property">classmethod </em><code class="descname">translate</code><span class="sig-paren">(</span><em>profile</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/profile.html#Profile.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Profile.translate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Offset a profile left, right, up or down.</p>
+<dd><p>Offset a Profile left, right, up or down.</p>
 <p>Delagates to the Surface objects’ translate method</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

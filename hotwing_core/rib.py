@@ -82,7 +82,7 @@ class Rib():
         """
         p = self.airfoil_profile
         if self.top_sheet or self.bottom_sheet:
-            p = Profile.offset_around_profiles(
+            p = Profile.offset_around_profile(
                 p, -self.top_sheet, -self.bottom_sheet)
         return p
 

@@ -74,7 +74,7 @@ class Surface():
         return self.coordinates[-1]
 
     @classmethod
-    def offset_around_profile(cls, surface, offset):
+    def offset_around_surface(cls, surface, offset):
         """
         Offset the surface around the current surface.
 
@@ -251,7 +251,7 @@ class Surface():
     @classmethod
     def rotate(cls, origin, surface, angle):
         """
-        Rotate a surface around a certain point.
+        Rotate a surface around a point.
 
         Args:
             origin (Coordinate): Object that defines the point to rotate surface around
@@ -268,7 +268,7 @@ class Surface():
 
     def interpolate(self, x):
         """
-        Interpolate the Y position for a given value of X.
+        Interpolate a point on the surface for a given value of X.
 
         Method uses linear interpolation between two points.  If the point lies outside of the
         coordinates, the line is interpolated based on the closest two points extended outwards.

@@ -83,6 +83,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">right_rib</span> <span class="o">=</span> <span class="n">right_rib</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
 
+<div class="viewcode-block" id="Panel.get_feedrate_multiplier"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.get_feedrate_multiplier">[docs]</a>    <span class="k">def</span> <span class="nf">get_feedrate_multiplier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Because the feedrate is always set on the left axis, when we flip a wing around, the feedrate</span>
+<span class="sd">        is incorrect.  This produces a value between 0 and 1 that is applied to the feedrate to adjust</span>
+<span class="sd">        for this.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l_t</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">top</span>
+        <span class="n">l_b</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_rib</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="n">r_t</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_rib</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">top</span>
+        <span class="n">r_b</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">trim_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_rib</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="n">left_len</span> <span class="o">=</span> <span class="n">l_t</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="n">l_b</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">right_len</span> <span class="o">=</span> <span class="n">r_t</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="n">r_b</span><span class="o">.</span><span class="n">length</span>
+        <span class="k">if</span> <span class="n">left_len</span> <span class="o">&gt;=</span> <span class="n">right_len</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">left_len</span><span class="o">/</span><span class="n">right_len</span></div>
+
+
 <div class="viewcode-block" id="Panel.copy"><a class="viewcode-back" href="../../panel.html#hotwing_core.Panel.copy">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">panel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

@@ -7,6 +7,9 @@ from .cutting_strategies import CuttingStrategyFactory
 import logging
 logging.getLogger(__name__)
 
+DEFAULT_FEEDRATE_IN = 5
+DEFAULT_FEEDRATE_MM = 125
+
 class Machine():
     """
     The Machine class is a representation of a foam cutting machine and goes
@@ -36,12 +39,8 @@ class Machine():
     :ivar profile_points: profile_points
     :ivar cutting_strategy_name: cutting_strategy_name
     :ivar gcode_formatter_name: gcode_formatter_name
-    :ivar units: units
-    :ivar feedrate: feedrate
-    :ivar left_offset: left_offset
-    :ivar panel: panel
-    :ivar safe_height: safe_height
-    :ivar normalize: normalize
+    :ivar units: units "inches" or "millimeters"
+    :ivar feedrate: feedrate on the side of the largest rib
     """
     def __init__(self, width, kerf=0.075, profile_points=200,
                  cutting_strategy_name="default",
@@ -58,7 +57,11 @@ class Machine():
         self.cutting_strategy_name = cutting_strategy_name
         self.gcode_formatter_name = gcode_formatter_name
         self.units = units
-        self.feedrate = feedrate
+        if feedrate:
+            self.feedrate = feedrate
+        else:
+            # feedrate not specified, set to default
+            self.feedrate = DEFAULT_FEEDRATE_IN if units=="inches" else DEFAULT_FEEDRATE_MM
 
 
     def load_panel(self, panel, left_offset=None):
@@ -101,7 +104,9 @@ class Machine():
 
         self.safe_height = safe_height
         self.foam_height = foam_height
-        self.gc = Gcode(formatter_name=self.gcode_formatter_name, units=self.units, feedrate=self.feedrate)
+        self.gc = Gcode(formatter_name=self.gcode_formatter_name, 
+                        units=self.units, 
+                        feedrate=self.feedrate*self.panel.get_feedrate_multiplier() )
 
         cutting_strategy = CuttingStrategyFactory.get_cls(self.cutting_strategy_name)(self)
         cutting_strategy.cut()

@@ -130,7 +130,7 @@ class Profile():
     @classmethod
     def rotate(cls, origin, profile, angle):
         """
-        Rotate a profile around a point.
+        Rotate a Profile around a point.
 
         Args:
             origin (Coordinate): object that defines the point to rotate profile around
@@ -147,7 +147,7 @@ class Profile():
     @classmethod
     def copy(cls, profile):
         """
-        Create a copy of a profile
+        Create a copy of a Profile
 
         Args:
             profile (Profile): object to copy
@@ -162,7 +162,7 @@ class Profile():
     @classmethod
     def scale(cls, profile, scale):
         """
-        Scale a profile
+        Scale a Profile
 
         Delagates to the Surface objects' scale method
 
@@ -182,7 +182,7 @@ class Profile():
     @classmethod
     def translate(cls, profile, offset):
         """
-        Offset a profile left, right, up or down.
+        Offset a Profile left, right, up or down.
 
         Delagates to the Surface objects' translate method
 
@@ -199,25 +199,25 @@ class Profile():
         return Profile(top, bottom)
 
     @classmethod
-    def offset_around_profiles(cls, profile, top_offset, bottom_offset):
+    def offset_around_profile(cls, profile, top_offset, bottom_offset):
         """
         Offset each of a Profile's Surfaces around itself. It can be thought of as scaling the Profile's
         Surfaces inward or outward around the Surfaces.
 
-        Delagates to the Surface objects' offset_around_profiles method
+        Delagates to the Surface objects' offset_around_surface method
 
         Args:
             profile (Profile): object to offset
             top_offset    (Float): -  Positive value expands profile (offsets upwards/outwards),
-                                    negative value contracs profile (offsets inwards/downwards).
-            bottom_offset (Float): -  Positive value expands profile (offsets upwards/downwards),
-                                    negative value contracs profile (offsets inwards/upwards).
+                                    negative value contracs profile (offsets downwards/inwards).
+            bottom_offset (Float): -  Positive value expands profile (offsets downwards/outwards),
+                                    negative value contracs profile (offsets upwards/inwards).
 
         Returns:
             Profile: new offset Profile
         """
-        top = Surface.offset_around_profile(profile.top, top_offset)
-        bottom = Surface.offset_around_profile(profile.bottom, -bottom_offset)
+        top = Surface.offset_around_surface(profile.top, top_offset)
+        bottom = Surface.offset_around_surface(profile.bottom, -bottom_offset)
         return Profile(top, bottom)
 
     @classmethod

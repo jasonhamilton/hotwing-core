@@ -99,7 +99,7 @@ ORDER BASED ON X VALUES</td>
 <dl class="method">
 <dt id="hotwing_core.Surface.interpolate">
 <code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.interpolate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpolate the Y position for a given value of X.</p>
+<dd><p>Interpolate a point on the surface for a given value of X.</p>
 <p>Method uses linear interpolation between two points.  If the point lies outside of the
 coordinates, the line is interpolated based on the closest two points extended outwards.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -182,8 +182,8 @@ the total distance around the surface of the profile, starting from the left-mos
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="hotwing_core.Surface.offset_around_profile">
-<em class="property">classmethod </em><code class="descname">offset_around_profile</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_around_profile" title="Permalink to this definition">¶</a></dt>
+<dt id="hotwing_core.Surface.offset_around_surface">
+<em class="property">classmethod </em><code class="descname">offset_around_surface</code><span class="sig-paren">(</span><em>surface</em>, <em>offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.offset_around_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.offset_around_surface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Offset the surface around the current surface.</p>
 <p>Evaluates the relative angle of each Coordinate with relation to the Coordinates on either side of it and
 moves the each Coordinate along its relative angle.  By moving each of the Surface’s Coordinates this way
@@ -213,7 +213,7 @@ value offsets downwards.</li>
 <dl class="classmethod">
 <dt id="hotwing_core.Surface.rotate">
 <em class="property">classmethod </em><code class="descname">rotate</code><span class="sig-paren">(</span><em>origin</em>, <em>surface</em>, <em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hotwing_core/surface.html#Surface.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hotwing_core.Surface.rotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotate a surface around a certain point.</p>
+<dd><p>Rotate a surface around a point.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -41,7 +41,7 @@ class Coordinate():
             a (Coordinate): First Coordinate
             b (Coordinate): Second Coordinate
         Returns:
-            Float: slope between a and b
+            Float: Slope between a and b
         """
         try:
             slope = (a.y-b.y) / (a.x-b.x)

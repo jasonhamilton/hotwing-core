@@ -12,7 +12,7 @@ class CuttingStrategy2(CuttingStrategyBase):
     """
     def cut(self):
         m = self.machine
-
+        dwell_time = 1
         le_offset = 1
         te_offset = 1
 
@@ -46,12 +46,14 @@ class CuttingStrategy2(CuttingStrategyBase):
 
         # CUT DOWN TO LEADING EDGE OFFSET
         m.gc.move(pos)
+        self.machine.gc.dwell(dwell_time)
 
         # CUT INWARDS TO LEADING EDGE
         m.gc.move(m.calculate_move(profile1.left_midpoint, profile2.left_midpoint))
+        self.machine.gc.dwell(dwell_time)
 
         # CUT THE TOP PROFILE
-        self._cut_top_profile(profile1, profile2)
+        self._cut_top_profile(profile1, profile2, dwell_time)
 
         # CUT TO TRAILING EDGE AT MIDDLE OF PROFILE
         m.gc.move(
@@ -59,6 +61,7 @@ class CuttingStrategy2(CuttingStrategyBase):
                 profile1.right_midpoint,
                 profile2.right_midpoint)
         )
+        self.machine.gc.dwell(dwell_time)
 
         # CUT TO TRAILING EDGE OFFSET
         m.gc.move(
@@ -66,6 +69,7 @@ class CuttingStrategy2(CuttingStrategyBase):
                 profile1.right_midpoint + Coordinate(te_offset,0),
                 profile2.right_midpoint + Coordinate(te_offset,0))
         )
+        self.machine.gc.dwell(dwell_time)
 
         # CUT TO TRAILING EDGE AT MIDDLE OF PROFILE
         m.gc.move(
@@ -75,7 +79,7 @@ class CuttingStrategy2(CuttingStrategyBase):
         )
 
         # CUT BOTTOM PROFILE
-        self._cut_bottom_profile(profile1, profile2)
+        self._cut_bottom_profile(profile1, profile2, dwell_time)
 
         # CUT TO LEADING EDGE
         m.gc.move(m.calculate_move(profile1.left_midpoint, profile2.left_midpoint))
@@ -86,9 +90,11 @@ class CuttingStrategy2(CuttingStrategyBase):
                 profile1.left_midpoint - Coordinate(le_offset,0),
                 profile2.left_midpoint - Coordinate(le_offset,0))
         )
+        self.machine.gc.dwell(dwell_time)
 
         # CUT UPWARD TO JUST ABOVE FOAM
         m.gc.move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
+        self.machine.gc.dwell(dwell_time*2)
 
         # MOVE TO SAFE HEIGHT
         self._move_to_safe_height()
@@ -114,7 +120,8 @@ class CuttingStrategy2(CuttingStrategyBase):
 
             # CUT UP TO JUST ABOVE FOAM
             m.gc.move( {'y':m.foam_height*1.1,'v':m.foam_height*1.1}, ["do_not_normalize"] )
-
+            self.machine.gc.dwell(dwell_time*2)
+            
             # MOVE UP TO SAFE HEIGHT
             self._move_to_safe_height()
 
@@ -145,7 +152,7 @@ class CuttingStrategy2(CuttingStrategyBase):
 
 
 
-    def _cut_top_profile(self, profile1, profile2):
+    def _cut_top_profile(self, profile1, profile2, dwell_time):
         # cut top profile
         c1 = profile1.top.coordinates[0]
         c2 = profile2.top.coordinates[0]
@@ -156,17 +163,23 @@ class CuttingStrategy2(CuttingStrategyBase):
         b_width = b_bounds_max.x - b_bounds_min.x
 
         for i in range(self.machine.profile_points):
+            if i == 0:
+                self.machine.gc.dwell(dwell_time)
             pct = i / self.machine.profile_points
             c1 = profile1.top.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.top.interpolate_around_profile_dist_pct(pct)
             self.machine.gc.move(self.machine.calculate_move(c1, c2))
+            if i == 0:
+                # dwell on first point
+                self.machine.gc.dwell(dwell_time)
 
         # cut to last point
         self.machine.gc.move(self.machine.calculate_move(profile1.top.coordinates[-1],
                                                         profile2.top.coordinates[-1]))
+        self.machine.gc.dwell(dwell_time)
 
 
-    def _cut_bottom_profile(self, profile1, profile2):
+    def _cut_bottom_profile(self, profile1, profile2, dwell_time):
         # cutting profile from right to left
         c1 = profile1.top.coordinates[-1]
         c2 = profile2.top.coordinates[-1]
@@ -181,3 +194,8 @@ class CuttingStrategy2(CuttingStrategyBase):
             c1 = profile1.bottom.interpolate_around_profile_dist_pct(pct)
             c2 = profile2.bottom.interpolate_around_profile_dist_pct(pct)
             self.machine.gc.move(self.machine.calculate_move(c1, c2))
+            if i == self.machine.profile_points:
+                # dwell on first point
+                self.machine.gc.dwell(dwell_time)
+
+        self.machine.gc.dwell(dwell_time)

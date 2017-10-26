@@ -42,23 +42,6 @@ class Panel():
         self.right_rib = right_rib
         self.width = width
 
-    def get_feedrate_multiplier(self):
-        """
-        Because the feedrate is always set on the left axis, when we flip a wing around, the feedrate
-        is incorrect.  This produces a value between 0 and 1 that is applied to the feedrate to adjust
-        for this.
-        """
-        l_t = Profile.trim_overlap(self.left_rib.profile).top
-        l_b = Profile.trim_overlap(self.left_rib.profile).bottom
-        r_t = Profile.trim_overlap(self.right_rib.profile).top
-        r_b = Profile.trim_overlap(self.right_rib.profile).bottom
-        left_len = l_t.length + l_b.length
-        right_len = r_t.length + r_b.length
-        if left_len >= right_len:
-            return 1
-        return left_len/right_len
-
-
     @classmethod
     def copy(cls, panel):
         """

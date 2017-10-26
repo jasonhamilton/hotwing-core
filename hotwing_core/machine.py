@@ -106,7 +106,7 @@ class Machine():
         self.foam_height = foam_height
         self.gc = Gcode(formatter_name=self.gcode_formatter_name, 
                         units=self.units, 
-                        feedrate=self.feedrate*self.panel.get_feedrate_multiplier() )
+                        feedrate=self.feedrate )
 
         cutting_strategy = CuttingStrategyFactory.get_cls(self.cutting_strategy_name)(self)
         cutting_strategy.cut()

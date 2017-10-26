@@ -129,11 +129,17 @@ class TestCoordinate():
         e = Coordinate(1+3,2+4)
         assert c1+c2 == e
 
+        with pytest.raises(NotImplementedError):
+            c1 + 1
+
     def test_subtract(self):
         c1 = Coordinate(1, 2)
         c2 = Coordinate(3, 4)
         e = Coordinate(1-3,2-4)
         assert c1-c2 == e
+
+        with pytest.raises(NotImplementedError):
+            c1 - 1
 
     def test_multiply(self):
         c1 = Coordinate(0, 1)

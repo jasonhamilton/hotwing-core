@@ -56,7 +56,7 @@ class Gcode():
     :ivar feedrate: feedrate - units per min (default 5 for inch units, 125 for mm units)
     """
 
-    def __init__(self, formatter_name=None, units="inches", feedrate=None):
+    def __init__(self, formatter_name="", units="inches", feedrate=None):
         self._commands = []
         self.units = units
         if feedrate:

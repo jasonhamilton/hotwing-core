@@ -158,32 +158,93 @@ class TestProfile():
         assert p2 == p3
 
 
-    # def test_rotate(self):
-    #     pass
+    def test_rotate(self):
+        top = [
+            Coordinate(0.2, 0.4), 
+            Coordinate(0.4, 0.5),
+            Coordinate(0.6, 0.6),
+            Coordinate(0.8, 0.7)
+        ]
+        bottom = [
+            Coordinate(0.3, 0.1), 
+            Coordinate(0.4, 0.2),
+            Coordinate(0.5, 0.3),
+            Coordinate(0.6, 0.4)
+        ]
+        p1 = Profile(top+bottom)
+        origin = Coordinate(1,2)
+        angle = 10
+        p1_r = Profile.rotate(origin,p1,angle)
+        p2 = Profile.rotate(origin,p1_r,-angle)
+        assert p1 == p2
 
-    # def test_left_midpoint(self):
-    #     pass
+    def test_comparison(self):
+        top = [
+            Coordinate(0.2, 0.4), 
+            Coordinate(0.4, 0.5),
+            Coordinate(0.6, 0.6),
+            Coordinate(0.8, 0.7)
+        ]
+        other_top = [
+            Coordinate(0.1, 0.4), 
+            Coordinate(0.4, 0.5),
+            Coordinate(0.6, 0.6),
+            Coordinate(0.8, 0.7)
+        ]
+        bottom = [
+            Coordinate(0.3, 0.1), 
+            Coordinate(0.4, 0.2),
+            Coordinate(0.5, 0.3),
+            Coordinate(0.6, 0.4)
+        ]
+        other_bottom = [
+            Coordinate(0.1, 0.1), 
+            Coordinate(0.2, 0.2),
+            Coordinate(0.5, 0.4),
+            Coordinate(0.6, 0.5)
+        ]
+        
 
-    # def test_right_midpoint(self):
-    #     pass
+        p1 = Profile(top+bottom)
+        p2 = Profile(top+bottom)
 
-    # def test_draw(self):
-    #     pass
+        p3 = Profile(top+other_bottom)
+        p4 = Profile(other_top+bottom)
+        p5 = Profile(other_top+other_bottom)
 
-    # def test_offset_around_profiles(self):
-    #     pass
+        assert p1 == p2
+        assert p2 != p3
+        assert p3 != p4
+        assert p4 != p5
 
-    # def test_trim_overlap(self):
-    #     pass
+        with pytest.raises(NotImplementedError):
+            p1 == 1
 
-    # def test_interpolate_new_profile(self):
-    #     pass
+        with pytest.raises(NotImplementedError):
+            p1 != "s"
 
-    # def test__find_convergence_points(self):
-    #     pass
+    def test_add_sub(self):
+        top = [
+            Coordinate(0.2, 0.4), 
+            Coordinate(0.4, 0.5),
+            Coordinate(0.6, 0.6),
+            Coordinate(0.8, 0.7)
+        ]
+        bottom = [
+            Coordinate(0.3, 0.1), 
+            Coordinate(0.4, 0.2),
+            Coordinate(0.5, 0.3),
+            Coordinate(0.6, 0.4)
+        ]
+        coord = Coordinate(1, 2)
+        p1 = Profile(top+bottom)
+        p2 = p1 + coord
+        p3 = p2 - coord
 
-    # def test__find_convergence_point(self):
-    #     pass
+        assert p1 == p3
 
-    # def test__find_region_of_convergence(self):
-    #     pass
+        with pytest.raises(NotImplementedError):
+            p1 + 1
+
+        with pytest.raises(NotImplementedError):
+            p1 - "s"

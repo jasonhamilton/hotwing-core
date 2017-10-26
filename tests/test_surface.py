@@ -220,47 +220,71 @@ class TestSurface():
             c_y = coords[i].y
             s1.coordinates[i] == Coordinate(c_x*scale,c_y*scale)
 
+    def trim_surface(self,coords,l,r,type_="method"):
+        s = Surface(coords)
+        if type_ == "method":
+            t = Surface.trim(s,l,r)
+        elif type_ == "slice":
+            t = s[l:r]
+        if l:
+            assert t.left.x == l
+        else:
+            assert t.left.x == s.left.x
+        if r:
+            assert t.right.x == r
+        else:
+            assert t.right.x == s.right.x
+
     def test_trim(self):
         # trim both sides
-        trim_l = 0.25
-        trim_r = 0.75
-        s = Surface(coordinates)
-        t = Surface.trim(s,trim_l,trim_r)
-        assert t.left.x == trim_l
-        assert t.right.x == trim_r
+        self.trim_surface(coordinates, 0.25, 0.75)
+        self.trim_surface(coordinates, 0.25, 0.75, "slice")
 
         # trim right side only
-        trim_l = None
-        trim_r = 0.75
-        s = Surface(coordinates)
-        t = Surface.trim(s,trim_l,trim_r)
-        assert t.left.x == coordinates[-1].x
-        assert t.right.x == trim_r
+        self.trim_surface(coordinates, None, 0.75)
+        self.trim_surface(coordinates, None, 0.75, "slice")
 
         # trim left side only
-        trim_l = 0.25
-        trim_r = None
-        s = Surface(coordinates)
-        t = Surface.trim(s,trim_l,trim_r)
-        assert t.left.x == trim_l
-        assert t.right.x == coordinates[0].x
+        self.trim_surface(coordinates, 0.25, None)
+        self.trim_surface(coordinates, 0.25, None, "slice")
 
         # don't trim either
-        trim_l = None
-        trim_r = None
+        self.trim_surface(coordinates, None, None)
+        self.trim_surface(coordinates, None, None, "slice")
+
         s = Surface(coordinates)
-        t = Surface.trim(s,trim_l,trim_r)
-        assert t.left.x == coordinates[-1].x
-        assert t.right.x == coordinates[0].x
+        with pytest.raises(NotImplementedError):
+            s[1]
 
     def test_equality(self):
+        coords1 = [
+            Coordinate(0.0,0.0),
+            Coordinate(0.4,0.4), 
+            Coordinate(0.8,0.8),
+            Coordinate(1.2,1.2),
+        ]
+        coords2 = [
+            Coordinate(0.0,0.0),
+            Coordinate(0.5,0.1), 
+            Coordinate(0.8,0.8),
+            Coordinate(1.2,1.2),
+        ]
+
         s1 = Surface(coordinates)
         s2 = Surface(coordinates_no_dupe)
         s3 = Surface(short_surface)
+        # same length different coords
+        s4 = Surface(coords1)
+        s5 = Surface(coords2)
 
         assert s1 == s2
         assert s1 != s3
         assert not s1 == s3
+        assert not s4 == s5
+        with pytest.raises(NotImplementedError):
+            s1 == 1
+        with pytest.raises(NotImplementedError):
+            s2 != "s"
         
     def test_interpolate(self):
         # Straignt line x=y
@@ -334,24 +358,35 @@ class TestSurface():
             c3 = c3*0.5
             assert s1.interpolate(c3.x) == s3.interpolate(c3.x)
 
-    # def test_offset_around_profile(self):
+    def test_offset(self):
+        ## test for 0 slope
+        coords = [
+            Coordinate(0.2,0.0),
+            Coordinate(0.4,0.0), 
+            Coordinate(0.6,0.0),
+            Coordinate(1.2,0.6),
+        ]
+        s1 = Surface(coords)
+        offset = 1.125
+        s2 = Surface.offset_around_surface(s1,offset)
 
-    #     s1 = Surface(coordinates)
-    #     offset = 1.125
-    #     s2 = Surface.offset_around_profile(s1,offset)
-    #     s3 = Surface.offset_around_profile(s2,-offset)
+    def test_write_file(self):
+        filename="my_test_output_file.txt"
+        s = Surface(coordinates)
+        if os.path.isfile(filename):
+                os.remove(filename)
 
+        s.to_file(filename)
+        assert os.path.isfile(filename)
+        os.remove(filename)
 
-    #     for i in range(len(s2.coordinates)):
-    #         c1 = s1.coordinates[i]
-    #         c2 = s2.coordinates[i]
-    #         c3 = s3.coordinates[i]
+    def test_str(self):
+        s = Surface(coordinates)
+        assert len(str(s)) > 0
 
-
-
-    # def test_interpolate_around_profile_dist_pct(self):
-    #     pass
-        
-    # def test_interpolate_around_profile_dist(self):
-    #     pass
-    #     
+    def test_add_sub(self):
+        s = Surface(coordinates)
+        with pytest.raises(NotImplementedError):
+            s + 1
+        with pytest.raises(NotImplementedError):
+            s - 1

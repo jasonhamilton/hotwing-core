@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='hotwing-core',
-    version='0.1.0',
+    version='0.2.0',
     url='https://github.com/jasonhamilton/hotwing-core',
     packages=['hotwing_core','hotwing_core.cutting_strategies','hotwing_core.gcode_formatters'],
     license='GPLv3',
@@ -15,8 +15,7 @@ setup(
 
         # How mature is this project? Common values are
         #   3 - Alpha
-        #   4 - Beta
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
 
         'Intended Audience :: Developers',
 

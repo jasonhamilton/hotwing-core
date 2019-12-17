@@ -24,30 +24,46 @@ class GenericGcodeFormatter(GcodeFormatterBase):
         return "G4 P%.4f" % command.data['p']
 
     def process_move(self,command):
-        d = command.data
         cmd_list = ['G1']
-        if 'x' in d:
-            cmd_list.append("x%.10f" % d['x'])
-        if 'y' in d:
-            cmd_list.append("y%.10f" % d['y'])
-        if 'u' in d:
-            cmd_list.append("u%.10f" % d['u'])
-        if 'v' in d:
-            cmd_list.append("v%.10f" % d['v'])
-        return " ".join(cmd_list)
+        return self._make_command(command, cmd_list)
 
     def process_fast_move(self, command):
-        d = command.data
         cmd_list = ['G0']
+        return self._make_command(command, cmd_list)
+
+        
+
+    def _make_command(self, command, cmd_list):
+        d = command.data
+
         if 'x' in d:
             cmd_list.append("x%.10f" % d['x'])
+            self.last_command['x'] = d['x']
+        else:
+            cmd_list.append("x%.10f" % self.last_command['x'])
+
         if 'y' in d:
             cmd_list.append("y%.10f" % d['y'])
+            self.last_command['y'] = d['y']
+        else:
+            cmd_list.append("y%.10f" % self.last_command['y'])
+
         if 'u' in d:
             cmd_list.append("u%.10f" % d['u'])
+            self.last_command['u'] = d['u']
+        else:
+            cmd_list.append("u%.10f" % self.last_command['u'])
+
         if 'v' in d:
             cmd_list.append("v%.10f" % d['v'])
+            self.last_command['v'] = d['v']
+        else:
+            cmd_list.append("v%.10f" % self.last_command['v'])
+
+
         return " ".join(cmd_list)
+
+
 
     def start_commands(self):
         out = []
@@ -80,6 +96,8 @@ class GenericGcodeFormatter(GcodeFormatterBase):
 
         # Use first work offset
         out.append("G54")
+        self.last_command = {'x':0,'y':0,'u':0,'v':0}
+
 
         return out
 

@@ -6,6 +6,8 @@ import copy
 import os
 import sys
 import logging
+import ssl
+
 try:
     # For Python 3.0 and later
     import urllib.request

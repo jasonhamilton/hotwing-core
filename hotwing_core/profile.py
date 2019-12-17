@@ -325,8 +325,9 @@ class Profile():
         """
 
         if "urllib.request" in sys.modules:
+            gcontext = ssl.SSLContext()
             req = urllib.request.Request(url)
-            res = urllib.request.urlopen(req)
+            res = urllib.request.urlopen(req, context=gcontext)
             contents = res.read().decode('utf-8')
         else:
             # Python 2

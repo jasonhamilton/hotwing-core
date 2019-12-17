@@ -284,7 +284,7 @@ r2 = Rib("http://airfoiltools.com/airfoil/seligdatfile?airfoil=rg14-il",
 p = Panel(r1, r2, 24)
 
 # Trim Panel
-p1 = Panel.trim_panel(p, 0, 12)
+p1 = Panel.trim(p, 0, 12)
 
 # Setup Machine
 m = Machine(24, kerf=0.075, profile_points=200)
@@ -297,7 +297,7 @@ m.gcode_formatter_name = "debug"
 gcode = m.generate_gcode(safe_height=5)
 
 # Output to screen
-print gcode
+print(gcode)
 ```
 
 # Testing
